@@ -17,8 +17,24 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include, path
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import RedirectView
+from django.urls import path, re_path
+import os
+from django.views.static import serve
+from .settings import BASE_DIR
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    # Redirect root to static index.html
+    path('', RedirectView.as_view(url='/static/index.html', permanent=False)),
+    # Serve the static HTML file
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': os.path.join(BASE_DIR, 'path_to_react_app_build_folder')}),
 ]
+
+
+# myproject/urls.py
+
+
+urlpatterns += staticfiles_urlpatterns()
