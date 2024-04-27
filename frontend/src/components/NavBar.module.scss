@@ -1,0 +1,52 @@
+.Navbar {
+  width: 1393px;
+  height: 48px;
+  padding-left: 13px;
+  padding-right: 13px;
+  background: rgba(255, 255, 255, 0.29);
+  backdrop-filter: blur(200px);
+  justify-content: flex-start;
+  align-items: center;
+  gap: 719px;
+  display: inline-flex;
+
+  .Artboard21 {
+    width: 67px;
+    height: 48px;
+    position: relative;
+
+    .Vector {
+      position: absolute;
+      background: #23C52A;
+      &.first {
+        width: 43.72px;
+        height: 30.24px;
+        left: 12.14px;
+        top: 8.5px;
+      }
+      &.second {
+        width: 24.53px;
+        height: 15.94px;
+        left: 22.3px;
+        top: 13.95px;
+        background: white;
+      }
+      // Additional vector styles can be added here using more classes or ids
+    }
+  }
+
+  .NavigationButtons {
+    justify-content: center;
+    align-items: center;
+    gap: 82px;
+    display: flex;
+
+    .Button {
+      color: black;
+      font-size: 20px;
+      font-family: "Segoe UI";
+      font-weight: 400;
+      word-wrap: break-word;
+    }
+  }
+}
