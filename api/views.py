@@ -8,7 +8,7 @@ def querying_view(request):
         query = request.data.get('query')
         if query:
             response = querying(query)
-            return JsonResponse(response, safe=False)
+            return response
         else:
             return JsonResponse({'error': 'No query provided'}, status=400)
 

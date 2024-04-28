@@ -30,7 +30,6 @@ urlpatterns = [
     # Redirect root to static index.html
     path('', RedirectView.as_view(url='/static/index.html', permanent=False)),
     # Serve the static HTML file
-    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': os.path.join(BASE_DIR, 'path_to_react_app_build_folder')}),
 ]
 
 
