@@ -30,6 +30,7 @@ urlpatterns = [
     # Redirect root to static index.html
     path('', RedirectView.as_view(url='/static/index.html', permanent=False)),
     # Serve the static HTML file
+    path('auth/', include('authentication.urls')),
 ]
 
 

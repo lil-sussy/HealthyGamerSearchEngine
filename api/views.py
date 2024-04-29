@@ -1,16 +1,60 @@
-from django.http import JsonResponse
-
+from firebase_admin import firestore, credentials, initialize_app
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+# Initialize Firebase Admin
+cred = credentials.Certificate('path/to/your/serviceAccountKey.json')
+initialize_app(cred)
+
+# Get Firestore database instance
+db = firestore.client()
+
+@api_view(['POST'])
+def feedback_query(request):
+    if request.method == 'POST':
+        query = request.data.get('query')
+        grade = int(request.data.get('grade'))
+        additional_information = request.data.get('additional_information')
+
+        # Validate feedback grade
+        if not (0 <= grade <= 5):
+            return Response({'error': 'Feedback grade must be between 0 and 5'}, status=400)
+
+        # Prepare data to save
+        feedback_data = {
+            'query': query,
+            'grade': grade,
+            'additional_information': additional_information
+        }
+
+        # Save to Firestore
+        db.collection('feedback').add(feedback_data)
+
+        return Response({'message': 'Feedback submitted successfully'})
+
+    return Response({'error': 'Invalid request'}, status=405)
 
 @api_view(['POST'])
 def querying_view(request):
     if request.method == 'POST':
         query = request.data.get('query')
         if query:
-            response = querying(query)
-            return response
+            video_list, chat_text = querying(query)
+            
+            # Prepare data to save
+            data_to_save = {
+                'query': query,
+                'video_list': video_list,
+                'chat_response': chat_text
+            }
+            
+            # Save to Firestore
+            db.collection('queries').add(data_to_save)
+            
+            return Response(video_list)
         else:
-            return JsonResponse({'error': 'No query provided'}, status=400)
+            return Response({'error': 'No query provided'}, status=400)
+
 
 
 import requests
@@ -41,6 +85,7 @@ load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
 
 def querying(query, use_prediction=True):
+    return [], ""
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json'
@@ -100,7 +145,7 @@ def querying(query, use_prediction=True):
                     'timestamp': entry['timestamp'],  # This should be 'timestamp' instead of 'current_time
                     'duration': entry['duration']
                 })
-            return JsonResponse(list(video_dict.values()), safe=False)
+            return list(video_dict.values()), chat_text
         else:
             return JsonResponse({"error": "Failed to retrieve embeddings: " + embedding_response.text}, status=400)
     else:
