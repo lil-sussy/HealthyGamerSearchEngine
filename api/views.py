@@ -2,8 +2,27 @@ from firebase_admin import firestore, credentials, initialize_app
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 # Initialize Firebase Admin
-cred = credentials.Certificate('path/to/your/serviceAccountKey.json')
+
+certificate = {
+  "type": "service_account",
+  "project_id": "healthy-gamer-search-engine",
+  "private_key_id": "ec1027265791bf0b79840d38e4e2d3667314869f",
+  "private_key": os.getenv("FIREBASE_KEY").replace('\\n', '\n'),
+  "client_email": "firebase-adminsdk-tjoq1@healthy-gamer-search-engine.iam.gserviceaccount.com",
+  "client_id": "101005237587317361993",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-tjoq1%40healthy-gamer-search-engine.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+
+cred = credentials.Certificate(certificate)
 initialize_app(cred)
 
 # Get Firestore database instance
@@ -15,45 +34,129 @@ def feedback_query(request):
         query = request.data.get('query')
         grade = int(request.data.get('grade'))
         additional_information = request.data.get('additional_information')
-
         # Validate feedback grade
         if not (0 <= grade <= 5):
             return Response({'error': 'Feedback grade must be between 0 and 5'}, status=400)
-
         # Prepare data to save
         feedback_data = {
             'query': query,
             'grade': grade,
             'additional_information': additional_information
         }
-
         # Save to Firestore
         db.collection('feedback').add(feedback_data)
-
         return Response({'message': 'Feedback submitted successfully'})
-
     return Response({'error': 'Invalid request'}, status=405)
+
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from firebase_admin import auth  # Import Firebase Admin Auth
+import requests
+import hgg_searchengine.settings as settings
+
+# Make sure to initialize the Firebase Admin SDK elsewhere in your code
 
 @api_view(['POST'])
 def querying_view(request):
-    if request.method == 'POST':
-        query = request.data.get('query')
-        if query:
-            video_list, chat_text = querying(query)
-            
-            # Prepare data to save
-            data_to_save = {
-                'query': query,
-                'video_list': video_list,
-                'chat_response': chat_text
-            }
-            
-            # Save to Firestore
-            db.collection('queries').add(data_to_save)
-            
-            return Response(video_list)
-        else:
-            return Response({'error': 'No query provided'}, status=400)
+    user_ip = get_client_ip(request)
+    user_ref = db.collection('users').document(user_ip)
+    user_doc = user_ref.get()
+
+    if user_doc.exists:
+        user_data = user_doc.to_dict()
+        query_count = user_data.get('query_performed', 0)
+
+        # Check if query limit is reached
+        from firebase_admin import firestore
+
+@api_view(['POST'])
+def querying_view(request):
+    user_ip = get_client_ip(request)
+    user_ref = db.collection('users').document(user_ip)
+    user_doc = user_ref.get()
+
+    if user_doc.exists:
+        user_data = user_doc.to_dict()
+        query_count = user_data.get('query_performed', 0)
+
+        if query_count >= 5:
+            jwt_token = request.COOKIES.get('jwt')  # Assumes JWT is stored in a cookie named 'jwt'
+            if jwt_token is None:
+                return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord'}, status=403)
+            try:
+                # Verify the JWT with Firebase
+                decoded_token = auth.verify_id_token(jwt_token)
+
+                # Extract Discord ID, name, and email from the decoded token
+                discord_id = decoded_token.get('discord_id')
+                discord_name = decoded_token.get('discord_name')
+                email = decoded_token.get('email')
+
+                # Use the Discord ID to get or create the Firestore document
+                discord_user_ref = db.collection('discord_users').document(discord_id)
+                discord_user_doc = discord_user_ref.get()
+
+                if discord_user_doc.exists:
+                    discord_user_data = discord_user_doc.to_dict()
+                    discord_query_count = discord_user_data.get('query_count', 0)
+                    
+                    # Check if the user has a higher limit or perform other logic
+                    if discord_query_count < settings.higher_limit:
+                        # Increase the user's query count
+                        discord_user_ref.update({'query_count': discord_query_count + 1})
+
+                        # Continue processing the query as usual
+                    else:
+                        return JsonResponse({'error': 'Discord query limit reached. Please wait or upgrade your plan.'}, status=403)
+                else:
+                    # Create a new document for the Discord user
+                    discord_user_ref.set({'query_count': 1, 'discord_name': discord_name, 'email': email})
+
+                # Continue processing the query as usual
+
+            except auth.InvalidIdTokenError:
+                return JsonResponse({'error': 'Invalid JWT token. Please log in again.'}, status=403)
+
+    # ... rest of the function
+    else:
+        user_ref.set({'query_performed': 0})
+        query_count = 0
+
+    # The rest of your function remains unchanged
+
+
+    # Process the query if under the limit
+    query = request.data.get('query')
+    if query:
+        video_list, chat_text = querying(query)
+
+        # Prepare data to save
+        data_to_save = {
+            'query': query,
+            'video_list': video_list,
+            'chat_response': chat_text
+        }
+        
+        # Save to Firestore
+        db.collection('queries').add(data_to_save)
+
+        # Update the user's query count
+        user_ref.update({'query_performed': query_count + 1})
+
+        return Response(video_list)
+    else:
+        return Response({'error': 'No query provided'}, status=400)
+
+def get_client_ip(request):
+    """Utility method to get the client IP address from request headers."""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
 
 
 
@@ -61,8 +164,6 @@ import requests
 import json
 import chromadb
 import math
-import os
-from dotenv import load_dotenv
 from django.http import JsonResponse
 
 prompt = """
@@ -81,7 +182,6 @@ In responding to user queries, your answers are enriched with carefully chosen k
 # Assuming the PersistentClient and collection setup are done elsewhere and imported here
 client = chromadb.PersistentClient(path="data/healthy_gamer_embeddings.db")
 collection = client.get_or_create_collection(name="video_embeddings")
-load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
 
 def querying(query, use_prediction=True):

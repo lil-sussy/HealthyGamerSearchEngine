@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 const HeroHeader = () => {
 	const [query, setQuery] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
 
 	const handleInputChange = (event: any) => {
 		setQuery(event.target.value);
@@ -22,14 +23,16 @@ const HeroHeader = () => {
 				body: JSON.stringify({ query: query }),
 			});
 
+
 			const data = await response.json();
 			if (response.ok) {
-				console.log("Success:", data);
+				setResponseMessage(`Success: ${JSON.stringify(data)}`);
 			} else {
-				console.error("Error:", data);
+				setResponseMessage(`Error: ${data.message || JSON.stringify(data)}`);
 			}
 		} catch (error) {
-			console.error("Error:", error);
+      //@ts-ignore
+			setResponseMessage(`Error: ${error.message}`);
 		}
 	};
 	return (
@@ -60,6 +63,7 @@ const HeroHeader = () => {
 								<div className="SearchLogo small"></div>
 							</button>
 						</form>
+						{responseMessage && <div className="response-message">{responseMessage}</div>}
 						<div className="indent-container">
 							<div className="WelcomeText">Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated tool designed by fans for fans. This platform allows you to navigate through the extensive content of Dr. K's videos to find specific advice, insights, and discussions tailored to your mental health and wellness needs.</div>
 							<div className="Actions">
