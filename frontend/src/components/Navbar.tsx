@@ -4,6 +4,12 @@ import axios from "axios";
 import styles from "./NavBar.module.scss";
 import Logo from "./Logo2";
 import { FaDiscord } from "react-icons/fa";
+import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithCustomToken, onAuthStateChanged } from "firebase/auth";
+
+import app from "../firebase";
+const auth = getAuth(app)
 
 
 const NavBar = () => {
@@ -27,16 +33,35 @@ const NavBar = () => {
 	};
 
 	useEffect(() => {
-		if (code) {
-			// Call an API endpoint on your server to handle the OAuth token exchange
-			axios
-				.post("/api/exchange-token", { code })
-				.then((response) => console.log("Token exchange successful", response.data))
-				.catch((error) => {
-					console.error("Token exchange failed", error);
-					setError("Failed to login with Discord.");
-				});
-		}
+    const unsubscribe = auth.onAuthStateChanged((user: any) => {
+			if (user) {
+				// User is signed in, use the user object for user's info.
+				console.log("User is signed in or token was refreshed:", user);
+			} else {
+				// User is signed out.
+				console.log("User is signed out");
+        axios
+          .post("/auth/token/")
+          .then((response: any) => {
+            const token = response.data.access_token;
+            signInWithCustomToken(auth, token).then((user) => console.log(user)).catch(function (error: any) {
+              console.log(error);
+              if (error.code === "auth/token-expired") {
+                // Display a message to the user that their session has expired and prompt them to log in again.
+                console.log("Session has expired, please log in again.");
+                // Redirect or handle the re-authentication flow
+              }
+            });
+          })
+          .catch((error) => {
+            console.error("Token exchange failed", error);
+            setError("Failed to login with Discord.");
+          });
+			}
+		});
+
+		// Clean up the subscription on unmount
+		return () => unsubscribe();
 	}, [code]);
 
 	return (

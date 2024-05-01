@@ -4,36 +4,19 @@ import os
 from firebase_admin import firestore
 
 db = firestore.client()
-
-def discord_callback(request):
-    error = request.GET.get('error')
-    code = request.GET.get('code')
-    
-    if error:
-        return JsonResponse({'error': error}, status=400)
-    
-    if code:
-        client_id = os.getenv('DISCORD_CLIENT')
-        client_secret = os.getenv('DISCORD_SECRET')
-        redirect_uri = 'http://localhost:8000/auth/callback/discord'
         
-        token_response = requests.post(
-            'https://discord.com/api/oauth2/token',
-            data={
-                'client_id': client_id,
-                'client_secret': client_secret,
-                'grant_type': 'authorization_code',
-                'code': code,
-                'redirect_uri': redirect_uri,
-            },
-            headers={'Content-Type': 'application/x-www-form-urlencoded'}
-        )
-        
-        from django.http import JsonResponse
+from django.http import JsonResponse
 from firebase_admin import auth
 import requests
 import datetime
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def return_acces_token(request):
+  # Get the access token from the cookies of the request then sends it back to the client
+  access_token = request.COOKIES.get('jwt')
+  return JsonResponse({'access_token': access_token})
 
 def discord_callback(request):
     error = request.GET.get('error')
@@ -84,10 +67,10 @@ def discord_callback(request):
                     
                     # Set JWT as an HTTP-only cookie
                     response = redirect('/')
-                    expires = datetime.datetime.now() + datetime.timedelta(days=1)  # Token expires in 1 day
+                    expires = datetime.datetime.now() + datetime.timedelta(days=3)  # Token expires in 1 day
                     response.set_cookie(
                         'jwt', 
-                        firebase_token, 
+                        firebase_token.decode('utf-8'), 
                         expires=expires, 
                         httponly=True, 
                         secure=True,  # Use secure=True in production to send cookies over HTTPS only

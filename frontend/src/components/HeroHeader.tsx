@@ -1,35 +1,60 @@
 import Logo from "./Logo";
 import "./HeroHeader.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app";
+import { getAuth, getIdToken , onAuthStateChanged } from "firebase/auth";
+
+import app from "../firebase";
+const auth = getAuth(app);
 
 const HeroHeader = () => {
 	const [query, setQuery] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
+  const [idToken, setIdToken] = useState("");
 
 	const handleInputChange = (event: any) => {
 		setQuery(event.target.value);
 	};
+  
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+			if (user) {
+				// User is signed in, retrieve the ID token
+				user.getIdToken(true).then(function (idToken) {
+					setIdToken(idToken);
+				});
+			} else {
+				// User is signed out
+				console.log("No user is signed in.");
+			}
+		});
+  }, []);
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 		if (!query.trim()) return;
 
 		try {
-			const response = await fetch("/api/query/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ query: query }),
+      const auth = getAuth(app);
+      auth.currentUser!.getIdToken(true).then(async function (idToken) {
+				const response = await fetch("/api/query/", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${idToken}`,
+					},
+					body: JSON.stringify({ query: query }),
+				});
+				const data = await response.json();
+				if (response.ok) {
+					setResponseMessage(`Success: ${JSON.stringify(data)}`);
+				} else {
+					setResponseMessage(`Error: ${data.message || JSON.stringify(data)}`);
+				}
 			});
 
 
-			const data = await response.json();
-			if (response.ok) {
-				setResponseMessage(`Success: ${JSON.stringify(data)}`);
-			} else {
-				setResponseMessage(`Error: ${data.message || JSON.stringify(data)}`);
-			}
 		} catch (error) {
       //@ts-ignore
 			setResponseMessage(`Error: ${error.message}`);
