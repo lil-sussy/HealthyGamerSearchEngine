@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import datetime
 
-higher_limit = 200
+QUERY_PER_MONTH_LIMIT = 200
 JWT_EXPIRATION_DELTA = datetime.datetime.now() + datetime.timedelta(days=3)  # Token expires in 3 day
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

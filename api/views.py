@@ -93,25 +93,34 @@ def querying_view(request):
                 discord_name = decoded_token.get('discord_name')
                 email = decoded_token.get('email')
 
-                # Use the Discord ID to get or create the Firestore document
-                discord_user_ref = db.collection('discord_users').document(discord_id)
-                discord_user_doc = discord_user_ref.get()
+                if check_query_limit(discord_id) == "Query limit is okay.":
+                    # Increase the user's query count
+                    increment_query_count(discord_id)
 
-                if discord_user_doc.exists:
-                    discord_user_data = discord_user_doc.to_dict()
-                    discord_query_count = discord_user_data.get('query_count', 0)
-                    
-                    # Check if the user has a higher limit or perform other logic
-                    if discord_query_count < settings.higher_limit:
-                        # Increase the user's query count
-                        discord_user_ref.update({'query_count': discord_query_count + 1})
+                    # Continue processing the query as usual
+                    # Process the query if under the limit
+                    query = request.data.get('query')
+                    if query:
+                        video_list, chat_text = querying(query)
 
-                        # Continue processing the query as usual
+                        # Prepare data to save
+                        data_to_save = {
+                            'query': query,
+                            'video_list': video_list,
+                            'chat_response': chat_text
+                        }
+                        
+                        # Save to Firestore
+                        db.collection('queries').add(data_to_save)
+
+                        # Update the user's query count
+                        user_ref.update({'query_performed': query_count + 1})
+
+                        return Response(video_list)
                     else:
-                        return JsonResponse({'error': 'Discord query limit reached. Please wait or upgrade your plan.'}, status=403)
+                        return Response({'error': 'No query provided'}, status=400)
                 else:
-                    # Create a new document for the Discord user
-                    discord_user_ref.set({'query_count': 1, 'discord_name': discord_name, 'email': email})
+                    return JsonResponse({'error': 'Monthly query limit reached. contact me on discord @lilsussyjett.'}, status=403)
 
                 # Continue processing the query as usual
 
@@ -123,30 +132,36 @@ def querying_view(request):
         user_ref.set({'query_performed': 0})
         query_count = 0
 
-    # The rest of your function remains unchanged
 
+from datetime import datetime, timedelta
 
-    # Process the query if under the limit
-    query = request.data.get('query')
-    if query:
-        video_list, chat_text = querying(query)
+def increment_query_count(user_id):
+    today = datetime.now().strftime("%Y-%m-%d")
+    user_ref = db.collection('discord_users').document(user_id)
+    day_ref = user_ref.collection('queries').document(today)
 
-        # Prepare data to save
-        data_to_save = {
-            'query': query,
-            'video_list': video_list,
-            'chat_response': chat_text
-        }
-        
-        # Save to Firestore
-        db.collection('queries').add(data_to_save)
+    # Transaction to increment the count safely
+    @firestore.transactional
+    def update_count(transaction, day_ref):
+        snapshot = day_ref.get(transaction=transaction)
+        current_count = snapshot.get('count') if snapshot.exists else 0
+        transaction.set(day_ref, {'count': current_count + 1})
 
-        # Update the user's query count
-        user_ref.update({'query_performed': query_count + 1})
+    transaction = db.transaction()
+    update_count(transaction, day_ref)
 
-        return Response(video_list)
-    else:
-        return Response({'error': 'No query provided'}, status=400)
+def check_query_limit(user_id):
+    lower_bound_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+    user_ref = db.collection('discord_users').document(user_id)
+    query_records = user_ref.collection('queries').where('date', '>=', lower_bound_date)
+
+    total_queries_last_30_days = sum(doc.get('count') for doc in query_records.stream())
+
+    if total_queries_last_30_days >= settings.QUERY_PER_MONTH_LIMIT:
+        # Tell the user to contact on Discord instead of upgrading the plan
+        return "Please contact lilsussyjett on Discord for more queries."
+    return "Query limit is okay."
+
 
 def get_client_ip(request):
     """Utility method to get the client IP address from request headers."""
