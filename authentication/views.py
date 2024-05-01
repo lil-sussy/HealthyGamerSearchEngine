@@ -8,15 +8,26 @@ db = firestore.client()
 from django.http import JsonResponse
 from firebase_admin import auth
 import requests
-import datetime
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+
+from hgg_searchengine import settings
+expires = settings.JWT_EXPIRATION_DELTA
 
 @csrf_exempt
 def return_acces_token(request):
   # Get the access token from the cookies of the request then sends it back to the client
   access_token = request.COOKIES.get('jwt')
-  return JsonResponse({'access_token': access_token})
+  response = JsonResponse({'access_token': access_token})
+  response.set_cookie(
+      'jwt', 
+      access_token, 
+      expires=expires, 
+      httponly=True, 
+      secure=True,  # Use secure=True in production to send cookies over HTTPS only
+      samesite='Lax'  # Recommended to prevent CSRF
+  )
+  return response
 
 def discord_callback(request):
     error = request.GET.get('error')
@@ -67,7 +78,6 @@ def discord_callback(request):
                     
                     # Set JWT as an HTTP-only cookie
                     response = redirect('/')
-                    expires = datetime.datetime.now() + datetime.timedelta(days=3)  # Token expires in 1 day
                     response.set_cookie(
                         'jwt', 
                         firebase_token.decode('utf-8'), 
