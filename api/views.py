@@ -81,12 +81,13 @@ def querying_view(request):
         query_count = user_data.get('query_performed', 0)
 
         if query_count >= 5:
-            jwt_token = request.COOKIES.get('jwt')  # Assumes JWT is stored in a cookie named 'jwt'
-            if jwt_token is None:
+            jwt = request.COOKIES.get('jwt')  # Assumes JWT is stored in a cookie named 'jwt'
+            id_token = request.headers.get('Authorization')[len('Bearer '):]
+            if jwt is None:
                 return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord'}, status=403)
             try:
                 # Verify the JWT with Firebase
-                decoded_token = auth.verify_id_token(jwt_token)
+                decoded_token = auth.verify_id_token(id_token)
 
                 # Extract Discord ID, name, and email from the decoded token
                 discord_id = decoded_token.get('discord_id')
@@ -195,12 +196,13 @@ In responding to user queries, your answers are enriched with carefully chosen k
 """
 
 # Assuming the PersistentClient and collection setup are done elsewhere and imported here
-client = chromadb.PersistentClient(path="data/healthy_gamer_embeddings.db")
-collection = client.get_or_create_collection(name="video_embeddings")
+# client = chromadb.PersistentClient(path="data/healthy_gamer_embeddings.db")
+remote_client = chromadb.HttpClient(host="chroma-gprs-production.up.railway.app", port=443, ssl=True)
+collection = remote_client.get_or_create_collection(name="video_embeddings")
 api_key = os.getenv('OPENAI_API_KEY')
 
 def querying(query, use_prediction=True):
-    return [], ""
+    # return [], ""
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json'
@@ -246,7 +248,7 @@ def querying(query, use_prediction=True):
                 quote = results['documents'][0][i]
                 video_id = entry['video_url'].split('=')[-1]
                 timestamp_rounded = math.floor(entry['timestamp'])
-                video_link = f"{entry['video_url']}?&={math.max(0, timestamp_rounded - 10)}s"
+                video_link = f"{entry['video_url']}?&={max(0, timestamp_rounded - 10)}s"
                 if video_id not in video_dict:
                     video_dict[video_id] = {
                         'video_id': video_id,
