@@ -1,0 +1,13 @@
+# nixpacks.toml
+
+[phases.setup]
+nixPkgs = ['nodejs', 'python3', 'cowsay']
+
+[phases.build]
+cmds = [
+  "poetry install"                              # Install Python dependencies
+  "cd frontend && npm install && npm run build", # Setup and build frontend
+]
+
+[start]
+cmd = "python manage.py runserver"
