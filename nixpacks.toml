@@ -1,8 +1,7 @@
 [phases.setup]
 
 
-let
-  python3122 = pkgs.python3.overrideAttrs (oldAttrs: rec {
+let python3122 = pkgs.python3.overrideAttrs (oldAttrs: rec {
     version = "3.12.2";
     src = pkgs.fetchurl {
       url = "https://www.python.org/ftp/python/3.12.2/Python-3.12.2.tar.xz";
