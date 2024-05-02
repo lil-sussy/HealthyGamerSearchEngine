@@ -1,3 +1,4 @@
+[phases.setup]
 { pkgs ? import <nixpkgs> {} }:
 
 let
@@ -5,16 +6,13 @@ let
     version = "3.12.2";
     src = pkgs.fetchurl {
       url = "https://www.python.org/ftp/python/3.12.2/Python-3.12.2.tar.xz";
-      sha256 = "1xyzabc..."; # Replace with the correct hash
+      sha256 = "6f1375c52c766f561d3378e47b231b23"; # Replace with the correct hash
     };
   });
 in
 pkgs.mkShell {
   buildInputs = [ python3122 ];
 }
-
-
-[phases.setup]
 nixPkgs = ['nodejs', 'python3122', 'cowsay']
 
 [phases.build]
