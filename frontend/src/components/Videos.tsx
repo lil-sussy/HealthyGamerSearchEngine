@@ -40,6 +40,7 @@ export { VideoResultDisplay };
 
 function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number }) {
 	const playerRef = React.useRef<YouTubePlayer | null>(null);;
+  seekTime = Math.round(seekTime)
 
 	React.useEffect(() => {
 		if (playerRef.current) {
@@ -47,12 +48,15 @@ function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number 
 		}
 	}, [seekTime]);
 
-	return <ReactPlayer
-    ref={playerRef}
-    url={`https://www.youtube.com/watch?v=${videoId}`}
-    controls
-    playing={false} // Disabled autoplay
-  />;
+	return (
+		<ReactPlayer
+			ref={playerRef}
+			url={`https://www.youtube.com/watch?v=${videoId}`}
+			controls
+			playing={false} // Disabled autoplay
+			onReady={() => playerRef.current!.seekTo(seekTime, "seconds")}
+		/>
+	);
 }
 
 export { VideoPlayer };

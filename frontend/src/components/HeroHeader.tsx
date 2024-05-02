@@ -35,7 +35,7 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
       const data = await response.json();
       if (response.ok) {
         setResponseMessage("");
-        setResults(data.results);
+        setResults(data);
       } else {
         setResponseMessage(`Error: ${data.message || JSON.stringify(data)}`);
       }
