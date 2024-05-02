@@ -1,5 +1,5 @@
 [phases.setup]
-{ pkgs ? import <nixpkgs> {} }:
+
 
 let
   python3122 = pkgs.python3.overrideAttrs (oldAttrs: rec {
