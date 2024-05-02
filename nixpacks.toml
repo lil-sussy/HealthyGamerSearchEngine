@@ -1,7 +1,7 @@
 # nixpacks.toml
 
 [phases.setup]
-nixPkgs = ['nodejs', 'python3', 'cowsay']
+nixPkgs = ['nodejs', 'python312', 'cowsay']
 
 [phases.build]
 cmds = [
