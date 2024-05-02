@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, getIdToken , onAuthStateChanged } from "firebase/auth";
+import type { Video, Occurrence } from "./Videos";
+import { VideoResultDisplay } from "./Videos";
 
 import app from "../firebase";
 const auth = getAuth(app);
@@ -11,6 +13,7 @@ const auth = getAuth(app);
 const HeroHeader = ({ idToken }: { idToken: string }) => {
 	const [query, setQuery] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
+  const [results, setResults] = useState<Video[]>([]);
 
 	const handleInputChange = (event: any) => {
 		setQuery(event.target.value);
@@ -31,7 +34,8 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
       });
       const data = await response.json();
       if (response.ok) {
-        setResponseMessage(`Success: ${JSON.stringify(data)}`);
+        setResponseMessage("");
+        setResults(data.results);
       } else {
         setResponseMessage(`Error: ${data.message || JSON.stringify(data)}`);
       }
@@ -69,6 +73,13 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 							</button>
 						</form>
 						{responseMessage && <div className="response-message">{responseMessage}</div>}
+            {responseMessage.length === 0 && results.length > 0 ? 
+              <div className="results">
+                {results.map((video: Video, index: number) => (
+                  <VideoResultDisplay key={index} video={video} />
+                ))}
+              </div>
+            : <></>}
 						<div className="indent-container">
 							<div className="WelcomeText">Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated tool designed by fans for fans. This platform allows you to navigate through the extensive content of Dr. K's videos to find specific advice, insights, and discussions tailored to your mental health and wellness needs.</div>
 							<div className="Actions">
