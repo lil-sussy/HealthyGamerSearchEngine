@@ -1,17 +1,4 @@
 [phases.setup]
-
-
-let python3122 = pkgs.python3.overrideAttrs (oldAttrs: rec {
-    version = "3.12.2";
-    src = pkgs.fetchurl {
-      url = "https://www.python.org/ftp/python/3.12.2/Python-3.12.2.tar.xz";
-      sha256 = "6f1375c52c766f561d3378e47b231b23"; # Replace with the correct hash
-    };
-  });
-in
-pkgs.mkShell {
-  buildInputs = [ python3122 ];
-}
 nixPkgs = ['nodejs', 'python3122', 'cowsay']
 
 [phases.build]
