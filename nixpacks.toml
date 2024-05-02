@@ -1,7 +1,21 @@
-# nixpacks.toml
+{ pkgs ? import <nixpkgs> {} }:
+
+let
+  python3122 = pkgs.python3.overrideAttrs (oldAttrs: rec {
+    version = "3.12.2";
+    src = pkgs.fetchurl {
+      url = "https://www.python.org/ftp/python/3.12.2/Python-3.12.2.tar.xz";
+      sha256 = "1xyzabc..."; # Replace with the correct hash
+    };
+  });
+in
+pkgs.mkShell {
+  buildInputs = [ python3122 ];
+}
+
 
 [phases.setup]
-nixPkgs = ['nodejs', 'python312', 'cowsay']
+nixPkgs = ['nodejs', 'python3122', 'cowsay']
 
 [phases.build]
 cmds = [
