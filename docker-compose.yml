@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  django:
+    image: hgg-search:0.0.1
+    build:
+      context: .
+      dockerfile: dockerfile
+    command: python manage.py runserver
+    ports:
+      - "8000:8000"

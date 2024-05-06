@@ -57,18 +57,10 @@ import hgg_searchengine.settings as settings
 
 # Make sure to initialize the Firebase Admin SDK elsewhere in your code
 
-@api_view(['POST'])
-def querying_view(request):
-    user_ip = get_client_ip(request)
-    user_ref = db.collection('users').document(user_ip)
-    user_doc = user_ref.get()
 
-    if user_doc.exists:
-        user_data = user_doc.to_dict()
-        query_count = user_data.get('query_performed', 0)
 
-        # Check if query limit is reached
-        from firebase_admin import firestore
+def healthcheck(request):
+    return Response({'error': 'bip boop'}, status=200)
 
 @api_view(['POST'])
 def querying_view(request):
