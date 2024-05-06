@@ -28,6 +28,9 @@ initialize_app(cred)
 # Get Firestore database instance
 db = firestore.client()
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 @api_view(['POST'])
 def feedback_query(request):
     if request.method == 'POST':
@@ -58,10 +61,11 @@ import hgg_searchengine.settings as settings
 # Make sure to initialize the Firebase Admin SDK elsewhere in your code
 
 
-
+@csrf_exempt
 def healthcheck(request):
-    return Response({'error': 'bip boop'}, status=200)
+    return Response({'healthcheck': 'bip boop'}, status=200)
 
+@csrf_exempt
 @api_view(['POST'])
 def querying_view(request):
     user_ip = get_client_ip(request)

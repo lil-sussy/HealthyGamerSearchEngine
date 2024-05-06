@@ -21,7 +21,9 @@ EXPOSE 8000
 
 # Install frontend dependencies and build the frontend
 WORKDIR /usr/src/app/frontend
+ENV NODE_ENV=production
 RUN npm install
+RUN npm run build
 
 # Return to the application root directory
 WORKDIR /usr/src/app

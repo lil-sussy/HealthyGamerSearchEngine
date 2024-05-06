@@ -29,6 +29,9 @@ def return_acces_token(request):
   )
   return response
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def discord_callback(request):
     error = request.GET.get('error')
     code = request.GET.get('code')
@@ -39,7 +42,7 @@ def discord_callback(request):
     if code:
         client_id = os.getenv('DISCORD_CLIENT')
         client_secret = os.getenv('DISCORD_SECRET')
-        redirect_uri = 'http://localhost:8000/auth/callback/discord'
+        redirect_uri = os.getenv("CALLBACK_DISCORD_URL")
         
         token_response = requests.post(
             'https://discord.com/api/oauth2/token',

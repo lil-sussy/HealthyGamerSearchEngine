@@ -16,6 +16,18 @@ import datetime
 QUERY_PER_MONTH_LIMIT = 200
 JWT_EXPIRATION_DELTA = datetime.datetime.now() + datetime.timedelta(days=3)  # Token expires in 3 day
 
+# settings.py
+import os
+from dotenv import load_dotenv
+
+# Load .env variables
+load_dotenv()
+
+# Django environment configuration
+ENVIRONMENT = os.getenv('DJANGO_ENV', 'production')
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,10 +38,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-v5wc&9ui68)ruoo-ueqd&08ts)f3kg@t^#m*8b*)^5vh2*+^4$'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -139,7 +147,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ALLOWED_HOSTS = ['*']
 
 LOGGING = {
     'version': 1,
