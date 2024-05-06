@@ -76,10 +76,10 @@ def querying_view(request):
         user_data = user_doc.to_dict()
         query_count = user_data.get('query_performed', 0)
 
-        if query_count >= 5:
+        if query_count <= 5:
             jwt = request.COOKIES.get('jwt')  # Assumes JWT is stored in a cookie named 'jwt'
             id_token = request.headers.get('Authorization')[len('Bearer '):]
-            if jwt is None:
+            if id_token is None:
                 return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord'}, status=403)
             try:
                 # Verify the JWT with Firebase
@@ -123,11 +123,19 @@ def querying_view(request):
 
             except auth.InvalidIdTokenError:
                 return JsonResponse({'error': 'Invalid JWT token. Please log in again.'}, status=403)
+            except Exception as e:
+                # stack trace
+                print(e)
+                return JsonResponse({'error': 'Invalid JWT token. Please log in again.'}, status=403)
 
     # ... rest of the function
+        else:
+            user_ref.set({'query_performed': 0})
+            query_count = 0
+            return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
     else:
-        user_ref.set({'query_performed': 0})
-        query_count = 0
+        return JsonResponse({'error': 'Firebase access denied'}, status=500)
+    return JsonResponse({'error': 'Unexpected condition encountered.'}, status=500)
 
 
 from datetime import datetime, timedelta
