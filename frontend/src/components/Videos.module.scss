@@ -1,0 +1,71 @@
+$primaryGreen: #24C52A;
+$secondaryPurple: #DFCDED;
+
+.VideoSection {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 2rem;
+    margin-bottom: 4rem;
+
+    h1 {
+        position: absolute;
+        top: 0rem;
+        left: -13rem;
+        font-size: 10rem;
+        color: $secondaryPurple;
+    }
+
+    .VideoContainer {
+        border-radius: 10px;
+        border-width: 10px;
+        border-color: $secondaryPurple;
+        border-style: solid;
+        box-sizing: padding-box;
+    }
+    .TimebarContainer {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+        flex-direction: column;
+        gap: 2rem;
+        h4 {
+            color: $secondaryPurple;
+            font-size: 2rem;
+        }
+        .Timebar {
+            width: 100%;
+            height: 1rem;
+            background-color: $secondaryPurple;
+            border-radius: 0.5rem;
+            position: relative;
+            div {
+                background-color: $primaryGreen;
+            }
+        }
+      }
+      .OccurrenceDetails {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          width: 100%;
+          gap: 1rem;
+          div {
+              display: flex;
+              justify-content: start;
+              align-items: center;
+              margin: 0 1rem;
+          }
+          h5 {
+              background-color: #f1f1f1;
+              padding: 0.5rem 1rem;
+              border-radius: 0.5rem;
+          }
+          p {
+              margin-left: 0.5rem;
+          }
+      }
+}

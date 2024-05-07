@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ReactPlayer from "react-player/youtube";
 import type YouTubePlayer from "react-player/youtube";
 
+import styles from "./Videos.module.scss";
+
 export type Occurrence = {
     quote: string;
     url: string;
@@ -22,16 +24,36 @@ export type Video = {
 function VideoResultDisplay({ video }: { video: Video }) {
   const firstOccurrenceTime = video.occurrences[0]?.timestamp; // Getting the first occurrence timestamp
 	const [seekTime, setSeekTime] = useState(firstOccurrenceTime || 0);
+  const [occurrence, setOccurrence] = useState<Occurrence>(video.occurrences[0]);
 
-	const handleSelectTime = (time: number) => {
+	const handleSelectTime = (time: number, occurrence: Occurrence) => {
+    setOccurrence(occurrence);
 		setSeekTime(time);
 	};
 
 
 	return (
-		<div className="video-section">
-			<VideoPlayer videoId={video.video_id} seekTime={seekTime} />
-			<TimeBar occurrences={video.occurrences} totalDuration={video.duration} onSelect={handleSelectTime} />
+		<div className={styles.VideoSection}>
+			<h1>#{video.occurrences[0].rank}</h1>
+			<div className={styles.VideoContainer}>
+				<VideoPlayer videoId={video.video_id} seekTime={seekTime} />
+			</div>
+			<div className={styles.TimebarContainer}>
+				<h4>Results :</h4>
+				<TimeBar occurrences={video.occurrences} totalDuration={video.duration} onSelect={handleSelectTime} />
+			</div>
+      <div className={styles.OccurrenceDetails}>
+        <div>
+          <h5>Rank: #{occurrence.rank}</h5>
+          <h5>Distance: {occurrence.distance}</h5>
+        </div>
+        <div>
+          <h5>Timestamp: {occurrence.timestamp}</h5>
+          <h5>Duration: {occurrence.duration}</h5>
+        </div>
+        <h5>{occurrence.url}</h5>
+        <p>{occurrence.quote}</p>
+      </div>
 		</div>
 	);
 }
@@ -61,14 +83,14 @@ function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number 
 
 export { VideoPlayer };
 
-function TimeBar({ occurrences, totalDuration, onSelect }: { occurrences: any[]; totalDuration: number; onSelect: (timestamp: number) => void }) {
+function TimeBar({ occurrences, totalDuration, onSelect }: { occurrences: any[]; totalDuration: number; onSelect: (timestamp: number, occurrence: Occurrence) => void }) {
 	return (
-		<div className="time-bar" style={{ position: "relative", height: "50px", width: "100%", backgroundColor: "#ddd" }}>
+		<div className={styles.Timebar} style={{ position: "relative", height: "50px", width: "100%", }}>
 			{occurrences.map((occurrence, index) => {
 				const left = `${Math.max((occurrence.timestamp / totalDuration) * 100, 2)}%`;
 				const width = `${Math.max((occurrence.duration / totalDuration) * 100, 2)}%`;
 
-				return <div key={index} style={{ position: "absolute", left, width, height: "100%", backgroundColor: "rgba(0, 123, 255, 0.5)", cursor: "pointer" }} onClick={() => onSelect(occurrence.timestamp)} title={occurrence.quote}></div>;
+				return <div key={index} style={{ position: "absolute", left, width, height: "100%", cursor: "pointer" }} onClick={() => onSelect(occurrence.timestamp, occurrence)} title={occurrence.quote}></div>;
 			})}
 		</div>
 	);
