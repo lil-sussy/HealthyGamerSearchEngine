@@ -8,7 +8,7 @@
     display: flex;
     position: relative;
     justify-content: flex-start;
-    align-items: center;
+    align-items: start;
     flex-direction: row;
     gap: 132px;
     width: 1292px;
@@ -84,6 +84,18 @@
               align-items: flex-start;
               gap: 10px;
               background: white;
+              .PlaceHolderContainer {
+                width: 100%;
+                .input {
+                    width: 100%;
+                    border: none;
+                    font-size: 24px;
+                    font-weight: 500;
+                    line-height: 29px;
+                    color: #000000;
+                    outline: none;
+                }
+              }
           }
           .search-button {
               width: 20%;
