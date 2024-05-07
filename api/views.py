@@ -57,7 +57,7 @@ from rest_framework.response import Response
 from firebase_admin import auth  # Import Firebase Admin Auth
 import requests
 import hgg_searchengine.settings as settings
-
+from pytube import YouTube
 # Make sure to initialize the Firebase Admin SDK elsewhere in your code
 
 
@@ -207,9 +207,16 @@ def process_query_response(query):
     else:
         return Response({'error': 'No query provided'}, status=400)
 
-def querying_ai(query, use_prediction=True):
+def get_video_duration(video_url):
+    # Create a YouTube object with the URL
+    yt = YouTube(video_url)
     
-    # return [], ""
+    # Access the duration of the video in seconds
+    duration = yt.length
+    return duration
+
+
+def querying_ai(query, use_prediction=True):
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json'
@@ -253,12 +260,14 @@ def querying_ai(query, use_prediction=True):
             video_dict = {}
             for i, entry in enumerate(results['metadatas'][0]):
                 quote = results['documents'][0][i]
+                duration = get_video_duration(entry['video_url'])
                 video_id = entry['video_url'].split('=')[-1]
                 timestamp_rounded = math.floor(entry['timestamp'])
                 video_link = f"{entry['video_url']}?&={max(0, timestamp_rounded - 10)}s"
                 if video_id not in video_dict:
                     video_dict[video_id] = {
                         'video_id': video_id,
+                        'duration': duration,
                         'occurrences': []
                     }
                 video_dict[video_id]['occurrences'].append({

@@ -20,6 +20,27 @@
       "sourceMaps": true,
       "preLaunchTask": "npm: build"
     },
+    {
+      "name": "Launch React Frontend 3000",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "sourceMaps": true,
+      "preLaunchTask": "npm: build"
+    },
+    {
+      "name": "Debug react",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "start"
+      ],
+      "cwd": "${workspaceFolder}/frontend",
+      "console": "integratedTerminal"
+    },
   ],
   "compounds": [
     {
@@ -28,6 +49,13 @@
         "Python Debugger: Django",
         "Launch React Frontend",
       ]
-    }
+    },
+    {
+      "name": "Debug Node and React Chrome",
+      "configurations": [
+        "Debug react",
+        "Launch React Frontend 3000",
+      ]
+    },
   ]
 }

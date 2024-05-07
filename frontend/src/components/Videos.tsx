@@ -14,7 +14,7 @@ export type Occurrence = {
 
 export type Video = {
 	video_id: string;
-  totalDuration: number;
+  duration: number;
 	occurrences: Occurrence[];
 };
 
@@ -31,7 +31,7 @@ function VideoResultDisplay({ video }: { video: Video }) {
 	return (
 		<div className="video-section">
 			<VideoPlayer videoId={video.video_id} seekTime={seekTime} />
-			<TimeBar occurrences={video.occurrences} totalDuration={video.totalDuration} onSelect={handleSelectTime} />
+			<TimeBar occurrences={video.occurrences} totalDuration={video.duration} onSelect={handleSelectTime} />
 		</div>
 	);
 }
@@ -65,8 +65,8 @@ function TimeBar({ occurrences, totalDuration, onSelect }: { occurrences: any[];
 	return (
 		<div className="time-bar" style={{ position: "relative", height: "50px", width: "100%", backgroundColor: "#ddd" }}>
 			{occurrences.map((occurrence, index) => {
-				const left = `${(occurrence.timestamp / totalDuration) * 100}%`;
-				const width = `${(occurrence.duration / totalDuration) * 100}%`;
+				const left = `${Math.max((occurrence.timestamp / totalDuration) * 100, 2)}%`;
+				const width = `${Math.max((occurrence.duration / totalDuration) * 100, 2)}%`;
 
 				return <div key={index} style={{ position: "absolute", left, width, height: "100%", backgroundColor: "rgba(0, 123, 255, 0.5)", cursor: "pointer" }} onClick={() => onSelect(occurrence.timestamp)} title={occurrence.quote}></div>;
 			})}
