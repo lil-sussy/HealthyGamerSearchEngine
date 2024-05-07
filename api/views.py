@@ -47,7 +47,7 @@ def feedback_query(request):
             'additional_information': additional_information
         }
         # Save to Firestore
-        db.collection('feedback').add(feedback_data)
+        db.collection(settings.FB_FEEDBACK_COLLECTION[os.getenv('DJANGO_ENV')]).add(feedback_data)
         return Response({'message': 'Feedback submitted successfully'})
     return Response({'error': 'Invalid request'}, status=405)
 
@@ -69,7 +69,7 @@ def healthcheck(request):
 @api_view(['POST'])
 def querying_view(request):
     user_ip = get_client_ip(request)
-    user_ref = db.collection('users').document(user_ip)
+    user_ref = db.collection(settings.FB_IP_USER_COLLECTION[os.getenv('DJANGO_ENV')]).document(user_ip)
     user_doc = user_ref.get()
 
     if user_doc.exists:
@@ -108,7 +108,7 @@ def querying_view(request):
                         }
                         
                         # Save to Firestore
-                        db.collection('queries').add(data_to_save)
+                        db.collection(settings.FB_QUERY_COLLECTION[os.getenv('DJANGO_ENV')]).add(data_to_save)
 
                         # Update the user's query count
                         user_ref.update({'query_performed': query_count + 1})
@@ -117,7 +117,7 @@ def querying_view(request):
                     else:
                         return Response({'error': 'No query provided'}, status=400)
                 else:
-                    return JsonResponse({'error': 'Monthly query limit reached. contact me on discord @lilsussyjett.'}, status=403)
+                    return JsonResponse({'error': 'Monthly query limit reached. You can contact me on discord @lilsussyjett.'}, status=403)
 
                 # Continue processing the query as usual
 
@@ -130,11 +130,11 @@ def querying_view(request):
 
     # ... rest of the function
         else:
-            user_ref.set({'query_performed': 0})
-            query_count = 0
             return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
     else:
-        return JsonResponse({'error': 'Firebase access denied'}, status=500)
+        user_ref.set({'query_performed': 0})
+        query_count = 0
+        return querying_view(request)
     return JsonResponse({'error': 'Unexpected condition encountered.'}, status=500)
 
 
@@ -142,8 +142,8 @@ from datetime import datetime, timedelta
 
 def increment_query_count(user_id):
     today = datetime.now().strftime("%Y-%m-%d")
-    user_ref = db.collection('discord_users').document(user_id)
-    day_ref = user_ref.collection('queries').document(today)
+    user_ref = db.collection(settings.FB_DISCORD_USER_COLLECTION[os.getenv('DJANGO_ENV')]).document(user_id)
+    day_ref = user_ref.collection(settings.FB_QUERY_COLLECTION[os.getenv('DJANGO_ENV')]).document(today)
 
     # Transaction to increment the count safely
     @firestore.transactional
@@ -157,8 +157,8 @@ def increment_query_count(user_id):
 
 def check_query_limit(user_id):
     lower_bound_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-    user_ref = db.collection('discord_users').document(user_id)
-    query_records = user_ref.collection('queries').where('date', '>=', lower_bound_date)
+    user_ref = db.collection(settings.FB_DISCORD_USER_COLLECTION[os.getenv('DJANGO_ENV')]).document(user_id)
+    query_records = user_ref.collection(settings.FB_QUERY_COLLECTION[os.getenv('DJANGO_ENV')]).where('date', '>=', lower_bound_date)
 
     total_queries_last_30_days = sum(doc.get('count') for doc in query_records.stream())
 

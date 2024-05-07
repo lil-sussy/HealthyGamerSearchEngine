@@ -77,7 +77,7 @@ def discord_callback(request):
                         'email': user_info.get('email'),
                         'discord_id': user_info.get('id'),
                     }
-                    db.collection('discord_users').document(user_info.get('id')).set(user_document)
+                    db.collection(settings.FB_DISCORD_USER_COLLECTION[os.getenv('DJANGO_ENV')]).document(user_info.get('id')).set(user_document)
                     
                     # Set JWT as an HTTP-only cookie
                     response = redirect('/')

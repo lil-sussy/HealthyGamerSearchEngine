@@ -28,6 +28,25 @@ ENVIRONMENT = os.getenv('DJANGO_ENV', 'production')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
 
+# Firestore collections
+FB_DISCORD_USER_COLLECTION = {
+  'production': 'discord_users',
+  'development': 'discord_users_dev',
+}
+FB_FEEDBACK_COLLECTION = {
+  'production': 'feedbacks',
+  'development': 'feedbacks_dev',
+}
+FB_QUERY_COLLECTION = {
+  'production': 'queries',
+  'development': 'queries_dev',
+}
+FB_IP_USER_COLLECTION = {
+  'production': 'ip_users',
+  'development': 'ip_users_dev',
+}
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
