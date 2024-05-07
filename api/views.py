@@ -76,11 +76,11 @@ def querying_view(request):
         user_data = user_doc.to_dict()
         query_count = user_data.get('query_performed', 0)
 
-        if query_count <= 5:
+        if query_count >= 5:
             jwt = request.COOKIES.get('jwt')  # Assumes JWT is stored in a cookie named 'jwt'
             id_token = request.headers.get('Authorization')[len('Bearer '):]
             if id_token is None:
-                return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord'}, status=403)
+                return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
             try:
                 # Verify the JWT with Firebase
                 decoded_token = auth.verify_id_token(id_token)
@@ -96,41 +96,23 @@ def querying_view(request):
 
                     # Continue processing the query as usual
                     # Process the query if under the limit
-                    query = request.data.get('query')
-                    if query:
-                        video_list, chat_text = querying(query)
-
-                        # Prepare data to save
-                        data_to_save = {
-                            'query': query,
-                            'video_list': video_list,
-                            'chat_response': chat_text
-                        }
-                        
-                        # Save to Firestore
-                        db.collection(settings.FB_QUERY_COLLECTION[os.getenv('DJANGO_ENV')]).add(data_to_save)
-
-                        # Update the user's query count
-                        user_ref.update({'query_performed': query_count + 1})
-
-                        return Response(video_list)
-                    else:
-                        return Response({'error': 'No query provided'}, status=400)
+                    return process_query_response(request.data.get('query'))
                 else:
                     return JsonResponse({'error': 'Monthly query limit reached. You can contact me on discord @lilsussyjett.'}, status=403)
 
                 # Continue processing the query as usual
 
             except auth.InvalidIdTokenError:
-                return JsonResponse({'error': 'Invalid JWT token. Please log in again.'}, status=403)
+                return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
             except Exception as e:
                 # stack trace
                 print(e)
-                return JsonResponse({'error': 'Invalid JWT token. Please log in again.'}, status=403)
+                return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
 
     # ... rest of the function
         else:
-            return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
+            user_ref.update({'query_performed': query_count + 1})
+            return process_query_response(request.data.get('query'))
     else:
         user_ref.set({'query_performed': 0})
         query_count = 0
@@ -196,7 +178,7 @@ Your communication style is notably direct and unyielding, often using stark, un
 
 # Your communication style is direct and unyielding, characterized by stark, straightforward language that challenges your audience. Rather than adopting a nurturing approach, you provoke thought and promote self-reliance. Your dialogues are infused with Sanskrit and Pali terms, adding authenticity and depth to your discussions. On platforms like YouTube, you provide succinct, actionable advice that combines clinical acumen with Buddhist principles to empower individuals. You focus on fostering self-awareness and personal accountability, eschewing the notion of therapy as a panacea. Instead, you champion the development of personal fortitude and coping mechanisms, emphasizing the importance of building lasting mental resilience over dependency.
 
-# In responding to user queries, your answers are enriched with carefully chosen keywords that resonate with both psychiatric and Buddhist perspectives, ensuring that each response is both enlightening and directly relevant to the user's needs. These keywords might include terms like "mindfulness," "cognitive restructuring," "self-compassion," and "emotional regulation," directly tying the user's concerns to both therapeutic techniques and meditative practices.
+  # In responding to user queries, your answers are enriched with carefully chosen keywords that resonate with both psychiatric and Buddhist perspectives, ensuring that each response is both enlightening and directly relevant to the user's needs. These keywords might include terms like "mindfulness," "cognitive restructuring," "self-compassion," and "emotional regulation," directly tying the user's concerns to both therapeutic techniques and meditative practices.
 # """
 
 # Assuming the PersistentClient and collection setup are done elsewhere and imported here
@@ -205,7 +187,28 @@ remote_client = chromadb.HttpClient(host="chroma-gprs-production.up.railway.app"
 collection = remote_client.get_or_create_collection(name="video_embeddings")
 api_key = os.getenv('OPENAI_API_KEY')
 
-def querying(query, use_prediction=True):
+def process_query_response(query):
+    if query:
+        video_list, chat_text = querying_ai(query)
+
+        # Prepare data to save
+        data_to_save = {
+            'query': query,
+            'video_list': video_list,
+            'chat_response': chat_text
+        }
+        
+        # Save to Firestore
+        db.collection(settings.FB_QUERY_COLLECTION[os.getenv('DJANGO_ENV')]).add(data_to_save)
+
+        # Update the user's query count
+
+        return Response(video_list)
+    else:
+        return Response({'error': 'No query provided'}, status=400)
+
+def querying_ai(query, use_prediction=True):
+    
     # return [], ""
     headers = {
         'Authorization': f'Bearer {api_key}',
