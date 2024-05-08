@@ -38,6 +38,14 @@ function VideoResultDisplay({ video }: { video: Video }) {
     }
 	};
 
+  function formatTime(seconds: number) {
+		const date = new Date(0);
+		date.setSeconds(seconds);
+		const timeString = date.toISOString().substr(11, 8);
+		// If the hours are '00', return only the minutes and seconds
+		return timeString.startsWith("00:") ? timeString.substr(3) : timeString;
+	}
+
   useEffect(() => {
     handleSelectTime(video.occurrences[0]);
   }, []);
@@ -52,18 +60,20 @@ function VideoResultDisplay({ video }: { video: Video }) {
 				<h4>Results :</h4>
 				<TimeBar occurrences={video.occurrences} totalDuration={video.duration} onSelect={handleSelectTime} />
 			</div>
-      <div className={styles.OccurrenceDetails}>
-        <div>
-          <h5>Rank: #{occurrence.rank}</h5>
-          <h5 className={distanceClass}>Distance: {Math.round(occurrence.distance * 100)/100}</h5>
-        </div>
-        <a href={occurrence.url} className={styles.URL}>{occurrence.url}</a>
-        <div className={styles.VideoTime}>
-          <h5>Timestamp: {occurrence.timestamp}</h5>
-          <h5>Duration: {occurrence.duration}</h5>
-        </div>
-        <p>"{occurrence.quote}"</p>
-      </div>
+			<div className={styles.OccurrenceDetails}>
+				<div>
+					<h5>Rank: #{occurrence.rank}</h5>
+					<h5 className={distanceClass}>Distance: {Math.round(occurrence.distance * 100) / 100}</h5>
+				</div>
+				<a href={occurrence.url} className={styles.URL}>
+					{occurrence.url}
+				</a>
+				<div className={styles.VideoTime}>
+					<h5>{formatTime(occurrence.timestamp)}</h5>
+					<h5>~{formatTime(occurrence.duration)}</h5>
+				</div>
+				<p>"{occurrence.quote}"</p>
+			</div>
 		</div>
 	);
 }

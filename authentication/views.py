@@ -101,6 +101,7 @@ def discord_callback(request):
             return JsonResponse({'error': 'Failed to fetch user info'}, status=user_response.status_code)
     
     else:
+        print(token_response.json())
         return JsonResponse({'error': 'Failed to exchange code for token'}, status=token_response.status_code)
 
     

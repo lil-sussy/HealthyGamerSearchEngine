@@ -53,6 +53,12 @@ $secondaryPurple: #DFCDED;
               flex-direction: column;
               align-items: flex-start;
               gap: 20px;
+              .PlaceholderRectContainer {
+                display: flex;
+                flex-direction: column;
+                margin-left: 7rem;
+                gap: 20px;
+              }
               .SearchBarContainer {
                 position: relative;
                 display: flex;
@@ -80,9 +86,11 @@ $secondaryPurple: #DFCDED;
                     }
                 }
                 .SearchButton {
-                    width: 4.2rem;
+                    box-sizing: border-box;
+                    width: 5rem;
                     margin-left: 1rem;
                     border-radius: 20px;
+                    padding-left: 0.7rem;
                     padding-right: 0.7rem;
                     border: solid 0px #24C52A;
                     background-color: rgba(36, 197, 42, .4);
