@@ -43,6 +43,7 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
         body: JSON.stringify({ query: query }),
       });
       const data = await response.json();
+      setLoading(false);
       if (response.ok) {
         setResponseMessage("");
         setResults(data);
@@ -60,7 +61,7 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 				{/* <div className="PurpleBlur" />
 				<div className="GreenBlur" /> */}
 				<div className={styles.DrKImageContainer}>
-					<img className={styles.Image7} src="./drkStaring.png" alt="Placeholder" />
+					<img className={styles.Image7} src={loading ? "./drkThinking.png" : "./drkStaring.png"} alt="Placeholder" />
 					<div className={styles.Logo}>
 						<Logo />
 					</div>
