@@ -40,9 +40,10 @@ const NavBar = () => {
 				<div className={`${styles.Button} ${styles.About}`}>About this</div>
 				<div className={`${styles.Button} ${styles.HowItWorks}`}>How it works</div>
 				<div className={`${styles.Button} ${styles.Contact}`}>Contact</div>
-				<button onClick={handleLogin} className={`${styles.Button} ${styles.Login}`}>
-					<FaDiscord /> Log in with Discord
-				</button>
+				<div onClick={handleLogin} className={`${(styles.Button, styles.ButtonDiscord)} ${styles.Login}`}>
+					<FaDiscord />
+					<p>Login</p>
+				</div>
 				{error && <p className={styles.Error}>{error}</p>}
 			</div>
 		</div>

@@ -1,13 +1,16 @@
+$primaryGreen: #24C52A;
+$secondaryGreen: #A1E8A6;
+$secondaryPurple: #DFCDED;
+
 .Navbar {
-  width: 1393px;
-  height: 48px;
-  padding-left: 13px;
-  padding-right: 13px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 4rem;
+  padding: 1rem;
   background: rgba(255, 255, 255, 0.29);
   backdrop-filter: blur(200px);
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  gap: 719px;
   display: inline-flex;
 
   .Artboard21 {
@@ -41,12 +44,35 @@
     gap: 82px;
     display: flex;
 
+    .ButtonDiscord {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      color: black;
+      font-size: 20px;
+      font-weight: 400;
+      font-family: "Segoe UI", sans-serif;
+      &:hover {
+        color: #7289da;
+        cursor: pointer;
+        transition: color, 0.3s;
+      }
+      p {
+        margin: 0;
+      }
+    }
+
     .Button {
       color: black;
       font-size: 20px;
-      font-family: "Segoe UI";
       font-weight: 400;
+      font-family: "Segoe UI", sans-serif;
       word-wrap: break-word;
+      &:hover {
+        color: $primaryGreen;
+        cursor: pointer;
+        transition: color, 0.3s;
+      }
     }
   }
 }
