@@ -91,7 +91,7 @@ function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number 
 		}
     setInterval(() => {
       playerRef!.current!.setState({ playerState: "unstarted" });
-    }, 500)
+    }, 2000)
 	}, [seekTime]);
 
 	return (

@@ -111,7 +111,7 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 									<div className="results">
                     <div className={styles.RatingButton}>
                       <h4>Rate those results</h4>
-                      <StarRating />
+                      <StarRating query={query} additionalInfo={JSON.stringify({results: results})} />
                     </div>
 										{results.map((video: Video, index: number) => (
 											<VideoResultDisplay key={index} video={video} />
