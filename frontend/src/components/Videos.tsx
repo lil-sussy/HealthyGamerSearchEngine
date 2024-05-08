@@ -89,6 +89,9 @@ function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number 
       playerRef.current.setState({ playerState: "unstarted" });
 			playerRef.current.seekTo(seekTime, "seconds");
 		}
+    setInterval(() => {
+      playerRef!.current!.setState({ playerState: "unstarted" });
+    }, 500)
 	}, [seekTime]);
 
 	return (

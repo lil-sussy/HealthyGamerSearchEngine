@@ -101,6 +101,21 @@ $secondaryPurple: #DFCDED;
                     }
                 }
               }
+              .RatingButton {
+                  margin-top: 4rem;
+                  margin-left: 12rem;
+                  display: flex;
+                  flex-direction: row;
+                  gap: 1rem;
+                  h4 {
+                      font-size: 20px;
+                      font-weight: 300;
+                      line-height: 29px;
+                      color: #9b9b9b;
+                      font-style: oblique;
+                      font-family: 'Segeo UI', sans-serif;
+                  }
+              }
               .IndentContainer {
                 display: flex;
                 flex-direction: column;

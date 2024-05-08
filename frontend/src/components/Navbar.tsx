@@ -37,7 +37,7 @@ const NavBar = () => {
 			<Logo />
 			<div className={styles.NavigationButtons}>
 				<div className={`${styles.Button} ${styles.Search}`}>Search</div>
-				<div className={`${styles.Button} ${styles.About}`}>About this</div>
+				<div className={`${styles.Button} ${styles.About}`}>About</div>
 				<div className={`${styles.Button} ${styles.HowItWorks}`}>How it works</div>
 				<div className={`${styles.Button} ${styles.Contact}`}>Contact</div>
 				<div onClick={handleLogin} className={`${(styles.Button, styles.ButtonDiscord)} ${styles.Login}`}>

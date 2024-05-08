@@ -10,7 +10,7 @@ import { VideoResultDisplay } from "./Videos";
 import { Oval } from "react-loader-spinner";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
+import StarRating from './StarRating';
 import app from "../firebase";
 const auth = getAuth(app);
 
@@ -55,6 +55,23 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 			setResponseMessage(`Error: ${error.message}`);
 		}
 	};
+
+  const getCookie = (name: string) => {
+		let cookieValue = null;
+		if (document.cookie && document.cookie !== "") {
+			const cookies = document.cookie.split(";");
+			for (let i = 0; i < cookies.length; i++) {
+				const cookie = cookies[i].trim();
+				// Does this cookie string begin with the name we want?
+				if (cookie.substring(0, name.length + 1) === name + "=") {
+					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					break;
+				}
+			}
+		}
+		return cookieValue;
+	};
+
 	return (
 		<div className={styles.HeroHeaderContainer}>
 			<div className={styles.HeroHeader}>
@@ -92,6 +109,10 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 								{responseMessage && <div className="response-message">{responseMessage}</div>}
 								{!responseMessage && results.length > 0 && (
 									<div className="results">
+                    <div className={styles.RatingButton}>
+                      <h4>Rate those results</h4>
+                      <StarRating />
+                    </div>
 										{results.map((video: Video, index: number) => (
 											<VideoResultDisplay key={index} video={video} />
 										))}
