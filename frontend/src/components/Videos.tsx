@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 import type YouTubePlayer from "react-player/youtube";
 
@@ -22,15 +22,25 @@ export type Video = {
 
 
 function VideoResultDisplay({ video }: { video: Video }) {
-  const firstOccurrenceTime = video.occurrences[0]?.timestamp; // Getting the first occurrence timestamp
-	const [seekTime, setSeekTime] = useState(firstOccurrenceTime || 0);
+	const [seekTime, setSeekTime] = useState(video.occurrences[0].timestamp);
   const [occurrence, setOccurrence] = useState<Occurrence>(video.occurrences[0]);
+  const [distanceClass, setDistanceClass] = useState("");
 
-	const handleSelectTime = (time: number, occurrence: Occurrence) => {
+	const handleSelectTime = (occurrence: Occurrence) => {
     setOccurrence(occurrence);
-		setSeekTime(time);
+		setSeekTime(occurrence.timestamp);
+    if (occurrence.distance < 0.81) {
+			setDistanceClass(styles.DistanceGreen);
+		} else if (occurrence.distance < 0.92) {
+			setDistanceClass(styles.DistanceOrange);
+		} else {
+      setDistanceClass(styles.DistanceRed);
+    }
 	};
 
+  useEffect(() => {
+    handleSelectTime(video.occurrences[0]);
+  }, []);
 
 	return (
 		<div className={styles.VideoSection}>
@@ -45,14 +55,14 @@ function VideoResultDisplay({ video }: { video: Video }) {
       <div className={styles.OccurrenceDetails}>
         <div>
           <h5>Rank: #{occurrence.rank}</h5>
-          <h5>Distance: {occurrence.distance}</h5>
+          <h5 className={distanceClass}>Distance: {Math.round(occurrence.distance * 100)/100}</h5>
         </div>
-        <div>
+        <a href={occurrence.url} className={styles.URL}>{occurrence.url}</a>
+        <div className={styles.VideoTime}>
           <h5>Timestamp: {occurrence.timestamp}</h5>
           <h5>Duration: {occurrence.duration}</h5>
         </div>
-        <h5>{occurrence.url}</h5>
-        <p>{occurrence.quote}</p>
+        <p>"{occurrence.quote}"</p>
       </div>
 		</div>
 	);
@@ -66,6 +76,7 @@ function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number 
 
 	React.useEffect(() => {
 		if (playerRef.current) {
+      playerRef.current.setState({ playerState: "unstarted" });
 			playerRef.current.seekTo(seekTime, "seconds");
 		}
 	}, [seekTime]);
@@ -75,7 +86,9 @@ function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number 
 			ref={playerRef}
 			url={`https://www.youtube.com/watch?v=${videoId}`}
 			controls
-			playing={false} // Disabled autoplay
+      width={"100%"}
+      height={"100%"}
+			playing={true} // Disabled autoplay
 			onReady={() => playerRef.current!.seekTo(seekTime, "seconds")}
 		/>
 	);
@@ -83,14 +96,14 @@ function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number 
 
 export { VideoPlayer };
 
-function TimeBar({ occurrences, totalDuration, onSelect }: { occurrences: any[]; totalDuration: number; onSelect: (timestamp: number, occurrence: Occurrence) => void }) {
+function TimeBar({ occurrences, totalDuration, onSelect }: { occurrences: any[]; totalDuration: number; onSelect: (occurrence: Occurrence) => void }) {
 	return (
-		<div className={styles.Timebar} style={{ position: "relative", height: "50px", width: "100%", }}>
+		<div className={styles.Timebar} style={{ position: "relative", width: "100%", }}>
 			{occurrences.map((occurrence, index) => {
 				const left = `${Math.max((occurrence.timestamp / totalDuration) * 100, 2)}%`;
 				const width = `${Math.max((occurrence.duration / totalDuration) * 100, 2)}%`;
 
-				return <div key={index} style={{ position: "absolute", left, width, height: "100%", cursor: "pointer" }} onClick={() => onSelect(occurrence.timestamp, occurrence)} title={occurrence.quote}></div>;
+				return <div key={index} style={{ position: "absolute", left, width, height: "100%", cursor: "pointer" }} onClick={() => onSelect(occurrence)} title={occurrence.quote}></div>;
 			})}
 		</div>
 	);

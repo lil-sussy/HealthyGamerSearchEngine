@@ -1,27 +1,39 @@
 $primaryGreen: #24C52A;
+$primaryPurple: #8824C5;
 $secondaryPurple: #DFCDED;
+$backgroundGraySecondary: #E1E1E1;
+$backgroundGrayTertiary: #F3F3F3;
+
+$goodGreen: #A1E8A6;
+$avgOrange: #F0FF92;
+$badRed: #FFA592;
 
 .VideoSection {
     display: flex;
     position: relative;
     flex-wrap: wrap;
+    width: 49rem;
     justify-content: center;
-    margin-top: 2rem;
-    gap: 2rem;
-    margin-bottom: 4rem;
-    margin-left: 10rem;
+    padding-top: 2rem;
+    box-sizing: border-box;
+    padding-bottom: 4rem;
+    padding-left: 12rem;
 
     h1 {
         position: absolute;
         top: 0rem;
-        left: -13rem;
-        font-size: 10rem;
+        left: 0rem;
+        font-size: 8rem;
+        font-family: "Segoe UI", sans-serif;
+        font-weight: 900;
         color: $secondaryPurple;
     }
 
     .VideoContainer {
         border-radius: 10px;
         border-width: 10px;
+        width: 100%;
+        height: 20rem;
         border-color: $secondaryPurple;
         border-style: solid;
         box-sizing: padding-box;
@@ -29,44 +41,79 @@ $secondaryPurple: #DFCDED;
     .TimebarContainer {
         display: flex;
         width: 100%;
+        margin-top: 2rem;
         justify-content: center;
-        margin-top: 1rem;
         flex-direction: column;
-        gap: 2rem;
+        gap: 0.3rem;
         h4 {
             color: $secondaryPurple;
-            font-size: 2rem;
+            font-size: 1.7rem;
         }
         .Timebar {
             width: 100%;
-            height: 1rem;
-            background-color: $secondaryPurple;
-            border-radius: 0.5rem;
+            height: 1.1rem;
+            background-color: $backgroundGraySecondary;
+            border-radius: 0.2rem;
             position: relative;
             div {
-                background-color: $primaryGreen;
+                border-radius: 0.2rem;
+                background-color: $secondaryPurple;
             }
         }
       }
       .OccurrenceDetails {
+          margin-top: 2rem;
+          border-radius: 1.5rem;
+          border: solid $secondaryPurple 0.2rem;
+          padding: 2rem;
           display: flex;
           justify-content: center;
           flex-direction: column;
           width: 100%;
           gap: 1rem;
+          font-family: 'Segoe UI', sans-serif;
           div {
               display: flex;
               justify-content: start;
               align-items: center;
-              margin: 0 1rem;
+              gap: 2rem;
+          }
+          .VideoTime {
+              h5 {
+                  font-weight: 400;
+                  font-size: 0.8rem;
+              }
+          }
+          .URL {
+              color: $primaryPurple;
+              font-size: 1.2rem;
+              font-weight: 200;
+              text-decoration: underline;
+              margin-bottom: 1rem;
+              &:hover {
+                  cursor: pointer;
+              }
           }
           h5 {
-              background-color: #f1f1f1;
+              font-size: 1rem;
+              font-weight: 400;
               padding: 0.5rem 1rem;
-              border-radius: 0.5rem;
+              border-radius: .5rem;
+              background-color: $backgroundGrayTertiary;
+          }
+          .DistanceGreen {
+              background-color: $goodGreen;
+          }
+          .DistanceOrange {
+              background-color: $avgOrange;
+          }
+          .DistanceRed {
+              background-color: $badRed;
           }
           p {
               margin-left: 0.5rem;
+              color: #878787;
+              font-size: 0.7rem;
           }
       }
 }

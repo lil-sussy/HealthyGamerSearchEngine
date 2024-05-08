@@ -71,7 +71,7 @@ function App() {
 	}, []);
 
   return (
-    <div>
+    <div className="App">
       <Navbar />
       <HeroHeader idToken={idToken} />
       <Background />
