@@ -1,5 +1,6 @@
 import Logo from "./Logo";
-import "./HeroHeader.scss";
+import { SearchIconSmall, SearchIconBig } from "./SearchIcon";
+import styles from "./HeroHeader.module.scss";
 import React, { useEffect, useState } from "react";
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
@@ -48,46 +49,46 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 		}
 	};
 	return (
-		<div className="HeroHeaderContainer">
-			<div className="HeroHeader">
+		<div className={styles.HeroHeaderContainer}>
+			<div className={styles.HeroHeader}>
 				{/* <div className="PurpleBlur" />
 				<div className="GreenBlur" /> */}
-				<div className="DrKImageContainer">
-					<img className="Image7" src="./drkStaring.png" alt="Placeholder" />
-					<div className="Logo">
+				<div className={styles.DrKImageContainer}>
+					<img className={styles.Image7} src="./drkStaring.png" alt="Placeholder" />
+					<div className={styles.Logo}>
 						<Logo />
 					</div>
 				</div>
-				<div className="RightContent">
-					<div className="UnofficialHealthyGamerGgSearchEngine">
-						<span className="text-black">Unofficial Healthy Gamer GG </span>
-						<span className="text-green">Search Engine</span>
+				<div className={styles.RightContent}>
+					<div className={styles.Title}>
+						<span className={styles.textBlack}>Unofficial Healthy Gamer GG </span>
+						<span className={styles.textGreen}>Search Engine</span>
 					</div>
-					<div className="Frame13">
-						<form className="SearchBarContainer" onSubmit={handleSubmit}>
-							<div className="SearchBar">
-								<div className="PlaceHolderContainer">
-									<div className="SearchLogo"></div>
-									<input type="text" className="input" placeholder="What’s on your mind..." value={query} onChange={handleInputChange} />
-								</div>
+					<div className={styles.Content}>
+						<form className={styles.SearchBarContainer} onSubmit={handleSubmit}>
+							<div className={styles.SearchBar}>
+								<SearchIconSmall />
+								<input type="text" className={styles.input} placeholder="What’s on your mind..." value={query} onChange={handleInputChange} />
 							</div>
-							<button className="search-button" type="submit">
-								<div className="SearchLogo small"></div>
+							<button className={styles.SearchButton} type="submit">
+								<SearchIconBig />
 							</button>
 						</form>
 						{responseMessage && <div className="response-message">{responseMessage}</div>}
-            {responseMessage.length === 0 && results.length > 0 ? 
-              <div className="results">
-                {results.map((video: Video, index: number) => (
-                  <VideoResultDisplay key={index} video={video} />
-                ))}
-              </div>
-            : <></>}
-						<div className="indent-container">
-							<div className="WelcomeText">Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated tool designed by fans for fans. This platform allows you to navigate through the extensive content of Dr. K's videos to find specific advice, insights, and discussions tailored to your mental health and wellness needs.</div>
-							<div className="Actions">
-								<div className="Donate">Donate</div>
-								<div className="ShareFeedback">Share feedback</div>
+						{responseMessage.length === 0 && results.length > 0 ? (
+							<div className="results">
+								{results.map((video: Video, index: number) => (
+									<VideoResultDisplay key={index} video={video} />
+								))}
+							</div>
+						) : (
+							<></>
+						)}
+						<div className={styles.IndentContainer}>
+							<div className={styles.WelcomeText}>Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated tool designed by fans for fans. This platform allows you to navigate through the extensive content of Dr. K's videos to find specific advice, insights, and discussions tailored to your mental health and wellness needs.</div>
+							<div className={styles.Actions}>
+								<div className={styles.Donate}>Donate</div>
+								<div className={styles.ShareFeedback}>Share feedback</div>
 							</div>
 						</div>
 					</div>

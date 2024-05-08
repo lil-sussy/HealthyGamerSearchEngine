@@ -1,0 +1,140 @@
+$primaryGreen: #24C52A;
+$secondaryGreen: #A1E8A6;
+$secondaryPurple: #DFCDED;
+
+.HeroHeaderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    .HeroHeader {
+        box-sizing: border-box;
+        display: flex;
+        position: relative;
+        justify-content: flex-start;
+        align-items: start;
+        flex-direction: row;
+        gap: 6rem;
+        width: 100%;
+        padding: 10rem 10%;
+        .DrKImageContainer {
+            position: relative;
+            .Logo {
+                position: absolute;
+                top: -20%;
+                left: -30%;
+                z-index: 20;
+            }
+        }
+      .RightContent {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 43px;
+          
+          .Title {
+              width: 40rem;
+              .textBlack, .textGreen {
+                  font-size: 48px;
+                  font-weight: 500;
+                  line-height: 57.6px;
+                  word-wrap: break-word;
+                  font-family: "Poppins", sans-serif;
+              }
+              .textGreen {
+                  color: #24C52A;
+                  font-weight: 700;
+              }
+          }
+
+          .Content {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 20px;
+              .SearchBarContainer {
+                position: relative;
+                display: flex;
+                flex: row;
+                width: 100%;
+                .SearchBar {
+                    box-sizing: border-box;
+                    width: 80%;
+                    border-radius: 25px;
+                    border: 4px solid #24C52A;
+                    padding: 5px 11px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 10px;
+                    background: white;
+                    .input {
+                        width: 100%;
+                        border: none;
+                        font-size: 20px;
+                        font-weight: 500;
+                        line-height: 29px;
+                        color: #000000;
+                        outline: none;
+                    }
+                }
+                .SearchButton {
+                    width: 4.2rem;
+                    margin-left: 1rem;
+                    border-radius: 20px;
+                    padding-right: 0.7rem;
+                    border: solid 0px #24C52A;
+                    background-color: rgba(36, 197, 42, .4);
+                    &:hover {
+                        background-color: rgba(36, 197, 42, 1);
+                        transition: color, 0.3s;
+                        cursor: pointer;
+                    }
+                }
+              }
+              .IndentContainer {
+                display: flex;
+                flex-direction: column;
+                padding-left: 5rem;
+                gap: 20px;
+                .WelcomeText {
+                    font-size: 20px;
+                    font-family: 'Segeo UI', sans-serif;
+                    font-weight: 500;
+                    line-height: 28.8px;
+                    color: #000000;
+                }
+                .Actions {
+                    display: flex;
+                    gap: 10px;
+                    .Donate {
+                      @extend .Button;
+                      padding: 10px 40px;
+                      background: $secondaryGreen;
+                      &:hover {
+                          background-color: rgba(36, 197, 42, 0.4);
+                      }
+                    }
+                    .ShareFeedback {
+                        @extend .Button;
+                        padding: 10px;
+                        border: 1px solid $primaryGreen;
+                        background: rgba(255, 255, 255, 0);
+                    }
+                }
+              }
+          }
+      }
+    }
+}
+
+.Button {
+    font-family: 'Segeo UI', sans-serif;
+    &:hover {
+        background-color: rgba(36, 197, 42, 1);
+        transition: color, 0.3s;
+        cursor: pointer;
+    }
+}
+
