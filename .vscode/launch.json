@@ -21,6 +21,14 @@
       "preLaunchTask": "npm: build"
     },
     {
+      "name": "chrome 8000",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "sourceMaps": true,
+    },
+    {
       "name": "chrome 3000 with npm start",
       "type": "chrome",
       "request": "launch",
@@ -43,10 +51,17 @@
   ],
   "compounds": [
     {
-      "name": "Debug server and frontend",
+      "name": "Debug server and frontend with mpm build",
       "configurations": [
         "server 8000 django python",
         "chrome 8000 with npm build",
+      ]
+    },
+    {
+      "name": "Debug server and frontend",
+      "configurations": [
+        "server 8000 django python",
+        "chrome 8000",
       ]
     },
     {
