@@ -20,13 +20,13 @@
   .searchbarBack {
     @extend .greenGradient;
     position: absolute;
-    top: -40%;
+    top: -30rem;
     right: -10%;
   }
   .heroHeaderBack {
     @extend .purpleGradient;
     position: absolute;
-    top: 60%;
+    top: 33rem;
     left: -30%;
   }
 }
