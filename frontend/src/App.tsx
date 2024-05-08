@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Navbar';
 import HeroHeader from './components/HeroHeader';
+import Background from "./components/Background";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./NavBar.module.scss";
@@ -73,8 +74,9 @@ function App() {
     <div>
       <Navbar />
       <HeroHeader idToken={idToken} />
+      <Background />
     </div>
-	);
+  );
 }
 
 export default App;
