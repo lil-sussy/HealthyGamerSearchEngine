@@ -76,7 +76,7 @@ def querying_view(request):
         user_data = user_doc.to_dict()
         query_count = user_data.get('query_performed', 0)
 
-        if query_count >= 5:
+        if query_count >= settings.QUERY_LIMIT:
             jwt = request.COOKIES.get('jwt')  # Assumes JWT is stored in a cookie named 'jwt'
             id_token = request.headers.get('Authorization')[len('Bearer '):]
             if id_token is None:
@@ -215,8 +215,69 @@ def get_video_duration(video_url):
     duration = yt.length
     return duration
 
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+import nltk
+from nltk.corpus import wordnet
+
+
+nltk.download('stopwords')
+def query_pre_processing(query):
+    # Tokenization
+    tokens = word_tokenize(query.lower())
+    
+    # Stopword Removal
+    stop_words = set(stopwords.words('english'))
+    tokens = [word for word in tokens if word.isalnum() and word not in stop_words]
+    
+    # Stemming
+    stemmer = PorterStemmer()
+    tokens = [stemmer.stem(word) for word in tokens]
+    
+    # Lemmatization
+    lemmatizer = WordNetLemmatizer()
+    tokens = [lemmatizer.lemmatize(word) for word in tokens]
+    return ' '.join(tokens)
+
+load_dotenv()
+api_key = os.getenv('OPENAI_API_KEY')
+import requests
+# remote_client = chromadb.HttpClient(host="chroma-gprs-production.up.railway.app", port=port, ssl=True)
+
+# remote_client.delete_collection(name="video_embeddings")
+# local_client.delete_collection(name="video_embeddings")
+collection_embeddings = remote_client.get_or_create_collection(name="keywords_embeddings")
+
+def get_embeddings_openai(texts):
+    headers = {
+        'Authorization': f'Bearer {api_key}',
+        'Content-Type': 'application/json'
+    }
+    url = "https://api.openai.com/v1/embeddings"
+    payload = {
+        "input": texts,
+        "model": "text-embedding-3-small"
+    }
+    return requests.post(url, headers=headers, json=payload).json()['data'][0]['embedding']
+
+def enhance_query_keywords(query):
+    # Extract keywords from the query
+    # query_keywords = extract_keywords(query)
+    # Extract keywords from the large dataset (simulated here as a single large text)
+    # large_keywords = extract_keyword_set_transcript()
+    # Find semantically close keywords
+    # enhanced_keywords = find_semantic_matches(query_keywords, large_keywords)
+    embeddings = get_embeddings_openai(query)
+    keywords = collection_embeddings.query(query_embeddings=[embeddings])['documents'][0]
+    query = query + ' '.join(keywords)
+    return query
+
 
 def querying_ai(query, use_prediction=True):
+    pre_processed_query = query_pre_processing(query)
+    enhanced_query = enhance_query_keywords(pre_processed_query)
+  
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json'
@@ -234,7 +295,7 @@ def querying_ai(query, use_prediction=True):
             },
             {
                 "role": "user",
-                "content": query
+                "content": enhanced_query
             }
         ]
     }

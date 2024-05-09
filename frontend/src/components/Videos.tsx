@@ -65,7 +65,7 @@ function VideoResultDisplay({ video }: { video: Video }) {
 					<h5>Rank: #{occurrence.rank}</h5>
 					<h5 className={distanceClass}>Distance: {Math.round(occurrence.distance * 100) / 100}</h5>
 				</div>
-				<a href={occurrence.url} className={styles.URL}>
+				<a href={occurrence.url} className={styles.URL} target="_blank" rel="noopener noreferrer">
 					{occurrence.url}
 				</a>
 				<div className={styles.VideoTime}>

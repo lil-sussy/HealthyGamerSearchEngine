@@ -14,6 +14,7 @@ from pathlib import Path
 import datetime
 
 QUERY_PER_MONTH_LIMIT = 200
+QUERY_LIMIT = 100
 JWT_EXPIRATION_DELTA = datetime.datetime.now() + datetime.timedelta(days=3)  # Token expires in 3 day
 
 # settings.py
