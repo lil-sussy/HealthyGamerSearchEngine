@@ -101,6 +101,7 @@ def healthcheck(request):
 @csrf_exempt
 @api_view(['POST'])
 def querying_view(request):
+    return JsonResponse({'error': 'An unexpected error occurred.'}, status=500)
     try:
         logger.info("Querying view called.")
         user_ip = get_client_ip(request)

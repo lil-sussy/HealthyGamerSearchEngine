@@ -134,20 +134,39 @@ def get_embeddings_openai(texts):
         logger.error(f"Error fetching embeddings from OpenAI: {e}")
         return None
 
+import yake
+
+def extract_keywords(text, max_ngram_size=3, num_of_keywords=5):
+    kw_extractor = yake.KeywordExtractor(n=max_ngram_size, top=num_of_keywords, dedupLim=0.9)
+    keywords = kw_extractor.extract_keywords(text)
+    return [keyword for keyword, score in keywords]
+
 def enhance_query_keywords(query):
-    logger.info(f"{WHITE}Enhancing query with keywords: {BLUE}{ITALIC}{query}{RESET}")
-    # Extract keywords from the query
-    # query_keywords = extract_keywords(query)
-    # Extract keywords from the large dataset (simulated here as a single large text)
-    # large_keywords = extract_keyword_set_transcript()
-    # Find semantically close keywords
-    # enhanced_keywords = find_semantic_matches(query_keywords, large_keywords)
+    logger.info(f"Enhancing query with keywords: {query}")
     try:
-        embeddings = get_embeddings_openai(query)
-        keywords = collection_embeddings.query(query_embeddings=[embeddings])['documents'][0]
-        query = query + ' '.join(keywords)
-        logger.info(f"{WHITE}Enhanced query: {BLUE}{ITALIC}{query}{RESET}")
-        return query
+        # Extract keywords from the query
+        query_keywords = extract_keywords(query, num_of_keywords=max(0.3*len(query.split(" ")), 8))
+        # Generate embeddings for each query keyword
+        embeddings = {keyword: get_embeddings_openai(keyword) for keyword in query_keywords}
+        enhanced_keywords = {}
+        for keyword, embedding in embeddings.items():
+            # Find similar keywords in the collection using the embedding
+            results = collection_embeddings.query(query_embeddings=[embedding], n_results=5)
+            similar_keywords = results['documents'][0]  # Assume results are structured with documents containing the keywords
+            # Add similar keywords to the set
+            enhanced_keywords[keyword] = set(similar_keywords)
+        # Replace each keyword in the original query with the augmented keywords
+        enhanced_query = []
+        for word in query.split():
+            if word in enhanced_keywords:
+                # Replace the word with the original and similar keywords
+                augmented_keywords = ' '.join(enhanced_keywords[word])
+                enhanced_query.append(f"{word} {augmented_keywords}")
+            else:
+                enhanced_query.append(word)
+        enhanced_query_str = ' '.join(enhanced_query)
+        logger.info(f"Enhanced query: {enhanced_query_str}")
+        return enhanced_query_str
     except Exception as e:
         logger.error(f"Error enhancing query keywords: {e}")
         return query
