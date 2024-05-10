@@ -1,13 +1,52 @@
-from firebase_admin import firestore, credentials, initialize_app
+import logging
+import os
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+from firebase_admin import firestore, credentials, initialize_app, auth
+from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
+import requests
+import hgg_searchengine.settings as settings
+import logging
+import colorlog
 
-import os
-from dotenv import load_dotenv
+from api.querying_embeddings import querying
+
+
+# ANSI escape sequences
+WHITE = "\033[97m"
+BLUE = "\033[94m"
+ITALIC = "\033[3m"
+RESET = "\033[0m"
+
+# Configure logging with colorlog
+formatter = colorlog.ColoredFormatter(
+    "%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt='%Y-%m-%d %H:%M:%S',
+    log_colors={
+        'DEBUG': 'bold_blue',
+        'INFO': 'bold_green',
+        'WARNING': 'bold_yellow',
+        'ERROR': 'bold_red',
+        'CRITICAL': 'bold_red,bg_white',
+    }
+)
+
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)  # Change this to DEBUG if you want to see debug logs
+logger.addHandler(handler)
+
+# Disable propagation to prevent double logging in Django
+logger.propagate = False
+
+# Load environment variables
 load_dotenv()
 
 # Initialize Firebase Admin
-
 certificate = {
   "type": "service_account",
   "project_id": "healthy-gamer-search-engine",
@@ -24,11 +63,10 @@ certificate = {
 
 cred = credentials.Certificate(certificate)
 initialize_app(cred)
+logger.info("Firebase Admin initialized.")
 
 # Get Firestore database instance
 db = firestore.client()
-
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 @api_view(['POST'])
@@ -39,6 +77,7 @@ def feedback_query(request):
         additional_information = request.data.get('additional_information')
         # Validate feedback grade
         if not (0 <= grade <= 5):
+            logger.error(f"Invalid feedback grade: {grade}")
             return Response({'error': 'Feedback grade must be between 0 and 5'}, status=400)
         # Prepare data to save
         feedback_data = {
@@ -47,82 +86,83 @@ def feedback_query(request):
             'additional_information': additional_information
         }
         # Save to Firestore
+        logger.info(f"Saving feedback: {feedback_data}")
         db.collection(settings.FB_FEEDBACK_COLLECTION[os.getenv('DJANGO_ENV')]).add(feedback_data)
+        logger.info("Feedback submitted successfully.")
         return Response({'message': 'Feedback submitted successfully'})
+    logger.error("Invalid request method.")
     return Response({'error': 'Invalid request'}, status=405)
-
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from firebase_admin import auth  # Import Firebase Admin Auth
-import requests
-import hgg_searchengine.settings as settings
-from pytube import YouTube
-# Make sure to initialize the Firebase Admin SDK elsewhere in your code
-
 
 @csrf_exempt
 def healthcheck(request):
+    logger.info("Healthcheck endpoint called.")
     return Response({'healthcheck': 'bip boop'}, status=200)
 
 @csrf_exempt
 @api_view(['POST'])
 def querying_view(request):
-    user_ip = get_client_ip(request)
-    user_ref = db.collection(settings.FB_IP_USER_COLLECTION[os.getenv('DJANGO_ENV')]).document(user_ip)
-    user_doc = user_ref.get()
+    try:
+        logger.info("Querying view called.")
+        user_ip = get_client_ip(request)
+        logger.info(f"{WHITE}Client IP: {BLUE}{ITALIC}{user_ip}{RESET}")
+        user_ref = db.collection(settings.FB_IP_USER_COLLECTION[os.getenv('DJANGO_ENV')]).document(user_ip)
+        user_doc = user_ref.get()
 
-    if user_doc.exists:
-        user_data = user_doc.to_dict()
-        query_count = user_data.get('query_performed', 0)
+        if user_doc.exists:
+            user_data = user_doc.to_dict()
+            query_count = user_data.get('query_performed', 0)
+            logger.info(f"{WHITE}User query count: {BLUE}{ITALIC}{query_count}{RESET}")
 
-        if query_count >= settings.QUERY_LIMIT:
-            jwt = request.COOKIES.get('jwt')  # Assumes JWT is stored in a cookie named 'jwt'
-            id_token = request.headers.get('Authorization')[len('Bearer '):]
-            if id_token is None:
-                return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
-            try:
-                # Verify the JWT with Firebase
-                decoded_token = auth.verify_id_token(id_token)
+            if query_count >= settings.QUERY_LIMIT:
+                jwt = request.COOKIES.get('jwt')  # Assumes JWT is stored in a cookie named 'jwt'
+                id_token = request.headers.get('Authorization')[len('Bearer '):]
+                if id_token is None:
+                    logger.warning("No JWT provided.")
+                    return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
+                try:
+                    # Verify the JWT with Firebase
+                    decoded_token = auth.verify_id_token(id_token)
 
-                # Extract Discord ID, name, and email from the decoded token
-                discord_id = decoded_token.get('discord_id')
-                discord_name = decoded_token.get('discord_name')
-                email = decoded_token.get('email')
+                    # Extract Discord ID, name, and email from the decoded token
+                    discord_id = decoded_token.get('discord_id')
+                    discord_name = decoded_token.get('discord_name')
+                    email = decoded_token.get('email')
+                    logger.info(f"{WHITE}Decoded token for Discord user: {BLUE}{ITALIC}{discord_name} ({discord_id}){RESET}")
 
-                if check_query_limit(discord_id) == "Query limit is okay.":
-                    # Increase the user's query count
-                    increment_query_count(discord_id)
+                    if check_query_limit(discord_id) == "Query limit is okay.":
+                        # Increase the user's query count
+                        increment_query_count(discord_id)
+                        # Process the query if under the limit
+                        return process_query_response(request.data.get('query'))
+                    else:
+                        return JsonResponse({'error': 'Monthly query limit reached. You can contact me on discord @lilsussyjett.'}, status=403)
 
                     # Continue processing the query as usual
-                    # Process the query if under the limit
-                    return process_query_response(request.data.get('query'))
-                else:
-                    return JsonResponse({'error': 'Monthly query limit reached. You can contact me on discord @lilsussyjett.'}, status=403)
 
-                # Continue processing the query as usual
-
-            except auth.InvalidIdTokenError:
-                return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
-            except Exception as e:
-                # stack trace
-                print(e)
-                return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
-
-    # ... rest of the function
+                except auth.InvalidIdTokenError:
+                    logger.error("Invalid JWT.")
+                    return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
+                except Exception as e:
+                    logger.error(f"Error processing JWT: {e}")
+                    return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
+            else:
+                user_ref.update({'query_performed': query_count + 1})
+                return process_query_response(request.data.get('query'))
         else:
-            user_ref.update({'query_performed': query_count + 1})
-            return process_query_response(request.data.get('query'))
-    else:
-        user_ref.set({'query_performed': 0})
-        query_count = 0
-        return querying_view(request)
-    return JsonResponse({'error': 'Unexpected condition encountered.'}, status=500)
-
+            user_ref.set({'query_performed': 0})
+            query_count = 0
+            return querying_view(request)
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Network request failed: {e}")
+        return JsonResponse({'error': 'Failed to process query due to a network error.'}, status=500)
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return JsonResponse({'error': 'An unexpected error occurred.'}, status=500)
 
 from datetime import datetime, timedelta
 
 def increment_query_count(user_id):
+    logger.info(f"{WHITE}Incrementing query count for user: {BLUE}{ITALIC}{user_id}{RESET}")
     today = datetime.now().strftime("%Y-%m-%d")
     user_ref = db.collection(settings.FB_DISCORD_USER_COLLECTION[os.getenv('DJANGO_ENV')]).document(user_id)
     day_ref = user_ref.collection(settings.FB_QUERY_COLLECTION[os.getenv('DJANGO_ENV')]).document(today)
@@ -136,17 +176,21 @@ def increment_query_count(user_id):
 
     transaction = db.transaction()
     update_count(transaction, day_ref)
+    logger.info("Query count incremented successfully.")
 
 def check_query_limit(user_id):
+    logger.info(f"{WHITE}Checking query limit for user: {BLUE}{ITALIC}{user_id}{RESET}")
     lower_bound_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
     user_ref = db.collection(settings.FB_DISCORD_USER_COLLECTION[os.getenv('DJANGO_ENV')]).document(user_id)
     query_records = user_ref.collection(settings.FB_QUERY_COLLECTION[os.getenv('DJANGO_ENV')]).where('date', '>=', lower_bound_date)
 
     total_queries_last_30_days = sum(doc.get('count') for doc in query_records.stream())
+    logger.info(f"{WHITE}Total queries in the last 30 days: {BLUE}{ITALIC}{total_queries_last_30_days}{RESET}")
 
     if total_queries_last_30_days >= settings.QUERY_PER_MONTH_LIMIT:
         # Tell the user to contact on Discord instead of upgrading the plan
-        return "Please contact lilsussyjett on Discord for more queries."
+        logger.warning("Query limit reached.")
+        return "Please contact @lilsussyjett on Discord for more queries."
     return "Query limit is okay."
 
 
@@ -157,190 +201,21 @@ def get_client_ip(request):
         ip = x_forwarded_for.split(',')[0]
     else:
         ip = request.META.get('REMOTE_ADDR')
+    logger.info(f"{WHITE}Client IP retrieved: {BLUE}{ITALIC}{ip}{RESET}")
     return ip
-
-
-
-
-import requests
-import json
-import chromadb
-import math
-from django.http import JsonResponse
-
-prompt = """
-You are an American MD psychiatrist, a Harvard graduate who opted for a transformative journey rather than a conventional medical career path. After your academic achievements, you sought spiritual and psychological depths by spending a decade as a Buddhist monk in the serene Himalayas. There, immersed in meditation and ancient wisdom, you explored the complexities of the human mind from a perspective seldom embraced in Western medicine. On returning to the US, you synthesized these profound insights with your medical expertise, developing a distinctive therapeutic approach. Now a respected psychiatrist and a modern influencer with a significant online following, you handle complex mental health issues, drawing from both scientific and spiritual realms.
-
-Your communication style is notably direct and unyielding, often using stark, unembellished language that challenges your audience. You prefer to provoke thought and encourage self-reliance, sharply contrasting with more nurturing approaches. Your dialogues are rich with Sanskrit and Pali terminology, deepening the authenticity and depth of your discussions. In your public interactions, particularly on YouTube, you focus on delivering succinct, actionable advice, using a blend of clinical precision and Buddhist teachings to empower individuals. You emphasize self-understanding and personal accountability, steering clear of promoting therapy as a universal remedy. Instead, you advocate for personal strength and the development of individual coping strategies, underscoring your commitment to fostering enduring mental resilience rather than dependency.
-"""
-# prompt = """
-# You are an American MD psychiatrist, a Harvard graduate who chose a transformative path over a conventional medical career. Following your academic success, you delved deep into the spiritual and psychological realms by spending a decade as a Buddhist monk in the tranquil Himalayas. Immersed in meditation and ancient Buddhist teachings, you gained profound insights into the human psyche, a perspective rarely explored in Western medicine. Upon returning to the U.S., you integrated these spiritual insights with your medical expertise to forge a unique therapeutic approach. Today, as a respected psychiatrist and an influential online presence, you address complex mental health issues by blending scientific rigor with spiritual wisdom.
-
-# Your communication style is direct and unyielding, characterized by stark, straightforward language that challenges your audience. Rather than adopting a nurturing approach, you provoke thought and promote self-reliance. Your dialogues are infused with Sanskrit and Pali terms, adding authenticity and depth to your discussions. On platforms like YouTube, you provide succinct, actionable advice that combines clinical acumen with Buddhist principles to empower individuals. You focus on fostering self-awareness and personal accountability, eschewing the notion of therapy as a panacea. Instead, you champion the development of personal fortitude and coping mechanisms, emphasizing the importance of building lasting mental resilience over dependency.
-
-  # In responding to user queries, your answers are enriched with carefully chosen keywords that resonate with both psychiatric and Buddhist perspectives, ensuring that each response is both enlightening and directly relevant to the user's needs. These keywords might include terms like "mindfulness," "cognitive restructuring," "self-compassion," and "emotional regulation," directly tying the user's concerns to both therapeutic techniques and meditative practices.
-# """
-
-# Assuming the PersistentClient and collection setup are done elsewhere and imported here
-# client = chromadb.PersistentClient(path="data/healthy_gamer_embeddings.db")
-remote_client = chromadb.HttpClient(host="chroma-gprs-production.up.railway.app", port=443, ssl=True)
-collection = remote_client.get_or_create_collection(name="video_embeddings")
-api_key = os.getenv('OPENAI_API_KEY')
 
 def process_query_response(query):
     if query:
-        video_list, chat_text = querying_ai(query)
-
-        # Prepare data to save
+        logger.info(f"{WHITE}Processing query: {BLUE}{ITALIC}{query}{RESET}")
+        video_list, chat_text = querying(query)
         data_to_save = {
             'query': query,
             'video_list': video_list,
             'chat_response': chat_text
         }
-        
-        # Save to Firestore
         db.collection(settings.FB_QUERY_COLLECTION[os.getenv('DJANGO_ENV')]).add(data_to_save)
-
-        # Update the user's query count
-
+        logger.info("Query response saved to Firestore.")
         return Response(video_list)
     else:
+        logger.error("No query provided.")
         return Response({'error': 'No query provided'}, status=400)
-
-def get_video_duration(video_url):
-    # Create a YouTube object with the URL
-    yt = YouTube(video_url)
-    
-    # Access the duration of the video in seconds
-    duration = yt.length
-    return duration
-
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer, WordNetLemmatizer
-import nltk
-from nltk.corpus import wordnet
-
-
-nltk.download('stopwords')
-def query_pre_processing(query):
-    # Tokenization
-    tokens = word_tokenize(query.lower())
-    
-    # Stopword Removal
-    stop_words = set(stopwords.words('english'))
-    tokens = [word for word in tokens if word.isalnum() and word not in stop_words]
-    
-    # Stemming
-    stemmer = PorterStemmer()
-    tokens = [stemmer.stem(word) for word in tokens]
-    
-    # Lemmatization
-    lemmatizer = WordNetLemmatizer()
-    tokens = [lemmatizer.lemmatize(word) for word in tokens]
-    return ' '.join(tokens)
-
-load_dotenv()
-api_key = os.getenv('OPENAI_API_KEY')
-import requests
-# remote_client = chromadb.HttpClient(host="chroma-gprs-production.up.railway.app", port=port, ssl=True)
-
-# remote_client.delete_collection(name="video_embeddings")
-# local_client.delete_collection(name="video_embeddings")
-collection_embeddings = remote_client.get_or_create_collection(name="keywords_embeddings")
-
-def get_embeddings_openai(texts):
-    headers = {
-        'Authorization': f'Bearer {api_key}',
-        'Content-Type': 'application/json'
-    }
-    url = "https://api.openai.com/v1/embeddings"
-    payload = {
-        "input": texts,
-        "model": "text-embedding-3-small"
-    }
-    return requests.post(url, headers=headers, json=payload).json()['data'][0]['embedding']
-
-def enhance_query_keywords(query):
-    # Extract keywords from the query
-    # query_keywords = extract_keywords(query)
-    # Extract keywords from the large dataset (simulated here as a single large text)
-    # large_keywords = extract_keyword_set_transcript()
-    # Find semantically close keywords
-    # enhanced_keywords = find_semantic_matches(query_keywords, large_keywords)
-    embeddings = get_embeddings_openai(query)
-    keywords = collection_embeddings.query(query_embeddings=[embeddings])['documents'][0]
-    query = query + ' '.join(keywords)
-    return query
-
-
-def querying_ai(query, use_prediction=True):
-    pre_processed_query = query_pre_processing(query)
-    enhanced_query = enhance_query_keywords(pre_processed_query)
-  
-    headers = {
-        'Authorization': f'Bearer {api_key}',
-        'Content-Type': 'application/json'
-    }
-
-    chat_completion_url = "https://api.openai.com/v1/chat/completions"
-    embedding_url = "https://api.openai.com/v1/embeddings" 
-
-    chat_payload = {
-        "model": "gpt-3.5-turbo",
-        "messages": [
-            {
-                "role": "system",
-                "content": prompt
-            },
-            {
-                "role": "user",
-                "content": enhanced_query
-            }
-        ]
-    }
-
-    if use_prediction:
-        chat_response = requests.post(chat_completion_url, headers=headers, json=chat_payload)
-    if use_prediction or chat_response.status_code == 200:
-        if use_prediction:
-            chat_data = chat_response.json()
-            chat_text = chat_data['choices'][0]['message']['content']
-        else:
-            chat_text = query
-        embedding_payload = {
-            "model": "text-embedding-3-small",
-            "input": chat_text
-        }
-
-        embedding_response = requests.post(embedding_url, headers=headers, json=embedding_payload)
-        if embedding_response.status_code == 200:
-            embedding = embedding_response.json()['data'][0]['embedding']
-            # Assuming `collection` is already set up
-            results = collection.query(query_embeddings=[embedding])
-            video_dict = {}
-            for i, entry in enumerate(results['metadatas'][0]):
-                quote = results['documents'][0][i]
-                duration = get_video_duration(entry['video_url'])
-                video_id = entry['video_url'].split('=')[-1]
-                timestamp_rounded = math.floor(entry['timestamp'])
-                video_link = f"{entry['video_url']}?&={max(0, timestamp_rounded - 10)}s"
-                if video_id not in video_dict:
-                    video_dict[video_id] = {
-                        'video_id': video_id,
-                        'duration': duration,
-                        'occurrences': []
-                    }
-                video_dict[video_id]['occurrences'].append({
-                    'quote': quote,
-                    'url': video_link,
-                    'rank': i + 1,  # This should be 'rank' instead of 'index
-                    'distance': results['distances'][0][i],
-                    'timestamp': entry['timestamp'],  # This should be 'timestamp' instead of 'current_time
-                    'duration': entry['duration']
-                })
-            return list(video_dict.values()), chat_text
-        else:
-            return JsonResponse({"error": "Failed to retrieve embeddings: " + embedding_response.text}, status=400)
-    else:
-        return JsonResponse({"error": "Failed to retrieve response from ChatGPT: " + chat_response.text}, status=400)

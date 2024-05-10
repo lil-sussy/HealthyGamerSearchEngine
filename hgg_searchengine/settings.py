@@ -168,12 +168,29 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+import colorlog
+from colorlog import ColoredFormatter
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'colored',
+        },
+    },
+    'formatters': {
+        'colored': {
+            '()': 'colorlog.ColoredFormatter',
+            'format': '%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            'log_colors': {
+                'DEBUG': 'bold_blue',
+                'INFO': 'bold_green',
+                'WARNING': 'bold_yellow',
+                'ERROR': 'bold_red',
+                'CRITICAL': 'bold_red,bg_white',
+            },
         },
     },
     'root': {
@@ -181,3 +198,4 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
