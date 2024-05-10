@@ -53,6 +53,15 @@ $secondaryPurple: #DFCDED;
               flex-direction: column;
               align-items: flex-start;
               gap: 20px;
+              .searchDescription {
+                  margin-bottom: -20px;
+                  font-size: 17px;
+                  font-weight: 300;
+                  line-height: 29px;
+                  color: $primaryGreen;
+                  opacity: 0.6;
+                  font-family: 'Segeo UI', sans-serif;
+              }
               .PlaceholderRectContainer {
                 display: flex;
                 flex-direction: column;

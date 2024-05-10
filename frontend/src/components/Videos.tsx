@@ -101,7 +101,7 @@ function VideoPlayer({ videoId, seekTime }: { videoId: string; seekTime: number 
 			controls
       width={"100%"}
       height={"100%"}
-			playing={true} // Disabled autoplay
+			playing={false} // Disabled autoplay
 			onReady={() => playerRef.current!.seekTo(seekTime, "seconds")}
 		/>
 	);

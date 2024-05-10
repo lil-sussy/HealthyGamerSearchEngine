@@ -78,7 +78,11 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 				{/* <div className="PurpleBlur" />
 				<div className="GreenBlur" /> */}
 				<div className={styles.DrKImageContainer}>
-					<img className={styles.Image7} src={loading ? "./drkThinking.png" : "./drkStaring.png"} alt="Placeholder" />
+					{loading ? (
+            <img className={styles.Image7} src="./drkThinking.png" alt="Loading" />
+          ) : (
+            <img className={styles.Image7} src="./drkStaring.png" alt="Loaded" />
+          )}
 					<div className={styles.Logo}>
 						<Logo />
 					</div>
@@ -86,9 +90,10 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 				<div className={styles.RightContent}>
 					<div className={styles.Title}>
 						<span className={styles.textBlack}>Unofficial Healthy Gamer GG </span>
-						<span className={styles.textGreen}>Search Engine</span>
+						<span className={styles.textGreen}>AI Search Engine</span>
 					</div>
 					<div className={styles.Content}>
+						<h4 className={styles.searchDescription}>Describe how you feel using one or multiple sentences :</h4>
 						<form className={styles.SearchBarContainer} onSubmit={handleSubmit}>
 							<div className={styles.SearchBar}>
 								<SearchIconSmall />
@@ -109,10 +114,10 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 								{responseMessage && <div className="response-message">{responseMessage}</div>}
 								{!responseMessage && results.length > 0 && (
 									<div className="results">
-                    <div className={styles.RatingButton}>
-                      <h4>Rate those results</h4>
-                      <StarRating query={query} additionalInfo={JSON.stringify({results: results})} />
-                    </div>
+										<div className={styles.RatingButton}>
+											<h4>Rate those results</h4>
+											<StarRating query={query} additionalInfo={JSON.stringify({ results: results })} />
+										</div>
 										{results.map((video: Video, index: number) => (
 											<VideoResultDisplay key={index} video={video} />
 										))}
