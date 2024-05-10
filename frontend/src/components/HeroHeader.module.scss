@@ -12,7 +12,8 @@ $secondaryPurple: #DFCDED;
         box-sizing: border-box;
         display: flex;
         position: relative;
-        justify-content: space-evenly;
+        justify-content: space-around;
+        gap: 4rem;
         align-items: start;
         flex-direction: row;
         width: 100%;
@@ -188,3 +189,220 @@ $secondaryPurple: #DFCDED;
     }
 }
 
+@media (max-width: 1280px) {
+    .HeroHeaderContainer {
+        .HeroHeader {
+            .DrKImageContainer {
+                img {
+                    width: 20rem;
+                }
+                .Logo {
+                  svg {
+                      width: 12rem;
+                  }
+                }
+            }
+          .RightContent {
+              .Title {
+                  width: 27rem;
+                  .textBlack, .textGreen {
+                      line-height: 35px;
+                      font-size: 30px;
+                  }
+                  .textGreen {
+                  }
+              }
+
+              .Content {
+                  .ResponseMessage {
+                      padding: 1rem;
+                      font-size: 16px;
+                  }
+                  .searchDescription {
+                  }
+                  .PlaceholderRectContainer {
+                  }
+                  .SearchBarContainer {
+                    .SearchBar {
+                        border-width: 3px;
+                        .input {
+                            font-size: 16px;
+                            line-height: 29px;
+                        }
+                    }
+                    .SearchButton {
+                    }
+                  }
+                  .RatingButton {
+                      h4 {
+                      }
+                  }
+                  .IndentContainer {
+                    .WelcomeText {
+                        line-height: 20px;
+                        font-size: 16px;
+                    }
+                    .Actions {
+                        .Donate {
+                        }
+                        .ShareFeedback {
+                        }
+                    }
+                  }
+              }
+          }
+        }
+    }
+}
+
+@media (max-width: 1006px) {
+    .HeroHeaderContainer {
+        .HeroHeader {
+            flex-direction: column;
+            padding: 4rem;
+            gap: 2rem;
+            .DrKImageContainer {
+                img {
+                    width: 14rem;
+                }
+                .Logo {
+                  svg {
+                      height: 10rem;
+                      width: 10rem;
+                  }
+                }
+            }
+          .RightContent {
+              width: 100%;
+              gap: 1rem;
+              .Title {
+                  width: 27rem;
+                  .textBlack, .textGreen {
+                      line-height: 40px;
+                      font-size: 35px;
+                  }
+                  .textGreen {
+                  }
+              }
+
+              .Content {
+                  .ResponseMessage {
+                      padding: 1rem;
+                      font-size: 16px;
+                  }
+                  .searchDescription {
+                  }
+                  .PlaceholderRectContainer {
+                  }
+                  .SearchBarContainer {
+                    .SearchBar {
+                        border-width: 3px;
+                        .input {
+                            font-size: 16px;
+                            line-height: 29px;
+                        }
+                    }
+                    .SearchButton {
+                    }
+                  }
+                  .RatingButton {
+                      h4 {
+                      }
+                  }
+                  .IndentContainer {
+                    .WelcomeText {
+                        font-size: 16px;
+                        line-height: 20px;
+                    }
+                    .Actions {
+                        .Donate {
+                        }
+                        .ShareFeedback {
+                        }
+                    }
+                  }
+              }
+          }
+        }
+    }
+}
+
+
+
+@media (max-width: 560px) {
+    .HeroHeaderContainer {
+        .HeroHeader {
+            flex-direction: column;
+            padding: 1rem;
+            gap: 2rem;
+            .DrKImageContainer {
+                margin-left: auto;
+                margin-right: auto;
+                img {
+                    width: 14rem;
+                }
+                .Logo {
+                  svg {
+                      height: 10rem;
+                      width: 10rem;
+                  }
+                }
+            }
+          .RightContent {
+              width: 100%;
+              gap: 1rem;
+              .Title {
+                  width: 20rem;
+                  .textBlack, .textGreen {
+                      line-height: 35px;
+                      font-size: 30px;
+                  }
+                  .textGreen {
+                  }
+              }
+
+              .Content {
+                  .ResponseMessage {
+                      padding: 1rem;
+                      font-size: 16px;
+                  }
+                  .searchDescription {
+                      font-size: 12px;
+                  }
+                  .PlaceholderRectContainer {
+                  }
+                  .SearchBarContainer {
+                    .SearchBar {
+                        border-width: 2px;
+                        width: 100%;
+                        .input {
+                            font-size: 16px;
+                            line-height: 29px;
+                        }
+                    }
+                    .SearchButton {
+                        display: none;
+                    }
+                  }
+                  .RatingButton {
+                      h4 {
+                      }
+                  }
+                  .IndentContainer {
+                    padding: 1rem;
+                    .WelcomeText {
+                        font-size: 16px;
+                        line-height: 20px;
+                    }
+                    .Actions {
+                        .Donate {
+                        }
+                        .ShareFeedback {
+                        }
+                    }
+                  }
+              }
+          }
+        }
+    }
+}
