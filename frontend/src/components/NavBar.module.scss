@@ -9,32 +9,28 @@ $secondaryPurple: #DFCDED;
   padding: 1rem;
   background: rgba(255, 255, 255, 0.29);
   backdrop-filter: blur(200px);
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  display: inline-flex;
+  position: relative;
 
-  .Artboard21 {
-    width: 67px;
-    height: 48px;
-    position: relative;
+  .BurgerIcon {
+    font-size: 2rem;
+    cursor: pointer;
+    display: none;
+  }
 
-    .Vector {
-      position: absolute;
-      background: #23C52A;
-      &.first {
-        width: 43.72px;
-        height: 30.24px;
-        left: 12.14px;
-        top: 8.5px;
-      }
-      &.second {
-        width: 24.53px;
-        height: 15.94px;
-        left: 22.3px;
-        top: 13.95px;
-        background: white;
-      }
-      // Additional vector styles can be added here using more classes or ids
+  .LogoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    text-align: center;
+
+    .Title {
+      margin-left: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
     }
   }
 
@@ -55,7 +51,7 @@ $secondaryPurple: #DFCDED;
       &:hover {
         color: #7289da;
         cursor: pointer;
-        transition: color, 0.3s;
+        transition: color 0.3s;
       }
       p {
         margin: 0;
@@ -71,7 +67,113 @@ $secondaryPurple: #DFCDED;
       &:hover {
         color: $primaryGreen;
         cursor: pointer;
-        transition: color, 0.3s;
+        transition: color 0.3s;
+      }
+    }
+
+    &.Show {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 3rem;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.29);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+
+// less than 812px
+@media (max-width: 812px) {
+  .Navbar {
+    padding: 0.5rem;
+    height: 3rem;
+
+    .Artboard21 {
+      width: 50px;
+      height: 36px;
+
+      .Vector {
+        &.first {
+          width: 32.72px;
+          height: 22.24px;
+          left: 9.14px;
+          top: 6.5px;
+        }
+        &.second {
+          width: 18.53px;
+          height: 12.94px;
+          left: 16.3px;
+          top: 9.95px;
+        }
+      }
+    }
+
+    .NavigationButtons {
+      gap: 50px;
+
+      .ButtonDiscord {
+        font-size: 16px;
+      }
+
+      .Button {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 602px) {
+  .Navbar {
+    z-index: 100;
+    padding: 1rem;
+    display: flex;
+    position: relative;
+    justify-content: start;
+    height: 3rem;
+
+    .BurgerIcon {
+      display: block;
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+        transition: transform, 0.3s;
+      }
+    }
+
+    .LogoContainer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .Title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.2rem;
+      }
+    }
+
+    .NavigationButtons {
+      display: none;
+
+      gap: 50px;
+
+      .ButtonDiscord {
+        font-size: 16px;
+      }
+
+      .Button {
+        font-size: 16px;
+      }
+
+      &.Show {
+        display: flex;
+        z-index: 100;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
       }
     }
   }

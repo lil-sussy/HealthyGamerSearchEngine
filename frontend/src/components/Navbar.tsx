@@ -7,6 +7,7 @@ import { FaDiscord } from "react-icons/fa";
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithCustomToken, onAuthStateChanged } from "firebase/auth";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 import app from "../firebase";
 const auth = getAuth(app)
@@ -32,15 +33,27 @@ const NavBar = () => {
 		window.location.href = discordAuthUrl; // Redirect user to Discord login
 	};
 
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+
+	const toggleBurgerMenu = () => {
+		setIsBurgerOpen(!isBurgerOpen);
+	};
+
 	return (
 		<div className={styles.Navbar}>
-			<Logo />
-			<div className={styles.NavigationButtons}>
+			<div className={styles.BurgerIcon} onClick={toggleBurgerMenu}>
+				{isBurgerOpen ? <FaTimes /> : <FaBars />}
+			</div>
+			<div className={styles.LogoContainer}>
+				<Logo />
+				<span className={styles.Title}>HGG AI</span>
+			</div>
+			<div className={`${styles.NavigationButtons} ${isBurgerOpen ? styles.Show : ""}`}>
 				<div className={`${styles.Button} ${styles.Search}`}>Search</div>
 				<div className={`${styles.Button} ${styles.About}`}>About</div>
 				<div className={`${styles.Button} ${styles.HowItWorks}`}>How it works</div>
 				<div className={`${styles.Button} ${styles.Contact}`}>Contact</div>
-				<div onClick={handleLogin} className={`${(styles.Button, styles.ButtonDiscord)} ${styles.Login}`}>
+				<div onClick={handleLogin} className={`${styles.Button} ${styles.ButtonDiscord} ${styles.Login}`}>
 					<FaDiscord />
 					<p>Login</p>
 				</div>
