@@ -72,7 +72,7 @@ $secondaryPurple: #DFCDED;
                   font-weight: 300;
                   line-height: 29px;
                   color: $primaryGreen;
-                  opacity: 0.6;
+                  opacity: 0.8;
                   font-family: 'Segeo UI', sans-serif;
               }
               .PlaceholderRectContainer {
@@ -128,13 +128,18 @@ $secondaryPurple: #DFCDED;
                   margin-left: 12rem;
                   display: flex;
                   flex-direction: row;
+                  justify-content: space-between;
+                  align-items: center;
                   gap: 1rem;
+                  padding: 1rem;
+                  box-sizing: border-box;
+                  background-color: #e4e5e9;
+                  border-radius: 10px;
                   h4 {
-                      font-size: 20px;
+                      font-size: 16px;
                       font-weight: 300;
                       line-height: 29px;
-                      color: #9b9b9b;
-                      font-style: oblique;
+                      color: #686868; //686868
                       font-family: 'Segeo UI', sans-serif;
                   }
               }

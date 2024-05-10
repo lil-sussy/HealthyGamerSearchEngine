@@ -101,7 +101,6 @@ def healthcheck(request):
 @csrf_exempt
 @api_view(['POST'])
 def querying_view(request):
-    return JsonResponse({'error': 'An unexpected error occurred.'}, status=500)
     try:
         logger.info("Querying view called.")
         user_ip = get_client_ip(request)
@@ -150,9 +149,8 @@ def querying_view(request):
                 user_ref.update({'query_performed': query_count + 1})
                 return process_query_response(request.data.get('query'))
         else:
-            user_ref.set({'query_performed': 0})
-            query_count = 0
-            return querying_view(request)
+            user_ref.set({'query_performed': 1})
+            return process_query_response(request.data.get('query'))
     except requests.exceptions.RequestException as e:
         logger.error(f"Network request failed: {e}")
         return JsonResponse({'error': 'Failed to process query due to a network error.'}, status=500)

@@ -60,7 +60,7 @@ Your communication style is notably direct and unyielding, often using stark, un
 
 # Assuming the PersistentClient and collection setup are done elsewhere and imported here
 # client = chromadb.PersistentClient(path="data/healthy_gamer_embeddings.db")
-remote_client = chromadb.HttpClient(host=os.getenv("CHROMA_SERVER_URL"), port=443, ssl=True)
+remote_client = chromadb.HttpClient(host=os.getenv("CHROMA_SERVER_URL"), port=os.getenv("CHROMA_SERVER_PORT"), ssl=(os.getenv("CHROMA_SERVER_PORT") == '443'))
 collection = remote_client.get_or_create_collection(name="video_embeddings")
 api_key = os.getenv('OPENAI_API_KEY')
 

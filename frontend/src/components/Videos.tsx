@@ -72,7 +72,6 @@ function VideoResultDisplay({ video }: { video: Video }) {
 					<h5>{formatTime(occurrence.timestamp)}</h5>
 					<h5>~{formatTime(occurrence.duration)}</h5>
 				</div>
-				<p>"{occurrence.quote}"</p>
 			</div>
 		</div>
 	);

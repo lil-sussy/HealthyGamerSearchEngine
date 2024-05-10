@@ -51,7 +51,7 @@ const StarRating: React.FC<StarRatingProps> = ({ query, additionalInfo }) => {
 				return (
 					<label key={index}>
 						<input type="radio" name="rating" value={ratingValue} onClick={() => handleClick(ratingValue)} />
-						<FontAwesomeIcon icon={solidStar} className="star" color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"} size="2x" onMouseEnter={() => setHover(ratingValue)} onMouseLeave={() => setHover(0)} />
+						<FontAwesomeIcon icon={solidStar} className="star" color={ratingValue <= (hover || rating) ? "#ffc107" : "#bdc0a0"} size="2x" onMouseEnter={() => setHover(ratingValue)} onMouseLeave={() => setHover(0)} />
 					</label>
 				);
 			})}
