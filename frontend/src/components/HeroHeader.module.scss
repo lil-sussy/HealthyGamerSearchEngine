@@ -53,6 +53,19 @@ $secondaryPurple: #DFCDED;
               flex-direction: column;
               align-items: flex-start;
               gap: 20px;
+              .ResponseMessage {
+                  // error div
+                  width: 100%;
+                  background: #F3B6B6;
+                  border-radius: 10px;
+                  box-sizing: border-box;
+                  padding: 1.5rem;
+                  font-size: 20px;
+                  font-weight: 300;
+                  line-height: 29px;
+                  color: #a50c0c;
+                  font-family: 'Segeo UI', sans-serif;
+              }
               .searchDescription {
                   margin-bottom: -20px;
                   font-size: 17px;
