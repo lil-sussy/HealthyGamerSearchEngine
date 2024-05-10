@@ -168,8 +168,6 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-import colorlog
-from colorlog import ColoredFormatter
 
 LOGGING = {
     'version': 1,
@@ -193,9 +191,19 @@ LOGGING = {
             },
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
+    # 'root': {
+    #     'handlers': ['console'],
+    #     'level': 'DEBUG',
+    # },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # Set to the lowest level you want to capture
+            'propagate': False,
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # Ensure root logger captures all levels
+        },
     },
 }
-
