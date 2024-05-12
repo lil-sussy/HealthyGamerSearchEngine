@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./NavBar.module.scss";
-import Logo from "./Logo2";
+import Logo from "../Logo2";
 import { FaDiscord } from "react-icons/fa";
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithCustomToken, onAuthStateChanged } from "firebase/auth";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-import app from "../firebase";
+import app from "../../firebase";
 const auth = getAuth(app)
 
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/Navbar';
-import HeroHeader from './components/HeroHeader';
+import Navbar from './components/NavBar/Navbar';
+import HeroHeader from './components/HeroHeader/HeroHeader';
 import Background from "./components/Background";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
