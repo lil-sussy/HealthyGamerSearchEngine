@@ -12,12 +12,13 @@ $secondaryPurple: #DFCDED;
         box-sizing: border-box;
         display: flex;
         position: relative;
-        justify-content: space-around;
+        justify-content: start;
         gap: 4rem;
         align-items: start;
         flex-direction: row;
         width: 100%;
         padding: 10rem 10rem;
+        padding-left: 15%;
         .DrKImageContainer {
             position: relative;
             .Logo {
@@ -234,10 +235,15 @@ $secondaryPurple: #DFCDED;
                     }
                   }
                   .RatingButton {
+                      margin-left: 8rem;
+                      width: 22rem;
+                      flex-direction: column;
+                      box-sizing: border-box;
                       h4 {
                       }
                   }
                   .IndentContainer {
+                    padding-left: 2rem;
                     .WelcomeText {
                         line-height: 20px;
                         font-size: 16px;
@@ -260,8 +266,10 @@ $secondaryPurple: #DFCDED;
         .HeroHeader {
             flex-direction: column;
             padding: 4rem;
-            gap: 2rem;
+            gap: 4rem;
             .DrKImageContainer {
+                margin-left: auto;
+                margin-right: auto;
                 img {
                     width: 14rem;
                 }
@@ -306,6 +314,10 @@ $secondaryPurple: #DFCDED;
                     }
                   }
                   .RatingButton {
+                      margin-left: 20%;
+                      width: 80%;
+                      flex-direction: column;
+                      box-sizing: border-box;
                       h4 {
                       }
                   }

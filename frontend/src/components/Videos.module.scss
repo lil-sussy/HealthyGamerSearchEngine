@@ -1,119 +1,288 @@
-$primaryGreen: #24C52A;
-$primaryPurple: #8824C5;
-$secondaryPurple: #DFCDED;
-$backgroundGraySecondary: #E1E1E1;
-$backgroundGrayTertiary: #F3F3F3;
+$primaryGreen: #24c52a;
+$primaryPurple: #8824c5;
+$secondaryPurple: #dfcded;
+$backgroundGraySecondary: #e1e1e1;
+$backgroundGrayTertiary: #f3f3f3;
 
-$goodGreen: #A1E8A6;
-$avgOrange: #F0FF92;
-$badRed: #FFA592;
+$goodGreen: #a1e8a6;
+$avgOrange: #f0ff92;
+$badRed: #ffa592;
 
 .VideoSection {
-    display: flex;
-    position: relative;
-    flex-wrap: wrap;
-    width: 49rem;
-    justify-content: center;
-    padding-top: 2rem;
-    box-sizing: border-box;
-    padding-bottom: 4rem;
-    padding-left: 12rem;
+	display: flex;
+	position: relative;
+	flex-wrap: wrap;
+	width: 49rem;
+	justify-content: center;
+	padding-top: 2rem;
+	box-sizing: border-box;
+	padding-bottom: 4rem;
+	padding-left: 12rem;
 
-    h1 {
-        position: absolute;
-        top: 0rem;
-        left: 0rem;
-        font-size: 8rem;
-        font-family: "Segoe UI", sans-serif;
-        font-weight: 900;
-        color: $secondaryPurple;
-    }
+	h1 {
+		position: absolute;
+    width: 10rem;
+    text-align: end;
+		top: 0rem;
+		left: 0rem;
+		font-size: 8rem;
+		font-family: "Segoe UI", sans-serif;
+		font-weight: 900;
+		color: $secondaryPurple;
+	}
 
-    .VideoContainer {
-        border-radius: 10px;
-        border-width: 10px;
-        width: 100%;
-        height: 20rem;
-        border-color: $secondaryPurple;
-        border-style: solid;
-        box-sizing: padding-box;
-    }
-    .TimebarContainer {
-        display: flex;
-        width: 100%;
-        margin-top: 2rem;
-        justify-content: center;
-        flex-direction: column;
-        gap: 0.3rem;
-        h4 {
-            color: $secondaryPurple;
-            font-size: 1.7rem;
+	.VideoContainer {
+		border-radius: 10px;
+		border-width: 10px;
+		width: 100%;
+		height: 20rem;
+		border-color: $secondaryPurple;
+		border-style: solid;
+		box-sizing: padding-box;
+	}
+	.TimebarContainer {
+		display: flex;
+		width: 100%;
+		margin-top: 2rem;
+		justify-content: center;
+		flex-direction: column;
+		gap: 0.3rem;
+		h4 {
+			color: $secondaryPurple;
+			font-size: 1.7rem;
+		}
+		.Timebar {
+			width: 100%;
+			height: 1.1rem;
+			background-color: $backgroundGraySecondary;
+			border-radius: 0.2rem;
+			position: relative;
+			div {
+				border-radius: 0.2rem;
+				background-color: $secondaryPurple;
+			}
+		}
+	}
+	.OccurrenceDetails {
+		margin-top: 2rem;
+		border-radius: 1.5rem;
+		border: solid $secondaryPurple 0.2rem;
+		padding: 2rem;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		width: 100%;
+		gap: 1rem;
+		font-family: "Segoe UI", sans-serif;
+		div {
+			display: flex;
+			justify-content: start;
+			align-items: center;
+			gap: 2rem;
+		}
+		.VideoTime {
+			h5 {
+				font-weight: 400;
+				font-size: 0.8rem;
+			}
+		}
+		.URL {
+			color: $primaryPurple;
+			font-size: 1.2rem;
+			font-weight: 200;
+			text-decoration: underline;
+			margin-bottom: 1rem;
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		h5 {
+			font-size: 1rem;
+			font-weight: 400;
+			padding: 0.5rem 1rem;
+			border-radius: 0.5rem;
+			background-color: $backgroundGrayTertiary;
+		}
+		.DistanceGreen {
+			background-color: $goodGreen;
+		}
+		.DistanceOrange {
+			background-color: $avgOrange;
+		}
+		.DistanceRed {
+			background-color: $badRed;
+		}
+		p {
+			margin-left: 0.5rem;
+			color: #878787;
+			font-size: 0.7rem;
+		}
+	}
+}
+
+@media (max-width: 1500px) {
+    .VideoSection {
+        padding-left: 8rem;
+        width: 40rem;
+
+        h1 {
+            font-size: 6rem;
+            width: 6rem;
         }
-        .Timebar {
-            width: 100%;
-            height: 1.1rem;
-            background-color: $backgroundGraySecondary;
-            border-radius: 0.2rem;
-            position: relative;
-            div {
-                border-radius: 0.2rem;
-                background-color: $secondaryPurple;
+
+        .VideoContainer {
+        }
+        .TimebarContainer {
+            h4 {
+            }
+            .Timebar {
+                div {
+                }
             }
         }
-      }
-      .OccurrenceDetails {
-          margin-top: 2rem;
-          border-radius: 1.5rem;
-          border: solid $secondaryPurple 0.2rem;
-          padding: 2rem;
-          display: flex;
-          justify-content: center;
-          flex-direction: column;
-          width: 100%;
-          gap: 1rem;
-          font-family: 'Segoe UI', sans-serif;
-          div {
-              display: flex;
-              justify-content: start;
-              align-items: center;
-              gap: 2rem;
-          }
-          .VideoTime {
-              h5 {
-                  font-weight: 400;
-                  font-size: 0.8rem;
-              }
-          }
-          .URL {
-              color: $primaryPurple;
-              font-size: 1.2rem;
-              font-weight: 200;
-              text-decoration: underline;
-              margin-bottom: 1rem;
-              &:hover {
-                  cursor: pointer;
-              }
-          }
-          h5 {
-              font-size: 1rem;
-              font-weight: 400;
-              padding: 0.5rem 1rem;
-              border-radius: .5rem;
-              background-color: $backgroundGrayTertiary;
-          }
-          .DistanceGreen {
-              background-color: $goodGreen;
-          }
-          .DistanceOrange {
-              background-color: $avgOrange;
-          }
-          .DistanceRed {
-              background-color: $badRed;
-          }
-          p {
-              margin-left: 0.5rem;
-              color: #878787;
-              font-size: 0.7rem;
-          }
-      }
+        .OccurrenceDetails {
+            div {
+            }
+            .VideoTime {
+                h5 {
+                }
+            }
+            .URL {
+            }
+            h5 {
+            }
+            .DistanceGreen {
+            }
+            .DistanceOrange {
+            }
+            .DistanceRed {
+            }
+            p {
+            }
+        }
+    }
+}
+
+@media (max-width: 1280px) {
+    .VideoSection {
+        width: 30rem;
+
+        h1 {
+            font-size: 6rem;
+        }
+        .VideoContainer {
+        }
+        .TimebarContainer {
+            h4 {
+            }
+            .Timebar {
+                div {
+                }
+            }
+        }
+        .OccurrenceDetails {
+            div {
+            }
+            .VideoTime {
+                h5 {
+                }
+            }
+            .URL {
+            }
+            h5 {
+            }
+            .DistanceGreen {
+            }
+            .DistanceOrange {
+            }
+            .DistanceRed {
+            }
+            p {
+            }
+        }
+    }
+}
+
+@media (max-width: 1006px) {
+    .VideoSection {
+        width: 100%;
+        padding-left: 20%;
+
+        h1 {
+            width: 15%;
+            font-size: 6rem;
+        }
+        .VideoContainer {
+        }
+        .TimebarContainer {
+            h4 {
+            }
+            .Timebar {
+                div {
+                }
+            }
+        }
+        .OccurrenceDetails {
+            div {
+            }
+            .VideoTime {
+                h5 {
+                }
+            }
+            .URL {
+            }
+            h5 {
+            }
+            .DistanceGreen {
+            }
+            .DistanceOrange {
+            }
+            .DistanceRed {
+            }
+            p {
+            }
+        }
+    }
+}
+
+@media (max-width: 560px) {
+    .VideoSection {
+        padding: 1rem;
+        padding-top: 6rem;
+        h1 {
+            top: 0.5rem;
+            font-size: 4rem;
+        }
+        .VideoContainer {
+            height: 15rem;
+        }
+        .TimebarContainer {
+            h4 {
+            }
+            .Timebar {
+                div {
+                }
+            }
+        }
+        .OccurrenceDetails {
+            div {
+            }
+            .VideoTime {
+                h5 {
+                }
+            }
+            .URL {
+            }
+            h5 {
+            }
+            .DistanceGreen {
+            }
+            .DistanceOrange {
+            }
+            .DistanceRed {
+            }
+            p {
+            }
+        }
+    }
 }
