@@ -33,6 +33,20 @@ formatter = colorlog.ColoredFormatter(
         'CRITICAL': 'bold_red,bg_white',
     }
 )
+import os
+
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+logger = logging.getLogger(__name__)
+logger.info(f'DJANGO_DEBUG is set to: {DEBUG}')
+
+logger = logging.getLogger('django')
+
+logger.debug("Debug level log")
+logger.info("Info level log")
+logger.warning("Warning level log")
+logger.error("Error level log")
+logger.critical("Critical level log")
+
 
 handler = logging.StreamHandler()
 handler.setFormatter(formatter)
@@ -118,7 +132,7 @@ def querying_view(request):
                 id_token = request.headers.get('Authorization')[len('Bearer '):]
                 if id_token is None:
                     logger.warning("No JWT provided.")
-                    return JsonResponse({'error': 'To prevent abuse the number of query for unregistered users is 5, to continue querying please login using discord.'}, status=403)
+                    return JsonResponse({'error': f'To prevent abuse the number of query for unregistered users is {settings.QUERY_LIMIT}, to continue querying please login using discord.'}, status=403)
                 try:
                     # Verify the JWT with Firebase
                     decoded_token = auth.verify_id_token(id_token)

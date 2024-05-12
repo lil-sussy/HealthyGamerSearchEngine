@@ -175,10 +175,13 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'colored',
+            'formatter': 'detailed',
         },
     },
     'formatters': {
+        'detailed': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        },
         'colored': {
             '()': 'colorlog.ColoredFormatter',
             'format': '%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -191,19 +194,15 @@ LOGGING = {
             },
         },
     },
-    # 'root': {
-    #     'handlers': ['console'],
-    #     'level': 'DEBUG',
-    # },
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'DEBUG',  # Set to the lowest level you want to capture
+            'level': 'DEBUG' if DEBUG else 'INFO',
             'propagate': False,
         },
         '': {
             'handlers': ['console'],
-            'level': 'DEBUG',  # Ensure root logger captures all levels
+            'level': 'DEBUG' if DEBUG else 'INFO',
         },
     },
 }
