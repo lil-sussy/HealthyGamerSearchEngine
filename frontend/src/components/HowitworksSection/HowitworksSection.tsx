@@ -9,7 +9,7 @@ const HowItWorksSection = () => {
 				<div className={styles.UnderlineColorGreen} />
 				<div className={styles.SectionTitle}>How It Works</div>
       </div>
-      <div className={styles.Element}>
+      <div className={styles.FirstElement}>
         <div className={styles.Icon}>
           <AiCloudIcon />
         </div>

@@ -19,6 +19,10 @@ $badRed: #ffa592;
   justify-content: flex-start;
   align-items: flex-start;
   gap: 56px;
+  .FirstElement {
+    margin-top: 0;
+    @extend .Element;
+  }
 
   .FirstElementWithTitle {
     display: flex;
@@ -50,6 +54,7 @@ $badRed: #ffa592;
       word-wrap: break-word;
     }
   }
+  
 
   .Element {
     display: inline-flex;
@@ -218,17 +223,24 @@ $badRed: #ffa592;
   .HowItWorksSection {
     padding: 6% 6%;
     .FirstElementWithTitle {
+      margin-bottom: -2rem;
       .UnderlineColorGreen {}
       .SectionTitle {}
     }
+    .FirstElement {
+      margin-top: 0;
+    }
     .Element {
-      margin-top: 2rem;
       display: flex;
       align-items: start;
       flex-direction: column;
+      margin-top: 2rem;
       .Icon {
-        height: 8rem;
+        height: 2rem;
+        width: 4rem;
         svg {
+          height: 4rem;
+          width: 4rem;
           
         }
       }
@@ -236,11 +248,14 @@ $badRed: #ffa592;
         width: 100%;
         .Title {}
         .ContentContainer {
+          padding: 0;
           .Content {}
         }
       }
     }
+
     .Actions {
+      padding: 0;
       .DonateButton {
         .Donate {}
       }
