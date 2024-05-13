@@ -2,6 +2,9 @@ $primaryGreen: #24C52A;
 $secondaryGreen: #A1E8A6;
 $secondaryPurple: #DFCDED;
 
+// import button from ../button.module.scss
+@import "../Button.module.scss";
+
 .HeroHeaderContainer {
     display: flex;
     flex-direction: column;
@@ -178,15 +181,6 @@ $secondaryPurple: #DFCDED;
               }
           }
       }
-    }
-}
-
-.Button {
-    font-family: 'Segeo UI', sans-serif;
-    &:hover {
-        background-color: rgba(36, 197, 42, 1);
-        transition: color, 0.3s;
-        cursor: pointer;
     }
 }
 

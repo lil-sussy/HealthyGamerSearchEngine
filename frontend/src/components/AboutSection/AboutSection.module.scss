@@ -1,0 +1,508 @@
+$primaryGreen: #24c52a;
+$primaryPurple: #8824c5;
+$secondaryPurple: #dfcded;
+$backgroundGraySecondary: #e1e1e1;
+$backgroundGrayTertiary: #f3f3f3;
+
+$goodGreen: #a1e8a6;
+$avgOrange: #f0ff92;
+$badRed: #ffa592;
+@import "../Button.module.scss";
+
+
+.AboutSection {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10%;
+  height: 1061px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 75px;
+  display: flex;
+  flex-direction: column;
+  .Row {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: start;
+    gap: 3rem;
+  }
+  .Row {
+    .Header {
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      width: 60%;
+      gap: 141px;
+      display: inline-flex;
+  
+      .Title {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        display: flex;
+        font-family: 'Poppins' sans-serif;
+        position: relative;
+  
+        .Rectangle4 {
+          width: 245px;
+          height: 47px;
+          left: -14px;
+          top: 95px;
+          position: absolute;
+          z-index: -10;
+          background: rgba(36, 197, 42, 0.40);
+          border-radius: 8px;
+        }
+  
+        .AboutTheSearchEngine {
+          width: 100%;
+          color: black;
+          font-size: 64px;
+          font-family: 'Poppins';
+          font-weight: 500;
+          line-height: 64px;
+          word-wrap: break-word;
+        }
+      }
+  
+      .ContentContainer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 47px;
+        display: flex;
+  
+        .ContainerAlignment {
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 18px;
+          display: flex;
+  
+          .WhyWeBuiltThis {
+            color: black;
+            font-size: 24px;
+            font-family: 'Segoe UI';
+            font-weight: 700;
+            line-height: 28.80px;
+            word-wrap: break-word;
+          }
+  
+          .ContainerIndent {
+            padding-left: 30px;
+            padding-right: 30px;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            display: inline-flex;
+  
+            .Paragraph {
+              width: 100%;
+              color: black;
+              font-size: 16px;
+              font-family: 'Segoe UI';
+              font-weight: 400;
+              line-height: 19.20px;
+              word-wrap: break-word;
+            }
+          }
+        }
+      }
+    }
+    .ImageGroup {
+      width: 397px;
+      height: 387px;
+      
+      .ImageContainer {
+        width: 397px;
+        height: 387px;
+        padding-top: 3rem;
+        padding-left: 3rem;
+        left: 0;
+        top: 0;
+        position: absolute;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 10px;
+        display: inline-flex;
+        position: relative;
+        .Logo {
+            position: absolute;
+            top: -10%;
+            left: -20%;
+            z-index: 20;
+        }
+  
+        .Image19 {
+          width: 327px;
+          height: 323px;
+          transform-origin: 0 0;
+          border-radius: 29px;
+        }
+      }
+    }
+  }
+  .Row {
+    .DrkConfidentImage {
+      width: 299px;
+      height: 356px;
+      border-radius: 40px;
+    }
+  
+    .DiscordLoginContainer {
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 18px;
+      display: inline-flex;
+  
+      .DiscordLoginTitle {
+        color: black;
+        font-size: 24px;
+        font-family: 'Segoe UI';
+        font-weight: 700;
+        line-height: 28.80px;
+        word-wrap: break-word;
+      }
+  
+      .Container {
+        padding-left: 29px;
+        padding-right: 29px;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 25px;
+        display: flex;
+  
+        .DiscordLoginExplanation {
+          width: 100%;
+  
+          span {
+            color: black;
+            font-size: 16px;
+            font-family: 'Segoe UI';
+            font-weight: 400;
+            line-height: 19.20px;
+            word-wrap: break-word;
+  
+            &.BoldText {
+              font-weight: 700;
+            }
+          }
+        }
+  
+        .Actions {
+          justify-content: flex-start;
+          align-items: flex-start;
+          gap: 23px;
+          display: inline-flex;
+          font-family: 'Segeo UI' sans-serif;
+  
+          .LoginButton {
+            @extend .Button;
+            padding-left: 42px;
+            padding-right: 42px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+            background: rgba(36, 197, 42, 0.40);
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 10px;
+            display: flex;
+  
+            .Login {
+              color: black;
+              font-size: 15px;
+              font-weight: 400;
+              word-wrap: break-word;
+            }
+          }
+  
+          .FeedbackButton {
+            @extend .Button;
+            padding-left: 40px;
+            padding-right: 40px;
+            padding-top: 13px;
+            padding-bottom: 13px;
+            background: rgba(255, 255, 255, 0);
+            border: 1px #24C52A solid;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 10px;
+            display: flex;
+  
+            .ShareFeedback {
+              width: 115.52px;
+              height: 13.42px;
+              color: black;
+              font-size: 15px;
+              font-weight: 400;
+              word-wrap: break-word;
+            }
+          }
+        }
+      }
+    }
+  }
+  .Row {
+    .WhoIsDrkContainer {
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 18px;
+      display: inline-flex;
+  
+      .Title {
+        color: black;
+        font-size: 24px;
+        font-family: 'Segoe UI';
+        font-weight: 700;
+        line-height: 28.80px;
+        word-wrap: break-word;
+      }
+  
+      .Container {
+        padding-left: 30px;
+        padding-right: 30px;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 10px;
+        display: inline-flex;
+  
+        .Content {
+          width: 637px;
+  
+          span {
+            color: black;
+            font-size: 16px;
+            font-family: 'Segoe UI';
+            font-weight: 400;
+            line-height: 19.20px;
+            word-wrap: break-word;
+  
+            &.LinkText {
+              color: #24C52A;
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .AboutSection {
+    .Row {
+    }
+    .Row {
+      .Header {
+        .Title {
+    
+          .Rectangle4 {
+          }
+    
+          .AboutTheSearchEngine {
+          }
+        }
+    
+        .ContentContainer {
+          .ContainerAlignment {
+    
+            .WhyWeBuiltThis {
+            }
+    
+            .ContainerIndent {
+    
+              .Paragraph {
+              }
+            }
+          }
+        }
+      }
+      .ImageGroup {
+        
+        .ImageContainer {
+          width: 15rem;
+          padding-left: 2rem;
+          .Logo {
+            svg {
+              width: 10rem;
+            }
+          }
+          
+          .Image19 {
+            width: 15rem;
+            height: 15rem;
+          }
+        }
+      }
+    }
+    .Row {
+      .DrkConfidentImage {
+        width: 15rem;
+        height: 17rem;
+      }
+    
+      .DiscordLoginContainer {
+    
+        .DiscordLoginTitle {
+        }
+    
+        .Container {
+          .DiscordLoginExplanation {
+    
+            span {
+              &.BoldText {
+              }
+            }
+          }
+    
+          .Actions {
+    
+            .LoginButton {
+    
+              .Login {
+              }
+            }
+    
+            .FeedbackButton {
+    
+              .ShareFeedback {
+              }
+            }
+          }
+        }
+      }
+    }
+    .Row {
+      .WhoIsDrkContainer {
+    
+        .Title {
+        }
+    
+        .Container {
+    
+          .Content {
+    
+            span {
+    
+              &.LinkText {
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 840px) {
+  .AboutSection {
+    .Row {
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+    .Row {
+      .Header {
+        width: 100%;
+        gap: 4rem;
+        .Title {
+    
+          .Rectangle4 {
+          }
+    
+          .AboutTheSearchEngine {
+          }
+        }
+    
+        .ContentContainer {
+          .ContainerAlignment {
+    
+            .WhyWeBuiltThis {
+            }
+    
+            .ContainerIndent {
+    
+              .Paragraph {
+              }
+            }
+          }
+        }
+      }
+      .ImageGroup {
+        height: 19rem;
+        width: 19rem;
+        
+        .ImageContainer {
+          width: 15rem;
+          padding-left: 2rem;
+          .Logo {
+            svg {
+              width: 10rem;
+            }
+          }
+          
+          .Image19 {
+            width: 15rem;
+            height: 15rem;
+          }
+        }
+      }
+    }
+    .Row {
+      .DrkConfidentImage {
+      }
+    
+      .DiscordLoginContainer {
+    
+        .DiscordLoginTitle {
+        }
+    
+        .Container {
+          .DiscordLoginExplanation {
+    
+            span {
+              &.BoldText {
+              }
+            }
+          }
+    
+          .Actions {
+    
+            .LoginButton {
+    
+              .Login {
+              }
+            }
+    
+            .FeedbackButton {
+    
+              .ShareFeedback {
+              }
+            }
+          }
+        }
+      }
+    }
+    .Row {
+      .WhoIsDrkContainer {
+    
+        .Title {
+        }
+    
+        .Container {
+    
+          .Content {
+    
+            span {
+    
+              &.LinkText {
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

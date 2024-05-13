@@ -4,6 +4,7 @@ import './App.css';
 import Navbar from './components/NavBar/Navbar';
 import HeroHeader from './components/HeroHeader/HeroHeader';
 import Background from "./components/Background";
+import AboutSection from "./components/AboutSection/AboutSection";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./NavBar.module.scss";
@@ -74,6 +75,7 @@ function App() {
     <div className="App">
       <Navbar />
       <HeroHeader idToken={idToken} />
+      <AboutSection />
       <Background />
     </div>
   );
