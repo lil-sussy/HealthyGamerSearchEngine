@@ -492,6 +492,128 @@ $badRed: #ffa592;
         }
     
         .Container {
+           width: 100%;
+           padding: 0;
+    
+          .Content {
+            width: 100%;
+    
+            span {
+    
+              &.LinkText {
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 500px) {
+  .AboutSection {
+    .Row {
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+    .Row {
+      .Header {
+        width: 100%;
+        gap: 4rem;
+        .Title {
+          .Rectangle4 {
+              width: 170px;
+              height: 37px;
+              left: -14px;
+              top: 95px;
+              position: absolute;
+              z-index: -10;
+              background: rgba(36, 197, 42, 0.4);
+          }
+          
+          .AboutTheSearchEngine {
+            font-size: 40px;
+          }
+        }
+    
+        .ContentContainer {
+          .ContainerAlignment {
+    
+            .WhyWeBuiltThis {
+            }
+    
+            .ContainerIndent {
+              padding: 0 0%;
+              .Paragraph {
+              }
+            }
+          }
+        }
+      }
+      .ImageGroup {
+        height: 19rem;
+        width: 19rem;
+        
+        .ImageContainer {
+          width: 15rem;
+          padding-left: 2rem;
+          .Logo {
+            svg {
+              width: 10rem;
+            }
+          }
+          
+          .Image19 {
+            width: 15rem;
+            height: 15rem;
+          }
+        }
+      }
+    }
+    .Row {
+      .DrkConfidentImage {
+      }
+    
+      .DiscordLoginContainer {
+        padding: 0 0rem;
+    
+        .DiscordLoginTitle {
+        }
+    
+        .Container {
+          padding: 0 0%;
+          .DiscordLoginExplanation {
+    
+            span {
+              &.BoldText {
+              }
+            }
+          }
+    
+          .Actions {
+    
+            .LoginButton {
+              padding: 1rem 2rem;
+              .Login {
+
+              }
+            }
+    
+            .FeedbackButton {
+              padding: 1rem 2rem;
+              .ShareFeedback {
+              }
+            }
+          }
+        }
+      }
+    }
+    .Row {
+      .WhoIsDrkContainer {
+    
+        .Title {
+        }
+    
+        .Container {
     
           .Content {
     

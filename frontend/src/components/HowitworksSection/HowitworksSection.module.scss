@@ -10,6 +10,7 @@ $badRed: #ffa592;
 @import "../Button.module.scss";
 
 .HowItWorksSection {
+  margin-top: 5rem;
   width: 100%;
   box-sizing: border-box;
   padding: 6% 20%;
@@ -223,6 +224,7 @@ $badRed: #ffa592;
     .Element {
       margin-top: 2rem;
       display: flex;
+      align-items: start;
       flex-direction: column;
       .Icon {
         height: 8rem;
