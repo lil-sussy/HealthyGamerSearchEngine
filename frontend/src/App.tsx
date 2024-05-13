@@ -14,6 +14,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithCustomToken, onAuthStateChanged } from "firebase/auth";
 
 import app from "./firebase";
+import HowItWorksSection from "./components/HowitworksSection/HowitworksSection";
 const auth = getAuth(app);
 
 function App() {
@@ -76,6 +77,7 @@ function App() {
       <Navbar />
       <HeroHeader idToken={idToken} />
       <AboutSection />
+      <HowItWorksSection />
       <Background />
     </div>
   );

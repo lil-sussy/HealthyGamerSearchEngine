@@ -15,6 +15,10 @@ $badRed: #ffa592;
         transform: scale(1.03);
         transition: color, 0.3s;
         transition: transform, 0.5s;
+        transition: backdrop-filter, 0.5s;
+        transition: filter, 0.5s;
+        backdrop-filter: blur(10px);
         cursor: pointer;
+        filter: drop-shadow(0 0.5rem 0.5rem rgba(0, 0, 0, 0.1));
     }
 }
