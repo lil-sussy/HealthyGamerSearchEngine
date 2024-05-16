@@ -1,12 +1,14 @@
+$squareSize: 1200px;
+
 .greenGradient {
-  width: 1000px;
-  height: 1000px;
+  width: $squareSize;
+  height: $squareSize;
   background-image: radial-gradient(50.00% 50.00% at 50% 50%, rgba(36, 197, 42, 0.40) 0%, rgba(36, 197, 42, 0) 100%)
 }
 .purpleGradient {
-  width: 1000px;
-  height: 1000px;
-  background-image: radial-gradient(50.00% 50.00% at 50% 50%, rgba(135.82, 36, 197, 0.40) 0%, rgba(145.48, 36, 197, 0) 100%)
+  width: $squareSize;
+  height: $squareSize;
+  background-image: radial-gradient(50.00% 50.00% at 50% 50%, rgba(135.82, 36, 197, 0.15) 0%, rgba(145.48, 36, 197, 0) 100%)
 }
 
 
@@ -26,7 +28,37 @@
   .heroHeaderBack {
     @extend .purpleGradient;
     position: absolute;
-    top: 33rem;
-    left: -30%;
+    top: 20rem;
+    left: -35%;
+  }
+  .AboutSection {
+    @extend .greenGradient;
+    position: absolute;
+    top: 50rem;
+    right: -30%;
+  }
+  .HowItworksPurple {
+    @extend .purpleGradient;
+    position: absolute;
+    top: 110rem;
+    left: -40%;
+  }
+  .HowItworksGreen {
+    @extend .greenGradient;
+    position: absolute;
+    top: 170rem;
+    right: -30%;
+  }
+  .ContactPurple {
+    @extend .purpleGradient;
+    position: absolute;
+    top: 210rem;
+    left: -40%;
+  }
+  .ContactGreen {
+    @extend .greenGradient;
+    position: absolute;
+    top: 240rem;
+    right: -30%;
   }
 }

@@ -10,6 +10,16 @@ const Background = () => {
       </div>
       <div className={styles.heroHeaderBack}>
       </div>
+      <div className={styles.AboutSection}>
+      </div>
+      <div className={styles.HowItworksPurple}>
+      </div>
+      <div className={styles.HowItworksGreen}>
+      </div>
+      <div className={styles.ContactPurple}>
+      </div>
+      <div className={styles.ContactGreen}>
+      </div>
     </div>)
 };
 
