@@ -12,9 +12,11 @@ import { FaDiscord } from "react-icons/fa";
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithCustomToken, onAuthStateChanged } from "firebase/auth";
+import { NextUIProvider } from "@nextui-org/react";
 
 import app from "./firebase";
 import HowItWorksSection from "./components/HowitworksSection/HowitworksSection";
+import ContactSection from "./components/ContactFormSection/ContactSection";
 const auth = getAuth(app);
 
 function App() {
@@ -72,14 +74,35 @@ function App() {
 		return () => unsubscribe();
 	}, []);
 
+  const myTheme = {
+		type: "light",
+		colors: {
+			primary: "#0070f3",
+			secondary: "#ff0080",
+			success: "#00ff00",
+			error: "#ff0000",
+			warning: "#ffae42",
+			background: "#f0f0f0",
+			card: "#ffffff",
+			text: "#000000",
+			border: "#d9d9d9",
+			notification: "#ff0080",
+		},
+		space: {}, // override spacing tokens
+		fonts: {}, // override font tokens
+	};
+
   return (
-    <div className="App">
-      <Navbar />
-      <HeroHeader idToken={idToken} />
-      <AboutSection />
-      <HowItWorksSection />
-      <Background />
-    </div>
+    <NextUIProvider>
+      <div className="App">
+        <Navbar />
+        <HeroHeader idToken={idToken} />
+        <AboutSection />
+        <HowItWorksSection />
+        <ContactSection />
+        <Background />
+      </div>
+    </NextUIProvider>
   );
 }
 

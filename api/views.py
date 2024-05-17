@@ -232,3 +232,43 @@ def process_query_response(query):
     else:
         logger.error("No query provided.")
         return Response({'error': 'No query provided'}, status=400)
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+from django.conf import settings
+import json
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+import re
+
+@csrf_exempt
+def feedback_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        name = data.get('name')
+        email = data.get('email')
+        message = data.get('message')
+
+        if not name or not email or not message:
+            return JsonResponse({'error': 'All fields are required.'}, status=400)
+
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return JsonResponse({'error': 'Please enter a valid email address.'}, status=400)
+
+        # Here you can handle the message, for example, sending an email
+        try:
+            send_mail(
+                f'Feedback from {name}',
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.CONTACT_EMAIL],
+                fail_silently=False,
+            )
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+        return JsonResponse({'success': 'Thank you for your feedback!'})
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)

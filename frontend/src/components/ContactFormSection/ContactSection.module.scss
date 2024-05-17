@@ -1,0 +1,326 @@
+.CenteringDiv {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.FeedbackSection {
+  width: 80%;
+  padding: 2rem;
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(255, 255, 255, 0.50);
+  border-radius: 58px;
+  backdrop-filter: blur(200px);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+
+  .WhiteContainer {
+    padding: 4rem;
+    background: white;
+    box-shadow: -4px 4px 50.8px 4px rgba(0, 0, 0, 0.08);
+    border-radius: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+
+    .ContentContainer {
+      display: inline-flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 79px;
+
+      .FormContainer {
+        width: 80%;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 88px;
+        position: relative;
+
+        .AnyQuestionsOrFeedback {
+          width: 100%;
+          color: black;
+          font-size: 64px;
+          font-family: 'Poppins';
+          font-weight: 500;
+          line-height: 64px;
+          word-wrap: break-word;
+        }
+
+        .Rectangle4 {
+          position: absolute;
+          top: 6rem;
+          z-index: 0;
+          left: -1rem;
+          width: 396px;
+          height: 38px;
+          transform-origin: 0 0;
+          background: rgba(36, 197, 42, 0.40);
+          border-radius: 8px;
+        }
+
+        .Form {
+          align-self: stretch;
+          height: 333px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-end;
+          gap: 33px;
+
+          .Frame13 {
+            align-self: stretch;
+            display: inline-flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 50px;
+
+            .Name, .Email {
+              flex: 1 1 0;
+              height: 40px;
+              padding: 12px 0;
+              border: 1px rgba(36, 197, 42, 0.40) solid;
+              display: flex;
+              justify-content: flex-start;
+              align-items: flex-end;
+              gap: 10px;
+
+              .YourName, .YourEmailOrDiscord {
+                color: rgba(0, 0, 0, 0.50);
+                font-size: 16px;
+                font-family: 'Segoe UI';
+                font-weight: 400;
+                line-height: 16px;
+                word-wrap: break-word;
+              }
+            }
+          }
+
+          .Messsage {
+            align-self: stretch;
+            flex: 1 1 0;
+            padding: 11px 17px;
+            border: 1px rgba(0, 0, 0, 0.53) solid;
+            display: inline-flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+            gap: 10px;
+
+            .YourMessage {
+              width: 162px;
+              height: 21px;
+              color: rgba(0, 0, 0, 0.50);
+              font-size: 16px;
+              font-family: 'Segoe UI';
+              font-weight: 400;
+              line-height: 16px;
+              word-wrap: break-word;
+            }
+          }
+
+          .SubmitButton {
+            width: 90px;
+            height: 36px;
+            padding: 14px 49px;
+            background: linear-gradient(55deg, rgba(235.88, 31.45, 166.37, 0.40) 0%, rgba(195.05, 234.81, 110.56, 0.40) 50%, rgba(36, 197, 42, 0.40) 100%), linear-gradient(0deg,  0%,  100%);
+            border-radius: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
+            .Submit {
+              color: black;
+              font-size: 16px;
+              font-family: 'Segoe UI';
+              font-weight: 400;
+              line-height: 16px;
+              word-wrap: break-word;
+            }
+          }
+        }
+      }
+
+      .DrkConfident {
+        width: 315px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1340px) {
+  .FeedbackSection {
+    width: 90%;
+    .WhiteContainer {
+      .ContentContainer {
+        .FormContainer {
+          .AnyQuestionsOrFeedback {
+          }
+
+          .Rectangle4 {
+          }
+
+          .Form {
+            .Frame13 {
+              .Name, .Email {
+                .YourName, .YourEmailOrDiscord {
+                }
+              }
+            }
+
+            .Messsage {
+              .YourMessage {
+              }
+            }
+
+            .SubmitButton {
+              .Submit {
+              }
+            }
+          }
+        }
+
+        .DrkConfident {
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1158px) {
+  .FeedbackSection {
+    width: 90%;
+    .WhiteContainer {
+      .ContentContainer {
+        .FormContainer {
+          .AnyQuestionsOrFeedback {
+          }
+
+          .Rectangle4 {
+            left: 4rem;
+          }
+
+          .Form {
+            .Frame13 {
+              .Name, .Email {
+                .YourName, .YourEmailOrDiscord {
+                }
+              }
+            }
+
+            .Messsage {
+              .YourMessage {
+              }
+            }
+
+            .SubmitButton {
+              .Submit {
+              }
+            }
+          }
+        }
+
+        .DrkConfident {
+           width: 250px;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1092px) {
+  .FeedbackSection {
+    width: 90%;
+    .WhiteContainer {
+      .ContentContainer {
+        .FormContainer {
+          width: 100%;
+          .AnyQuestionsOrFeedback {
+          }
+
+          .Rectangle4 {
+            left: 4rem;
+          }
+
+          .Form {
+            .Frame13 {
+              .Name, .Email {
+                .YourName, .YourEmailOrDiscord {
+                }
+              }
+            }
+
+            .Messsage {
+              .YourMessage {
+              }
+            }
+
+            .SubmitButton {
+              .Submit {
+              }
+            }
+          }
+        }
+
+        .DrkConfident {
+          display: none;
+           width: 250px;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 784px) {
+  .FeedbackSection {
+    width: 97%;
+    padding: 1rem;
+    .WhiteContainer {
+      padding: 2rem;
+      .ContentContainer {
+        .FormContainer {
+          width: 100%;
+          .AnyQuestionsOrFeedback {
+            font-size: 40px;
+          }
+
+          .Rectangle4 {
+            width: 250px;
+            left: -1rem;
+          }
+
+          .Form {
+            .Frame13 {
+              flex-direction: column;
+              gap: 30px;
+              .Name, .Email {
+                .YourName, .YourEmailOrDiscord {
+                }
+              }
+            }
+
+            .Messsage {
+              .YourMessage {
+              }
+            }
+
+            .SubmitButton {
+              .Submit {
+              }
+            }
+          }
+        }
+
+        .DrkConfident {
+          display: none;
+           width: 250px;
+        }
+      }
+    }
+  }
+}
