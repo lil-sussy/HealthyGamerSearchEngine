@@ -5,6 +5,9 @@ description = ""
 authors = ["lil-sussy <naykeysnet@gmail.com>"]
 readme = "README.md"
 
+[tool.poetry.packages]
+include = []
+
 [tool.poetry.dependencies]
 python = "==3.12.2"
 django = "^5.0.4"

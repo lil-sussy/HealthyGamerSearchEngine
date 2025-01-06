@@ -2,8 +2,10 @@
 FROM python:3.12.2
 
 # Install Node.js and npm (using the NodeSource Node.js Binary Distributions)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh \
+    && bash nodesource_setup.sh \
+    && apt-get install -y nodejs \
+    && rm nodesource_setup.sh
 
 # Set the working directory in the container
 WORKDIR /usr/src/app

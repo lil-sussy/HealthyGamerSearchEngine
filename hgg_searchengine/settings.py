@@ -27,7 +27,7 @@ load_dotenv()
 # Django environment configuration
 ENVIRONMENT = os.getenv('DJANGO_ENV', 'production')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')]
 
 # Firestore collections
 FB_DISCORD_USER_COLLECTION = {

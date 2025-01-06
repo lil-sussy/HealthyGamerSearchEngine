@@ -1,47 +1,57 @@
 {
-  "version": "2.0.0",
-  "tasks": [
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "npm: start",
+			"type": "npm",
+			"script": "start",
+			"group": "build",
+			"isBackground": true,
+			"options": {
+				"cwd": "${workspaceFolder}/frontend"
+			},
+			"problemMatcher": {
+				"owner": "custom",
+				"pattern": {
+					"regexp": "..."
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "^Compiled successfully",
+					"endsPattern": "^Failed to compile"
+				}
+			}
+		},
+		{
+			"label": "npm: build",
+			"type": "npm",
+			"script": "build",
+			"group": "build",
+			"isBackground": true,
+			"options": {
+				"cwd": "${workspaceFolder}/frontend"
+			},
+			"problemMatcher": {
+				"owner": "custom",
+				"pattern": {
+					"regexp": "..."
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "^Compiled successfully",
+					"endsPattern": "^Failed to compile"
+				}
+			}
+		},
     {
-      "label": "npm: start",
-      "type": "npm",
-      "script": "start",
-      "group": "build",
-      "isBackground": true,
-      "options": {
-        "cwd": "${workspaceFolder}/frontend",
-      },
-      "problemMatcher": {
-        "owner": "custom",
-        "pattern": {
-          "regexp": "..."
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^Compiled successfully",
-          "endsPattern": "^Failed to compile"
-        }
-      }
-    },
-    {
-      "label": "npm: build",
-      "type": "npm",
-      "script": "build",
-      "group": "build",
-      "isBackground": true,
-      "options": {
-        "cwd": "${workspaceFolder}/frontend",
-      },
-      "problemMatcher": {
-        "owner": "custom",
-        "pattern": {
-          "regexp": "..."
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^Compiled successfully",
-          "endsPattern": "^Failed to compile"
-        }
+      "label": "Docker Build, Login, and Push",
+      "type": "shell",
+      "command": "docker buildx build -t sussymf/hgg . && docker login && docker push sussymf/hgg",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
     }
-  ]
+	]
 }
