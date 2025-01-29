@@ -1,8 +1,6 @@
-import styles from "./ContactSection.module.scss";
-import { Button, Input, Textarea } from "@nextui-org/react";
-
 import React, { useState } from "react";
-import axios from "axios";
+import { Button, Input, Textarea } from "@nextui-org/react";
+import { sendContactFeedback } from "../../requests";
 
 const ContactSection = () => {
 	const [name, setName] = useState("");
@@ -31,37 +29,39 @@ const ContactSection = () => {
 			return;
 		}
 
-		try {
-			await axios.post("/api/contact/feedback", { name, email, message });
+		const [result, error] = await sendContactFeedback(name, email, message);
+		if (error) {
+			setError("Something went wrong. Please try again later.");
+		} else {
 			setSuccess("Thank you for your feedback!");
 			setName("");
 			setEmail("");
 			setMessage("");
-		} catch (err) {
-			setError("Something went wrong. Please try again later.");
 		}
 	};
 
 	return (
-		<div className={styles.CenteringDiv}>
-			<div className={styles.FeedbackSection}>
-				<div className={styles.WhiteContainer}>
-					<div className={styles.ContentContainer}>
-						<div className={styles.FormContainer}>
-							<div className={styles.AnyQuestionsOrFeedback}>Any questions or Feedback?</div>
-							<div className={styles.Rectangle4}></div>
-							<form className={styles.Form} onSubmit={handleSubmit}>
-								<div className={styles.Frame13}>
+		<div className="w-full flex justify-center items-center">
+			<div className="w-4/5 p-8 mt-8 mx-auto bg-white bg-opacity-50 rounded-3xl backdrop-blur-lg inline-flex flex-col justify-start items-start gap-2">
+				<div className="p-16 bg-white shadow-lg rounded-3xl flex flex-col justify-start items-start gap-2">
+					<div className="inline-flex justify-start items-center gap-20">
+						<div className="w-4/5 inline-flex flex-col justify-center items-start gap-20 relative">
+							<div className="w-full text-black text-4xl font-poppins font-medium leading-tight">
+								Any questions or Feedback?
+							</div>
+							<div className="absolute top-24 z-0 left-[-1rem] w-96 h-9 bg-green-500 bg-opacity-40 rounded-lg" />
+							<form className="self-stretch h-80 flex flex-col justify-start items-end gap-8" onSubmit={handleSubmit}>
+								<div className="self-stretch inline-flex justify-start items-end gap-12">
 									<Input name="Name" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
 									<Input name="Email" placeholder="Your email" value={email} onChange={(e) => setEmail(e.target.value)} />
 								</div>
 								<Textarea name="Message" placeholder="Your message" height="300px" size="lg" value={message} onChange={(e) => setMessage(e.target.value)} />
 								<Button type="submit">Submit</Button>
-								{error && <div className={styles.Error}>{error}</div>}
-								{success && <div className={styles.Success}>{success}</div>}
+								{error && <div className="text-red-500">{error}</div>}
+								{success && <div className="text-green-500">{success}</div>}
 							</form>
 						</div>
-						<img className={styles.DrkConfident} src="./dr k confident 2.png" alt="Dr K confident" />
+						<img className="w-80" src="./dr k confident 2.png" alt="Dr K confident" />
 					</div>
 				</div>
 			</div>
