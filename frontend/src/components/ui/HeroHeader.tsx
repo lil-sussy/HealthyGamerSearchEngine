@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, Spin, message, Rate } from "antd";
+import { Input, Button, Spin, message, Rate, Typography } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Logo from "../../components/Logo.tsx";
 import { getAuth, getIdToken } from "firebase/auth";
@@ -11,8 +11,9 @@ import "react-loading-skeleton/dist/skeleton.css";
 import StarRating from "../HeroHeader/StarRating.tsx";
 import app from "../../firebase.ts";
 import { queryVideos, submitFeedback } from "../../requests.ts"; // Import the request functions
-import clsx from 'clsx';
+import clsx from "clsx";
 const auth = getAuth(app);
+const { Text } = Typography;
 
 const HeroHeader = ({ idToken }: { idToken: string }) => {
   const test: Video[] = JSON.parse(
@@ -24,6 +25,7 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [rateValue, setRateValue] = useState<number | null>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -48,13 +50,16 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
   };
 
   const handleRateChange = async (value: number) => {
-    const [result, error] = await submitFeedback(query, value, JSON.stringify({ results }));
-    if (error) {
-      console.error("Failed to submit feedback:", error);
-      message.error("Failed to submit feedback.");
-    } else {
-      console.log("Feedback submitted successfully:", result);
-      message.success("Thank you for your feedback!");
+    setRateValue(value);
+    if (rateValue) {
+      const [result, error] = await submitFeedback(query, value, JSON.stringify({ results }));
+      if (error) {
+        console.error("Failed to submit feedback:", error);
+        message.error("Failed to submit feedback.");
+      } else {
+        console.log("Feedback submitted successfully:", result);
+        message.success("Thank you for your feedback!");
+      }
     }
   };
 
@@ -101,41 +106,75 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
                 </Button>
               </form>
             </div>
-            {responseMessage && (
-              <div className="error-message w-full bg-red-200 rounded-lg p-4 text-red-700">{responseMessage}</div>
-            )}
-            {!responseMessage && results.length > 0 && (
-              <div className="results-container">
-                <div className="rating-section flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-gray-200 rounded-lg">
-                  <h4 className="text-base font-light text-gray-600">
-                    Rate those results to improve the search engine!
-                  </h4>
-                  <Rate onChange={handleRateChange} />
-                </div>
-                {results.map((video: Video, index: number) => (
-                  <VideoResultDisplay key={index} video={video} />
-                ))}
-              </div>
-            )}
-            <div className="description-section flex flex-col pl-20 gap-5">
-              <div className="description-text text-lg font-medium">
-                Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated tool designed by fans for fans.
-                This platform allows you to navigate through the extensive content of Dr. K's videos to find specific
-                advice, insights, and discussions tailored to your mental health and wellness needs.
-              </div>
-              <div className="button-group flex gap-2">
-                <Button className="bg-green-200 hover:bg-green-400" type="default">
-                  Donate
-                </Button>
-                <Button className="border border-green-500" type="default">
-                  Share feedback
-                </Button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
+      {renderResults(responseMessage, results, loading, handleRateChange, rateValue)}
     </div>
+  );
+};
+
+const renderResults = (
+  errorMessage: string,
+  results: Video[] | null,
+  loading: boolean,
+  handleRateChange: (value: number) => void,
+  rateValue: number | null,
+) => {
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (errorMessage) {
+    return <div className="error-message w-full bg-red-200 rounded-lg p-4 text-red-700">{errorMessage}</div>;
+  }
+
+  if (!results) {
+    return (
+      <div className="description-section flex flex-col pl-20 gap-5">
+        <div className="description-text text-lg font-medium">
+          Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated tool designed by fans for fans. This
+          platform allows you to navigate through the extensive content of Dr. K's videos to find specific advice,
+          insights, and discussions tailored to your mental health and wellness needs.
+        </div>
+        <div className="button-group flex gap-2">
+          <Button className="bg-green-200 hover:bg-green-400" type="default">
+            Donate
+          </Button>
+          <Button className="border border-green-500" type="default">
+            Share feedback
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (results.length === 0) {
+    return <div className="results-container">No results found</div>;
+  }
+
+  return (
+    <>
+      <div className="results-container flex flex-col gap-4 !mt-16">
+        <div className="rating-section flex flex-col justify-between items-start gap-2 !p-4 bg-gray-200 rounded-lg">
+          <Text className="text-base font-light text-gray-600 w-[20rem]">
+            Rate those results to improve the search engine!
+          </Text>
+          <Rate value={rateValue || 0} onChange={handleRateChange} className="w-[20rem]" />
+        </div>
+        <div className="results-list flex flex-col gap-4">
+          {results.map((video: Video, index: number) => (
+            <VideoResultDisplay key={index} video={video} />
+          ))}
+        </div>
+        <div className="rating-section flex flex-col justify-between items-start gap-2 !p-4 bg-gray-200 rounded-lg">
+          <Text className="text-base font-light text-gray-600 w-[20rem]">
+            Rate those results to improve the search engine!
+          </Text>
+          <Rate value={rateValue || 0} onChange={handleRateChange} className="w-[20rem]" />
+        </div>
+      </div>
+    </>
   );
 };
 
