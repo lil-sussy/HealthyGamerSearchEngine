@@ -32,16 +32,16 @@ function VideoResultDisplay({ video }: { video: Video }) {
 	}, []);
 
 	return (
-		<div className="flex flex-wrap justify-center w-full md:w-3/4 lg:w-1/2 p-8 box-border">
-			<h1 className="absolute text-8xl font-black text-purple-200">{`#${video.occurrences[0].rank}`}</h1>
-			<div className="w-full h-80 border-8 border-purple-200 rounded-lg">
+		<div className="flex flex-wrap justify-center w-full md:w-3/4 lg:w-1/2 !px-8 !pl-20 !py-4 box-border relative">
+			<h1 className="absolute -left-14 top-4 text-shadow-lg !text-[5rem] !font-black text-purple-200">{`#${video.occurrences[0].rank}`}</h1>
+			<div className="w-full h-80 !border-8 !border-purple-200 rounded-lg">
 				<VideoPlayer videoId={video.video_id} seekTime={seekTime} />
 			</div>
-			<div className="flex flex-col items-center w-full mt-8 gap-2">
+			<div className="flex flex-col items-center w-full !mt-8 gap-2">
 				<h4 className="text-xl text-purple-200">Results :</h4>
 				<TimeBar occurrences={video.occurrences} totalDuration={video.duration} onSelect={handleSelectTime} />
 			</div>
-			<div className="flex flex-col items-start w-full mt-8 p-8 border-2 border-purple-200 rounded-lg gap-4">
+			<div className="flex flex-col items-start w-full !mt-8 !p-8 !border-2 !border-purple-200 !rounded-lg !gap-4">
 				<div className="flex items-center gap-8">
 					<h5 className="bg-gray-200 p-2 rounded">{`Rank: #${occurrence.rank}`}</h5>
 					<h5 className={`p-2 rounded ${distanceClass}`}>{`Distance: ${Math.round(occurrence.distance * 100) / 100}`}</h5>

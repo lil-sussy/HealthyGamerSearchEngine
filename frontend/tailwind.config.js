@@ -15,9 +15,14 @@ module.exports = {
 				border: "#d9d9d9",
 				notification: "#ff0080",
 			},
+			textShadow: {
+				lg: '0 4px 8px rgba(0, 0, 0, 0.15)',
+			},
 		},
 	},
-	plugins: [],
+	plugins: [
+		require('tailwindcss-textshadow')
+	],
 	corePlugins: {
 		preflight: false, // Disables Tailwind's base reset
 	},

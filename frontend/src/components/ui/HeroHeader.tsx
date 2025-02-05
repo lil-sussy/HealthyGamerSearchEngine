@@ -78,8 +78,8 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
         </div>
         <div className="main-content flex flex-col items-start w-40 md:w-[30rem] gap-10">
           <div className="title-container w-full md:w-80">
-            <span className="text-4xl font-medium">Unofficial Healthy Gamer GG </span>
-            <span className="text-4xl font-bold text-green-500">Video Search Engine</span>
+            <span className="text-4xl font-medium text-shadow-lg">Unofficial Healthy Gamer GG </span>
+            <span className="text-4xl font-bold text-green-500 text-shadow-lg">Video Search Engine</span>
           </div>
           <div className="search-section flex flex-col items-start gap-6">
             <div className="search-form-container flex flex-col items-start gap-2">
@@ -162,7 +162,7 @@ const renderResults = (
           </Text>
           <Rate value={rateValue || 0} onChange={handleRateChange} className="w-[20rem]" />
         </div>
-        <div className="results-list flex flex-col gap-4">
+        <div className="results-list flex flex-col gap-2">
           {results.map((video: Video, index: number) => (
             <VideoResultDisplay key={index} video={video} />
           ))}
