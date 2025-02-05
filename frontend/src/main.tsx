@@ -8,10 +8,11 @@ import { ConfigProvider } from "antd";
 
 const myTheme = {
 	token: {
-		colorPrimary: "#0070f3",
-		colorSecondary: "#ff0080",
-		colorSuccess: "#00ff00",
+		colorPrimary: "#24c52a",
+		colorSecondary: "#ba40fd",
+		colorSuccess: "#24c52a",
 		colorError: "#ff0000",
+		colorLink: "##8ed8e7",
 		colorWarning: "#ffae42",
 		colorBackground: "#f0f0f0",
 		colorCard: "#ffffff",
