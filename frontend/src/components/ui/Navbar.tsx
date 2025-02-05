@@ -1,19 +1,10 @@
 import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import axios from "axios";
 import { FaDiscord, FaBars, FaTimes } from "react-icons/fa";
 import { Button } from "antd";
-import Logo from "../Logo2";
-import { getAnalytics } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithCustomToken, onAuthStateChanged } from "firebase/auth";
-
-import app from "../../firebase";
-const auth = getAuth(app)
+import Logo from "../Logo2.tsx";
 
 const NavBar = () => {
 	const [error] = useState("");
-	const [searchParams] = useSearchParams();
 
 	const discordClientId = "1234460436745949185"; // Replace with your Discord Client ID
 	let redirect;

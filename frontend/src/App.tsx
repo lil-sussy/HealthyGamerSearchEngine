@@ -1,15 +1,15 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import logo from "./logo.svg";
 import { onAuthStateChanged, signInWithCustomToken } from "firebase/auth";
 import app, { auth } from "./firebase.ts";
 import axios from "axios";
-import Navbar from "./components/ui/Navbar.tsx";
 import HeroHeader from "./components/ui/HeroHeader.tsx";
+import Navbar from "./components/ui/Navbar.tsx";
 import AboutSection from "./components/ui/AboutSection.tsx";
 import HowItWorksSection from "./components/ui/HowitworksSection.tsx";
 import ContactSection from "./components/ui/ContactSection.tsx";
 import Background from "./components/Background.tsx";
+import { User } from "firebase/auth";
 
 function App() {
 	const [idToken, setIdToken] = useState("");
@@ -30,48 +30,44 @@ function App() {
 
 	useEffect(() => {
 		axios
-			.post("/auth/token/")
-			.then((response: any) => {
+			.post<{ access_token: string }>("/auth/token/")
+			.then((response) => {
 				const token = response.data.access_token;
 				signInWithCustomToken(auth, token)
-					.then((user) => {
-						auth.currentUser!.getIdToken(true).then(async function (idToken) {
+					.then((userCredential) => {
+						const user = userCredential.user;
+						user.getIdToken(true).then((idToken: string) => {
 							setIdToken(idToken);
 						});
 					})
-					.catch(function (error: any) {
+					.catch((error: Error) => {
 						console.log(error);
-						if (error.code === "auth/token-expired") {
-							// Display a message to the user that their session has expired and prompt them to log in again.
+						if (error.message.includes("token-expired")) {
 							console.log("Session has expired, please log in again.");
-							// Redirect or handle the re-authentication flow
 						}
 					});
 			})
-			.catch((error) => {
+			.catch((error: Error) => {
 				console.error("Token exchange failed", error);
 			});
-		const unsubscribe = auth.onAuthStateChanged((user: any) => {
+
+		const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
 			if (user) {
-				// User is signed in, use the user object for user's info.
-				console.log("User is signed in or token was refreshed:", user);
-				auth.currentUser!.getIdToken(true).then(async function (idToken) {
+				user.getIdToken(true).then((idToken: string) => {
 					setIdToken(idToken);
 				});
 			} else {
-				// User is signed out.
-				console.log("User is signed out, attempt loggin in");
+				console.log("User is signed out, attempt logging in");
 			}
 		});
 
-		// Clean up the subscription on unmount
 		return () => unsubscribe();
 	}, []);
 
 	return (
 		<>
 			<div className="App relative">
-				{/* <Navbar /> */}
+				<Navbar />
 				<HeroHeader idToken={idToken} />
 				<AboutSection />
 				<HowItWorksSection />
