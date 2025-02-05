@@ -11,6 +11,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import StarRating from "../HeroHeader/StarRating.tsx";
 import app from "../../firebase.ts";
 import { queryVideos, submitFeedback } from "../../requests.ts"; // Import the request functions
+import clsx from 'clsx';
 const auth = getAuth(app);
 
 const HeroHeader = ({ idToken }: { idToken: string }) => {
@@ -20,17 +21,13 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
 
   const [results, setResults] = useState<Video[]>(test);
   const [query, setQuery] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
-    const input = event.target as HTMLInputElement;
-    if (input.value.length > 50) {
-      input.classList.add("expanded");
-    } else {
-      input.classList.remove("expanded");
-    }
+    setIsExpanded(event.target.value.length > 50);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -86,7 +83,7 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
               </h4>
               <form className="search-form flex gap-4 flex-col md:flex-row items-center w-full" onSubmit={handleSubmit}>
                 <Input
-                  className="flex-grow w-64"
+                  className={clsx("flex-grow", isExpanded ? "w-full" : "w-64")}
                   size="large"
                   placeholder="What's on your mind..."
                   value={query}
@@ -100,7 +97,7 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
                   icon={loading ? <Spin /> : <SearchOutlined />}
                   disabled={loading}
                 >
-                  Search
+                  Search :3
                 </Button>
               </form>
             </div>
