@@ -1,0 +1,56 @@
+{
+  "version": "4",
+  "remote": {
+    "https://deno.land/std@0.203.0/async/delay.ts": "a6142eb44cdd856b645086af2b811b1fcce08ec06bb7d50969e6a872ee9b8659",
+    "https://deno.land/std@0.203.0/http/server.ts": "1b2403b3c544c0624ad23e8ca4e05877e65380d9e0d75d04957432d65c3d5f41",
+    "https://deno.land/std@0.221.0/async/delay.ts": "8e1d18fe8b28ff95885e2bc54eccec1713f57f756053576d8228e6ca110793ad",
+    "https://deno.land/std@0.221.0/http/server.ts": "cc8ae0de927c3afc855466b89bf9a7a3196223f47f2723e218912c6ca3eb166c",
+    "https://deno.land/std@0.224.0/async/delay.ts": "f90dd685b97c2f142b8069082993e437b1602b8e2561134827eeb7c12b95c499",
+    "https://deno.land/std@0.224.0/http/server.ts": "f9313804bf6467a1704f45f76cb6cd0a3396a3b31c316035e6a4c2035d1ea514"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@eslint/js@^9.17.0",
+        "npm:@fortawesome/free-solid-svg-icons@^6.7.2",
+        "npm:@fortawesome/react-fontawesome@~0.2.2",
+        "npm:@nextui-org/react@^2.6.11",
+        "npm:@schybo-quizzing/react-oauth-discord@^1.1.7",
+        "npm:@testing-library/jest-dom@^6.6.3",
+        "npm:@testing-library/react@^16.2.0",
+        "npm:@testing-library/user-event@^14.6.1",
+        "npm:@types/jest@^29.5.14",
+        "npm:@types/node@^22.12.0",
+        "npm:@types/react-dom@^18.3.5",
+        "npm:@types/react-dom@^19.0.3",
+        "npm:@types/react@^18.3.18",
+        "npm:@types/react@^19.0.8",
+        "npm:@types/testing-library__jest-dom@^5.14.9",
+        "npm:@vitejs/plugin-react@^4.3.4",
+        "npm:antd@^5.23.3",
+        "npm:autoprefixer@^10.4.20",
+        "npm:axios@^1.7.9",
+        "npm:dotenv@^16.4.7",
+        "npm:eslint-plugin-react-hooks@5",
+        "npm:eslint-plugin-react-refresh@~0.4.16",
+        "npm:eslint@^9.17.0",
+        "npm:firebase@^11.2.0",
+        "npm:framer-motion@^12.0.6",
+        "npm:globals@^15.14.0",
+        "npm:postcss@^8.5.1",
+        "npm:react-dom@^18.3.1",
+        "npm:react-icons@^5.4.0",
+        "npm:react-loader-spinner@^6.1.6",
+        "npm:react-loading-skeleton@^3.5.0",
+        "npm:react-player@^2.16.0",
+        "npm:react-router-dom@^7.1.3",
+        "npm:react@^18.3.1",
+        "npm:scss@~0.2.4",
+        "npm:tailwindcss@^4.0.3",
+        "npm:typescript-eslint@^8.18.2",
+        "npm:typescript@^5.7.3",
+        "npm:vite@^6.0.5"
+      ]
+    }
+  }
+}

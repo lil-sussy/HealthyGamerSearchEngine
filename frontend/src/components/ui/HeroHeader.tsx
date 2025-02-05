@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import { Input, Button, Spin, message, Rate } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import Logo from "../Logo";
-import { SearchIconSmall, SearchIconBig } from "./SearchIcon";
-import styles from "./HeroHeader.module.scss";
-import { getAnalytics } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
-import { getAuth, getIdToken, onAuthStateChanged } from "firebase/auth";
-import type { Video, Occurrence } from "../../types/Video";
-import { VideoResultDisplay } from "./Videos";
+import Logo from "../../components/Logo.tsx";
+import { getAuth, getIdToken } from "firebase/auth";
+import type { Video, Occurrence } from "../../types/Video.ts";
+import { VideoResultDisplay } from "../HeroHeader/Videos.tsx";
 import { Oval } from "react-loader-spinner";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import StarRating from './StarRating';
-import app from "../../firebase";
-import { queryVideos, submitFeedback } from "../../requests"; // Import the request functions
+import StarRating from '../HeroHeader/StarRating.tsx';
+import app from "../../firebase.ts";
+import { queryVideos, submitFeedback } from "../../requests.ts"; // Import the request functions
 const auth = getAuth(app);
 
 const HeroHeader = ({ idToken }: { idToken: string }) => {
@@ -25,9 +21,9 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
+  const handleInputChange = (event: React.ChangeEvent<EventTarget & HTMLInputElement>) => {
+		setQuery(event.target.value);
+	};
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -58,69 +54,55 @@ const HeroHeader = ({ idToken }: { idToken: string }) => {
   };
 
   return (
-    <div className="flex flex-col items-start w-full box-border">
-      <div className="flex flex-col md:flex-row justify-start gap-16 items-start w-full p-10 md:p-40 box-border">
-        <div className="relative">
-          {loading ? (
-            <img className="w-80" src="./drkThinking.png" alt="Loading" />
-          ) : (
-            <img className="w-80" src="./drkStaring.png" alt="Loaded" />
-          )}
-          <div className="absolute top-[-20%] left-[-30%] z-20">
-            <Logo />
-          </div>
-        </div>
-        <div className="flex flex-col items-start w-full md:w-96 gap-10">
-          <div className="w-full md:w-80">
-            <span className="text-4xl font-medium">Unofficial Healthy Gamer GG </span>
-            <span className="text-4xl font-bold text-green-500">AI Search Engine</span>
-          </div>
-          <div className="flex flex-col items-start gap-5">
-            <h4 className="text-lg font-light text-green-500 opacity-80">Describe how you feel using one or multiple sentences :</h4>
-            <form className="flex flex-col md:flex-row items-center w-full" onSubmit={handleSubmit}>
-              <Input
-                className="flex-grow"
-                size="large"
-                placeholder="What's on your mind..."
-                value={query}
-                onChange={handleInputChange}
-                disabled={loading}
-                prefix={<SearchOutlined />}
-              />
-              <Button
-                className="mt-4 md:mt-0 md:ml-4"
-                type="primary"
-                htmlType="submit"
-                icon={loading ? <Spin /> : <SearchOutlined />}
-                disabled={loading}
-              >
-                Search
-              </Button>
-            </form>
-            {responseMessage && <div className="w-full bg-red-200 rounded-lg p-4 text-red-700">{responseMessage}</div>}
-            {!responseMessage && results.length > 0 && (
-              <div className="results">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-gray-200 rounded-lg">
-                  <h4 className="text-base font-light text-gray-600">Rate those results to improve the search engine!</h4>
-                  <Rate onChange={handleRateChange} />
-                </div>
-                {results.map((video: Video, index: number) => (
-                  <VideoResultDisplay key={index} video={video} />
-                ))}
-              </div>
-            )}
-            <div className="flex flex-col pl-20 gap-5">
-              <div className="text-lg font-medium">Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated tool designed by fans for fans. This platform allows you to navigate through the extensive content of Dr. K's videos to find specific advice, insights, and discussions tailored to your mental health and wellness needs.</div>
-              <div className="flex gap-2">
-                <Button className="bg-green-200 hover:bg-green-400" type="default">Donate</Button>
-                <Button className="border border-green-500" type="default">Share feedback</Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+		<div className="hero-container centering flex flex-col items-center w-full box-border">
+			<div className="content-container container !pt-40 flex backdrop-blur-2xl flex-col md:flex-row justify-start gap-16 items-start rounded-2xl">
+				<div className="image-container relative pt-20">
+					{loading ? <img className="w-80" src="./drkThinking.png" alt="Loading" /> : <img className="w-80" src="./drkStaring.png" alt="Loaded" />}
+					<div className="logo-container absolute top-[-20%] left-[-30%] z-20">
+						<Logo />
+					</div>
+				</div>
+				<div className="main-content flex flex-col items-start md:w-96 gap-10">
+					<div className="title-container w-full md:w-80">
+						<span className="text-4xl font-medium">Unofficial Healthy Gamer GG </span>
+						<span className="text-4xl font-bold text-green-500">Video Search Engine</span>
+					</div>
+					<div className="search-section flex flex-col items-start gap-5">
+						<h4 className="text-lg font-light text-green-500 opacity-80">Describe how you feel using one or multiple sentences :</h4>
+						<form className="search-form flex flex-col md:flex-row items-center" onSubmit={handleSubmit}>
+							<Input.TextArea className="flex-grow" size="large" placeholder="What's on your mind..." value={query} onChange={handleInputChange} disabled={loading} />
+							<Button className="search-button mt-4 md:mt-0 md:ml-4" type="primary" htmlType="submit" icon={loading ? <Spin /> : <SearchOutlined />} disabled={loading}>
+								Search
+							</Button>
+						</form>
+						{responseMessage && <div className="error-message w-full bg-red-200 rounded-lg p-4 text-red-700">{responseMessage}</div>}
+						{!responseMessage && results.length > 0 && (
+							<div className="results-container">
+								<div className="rating-section flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-gray-200 rounded-lg">
+									<h4 className="text-base font-light text-gray-600">Rate those results to improve the search engine!</h4>
+									<Rate onChange={handleRateChange} />
+								</div>
+								{results.map((video: Video, index: number) => (
+									<VideoResultDisplay key={index} video={video} />
+								))}
+							</div>
+						)}
+						<div className="description-section flex flex-col pl-20 gap-5">
+							<div className="description-text text-lg font-medium">Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated tool designed by fans for fans. This platform allows you to navigate through the extensive content of Dr. K's videos to find specific advice, insights, and discussions tailored to your mental health and wellness needs.</div>
+							<div className="button-group flex gap-2">
+								<Button className="bg-green-200 hover:bg-green-400" type="default">
+									Donate
+								</Button>
+								<Button className="border border-green-500" type="default">
+									Share feedback
+								</Button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 const RectanglePlaceholder = ({ height, width }: { height: number; width: number }) => (

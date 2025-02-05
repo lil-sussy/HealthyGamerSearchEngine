@@ -29,7 +29,7 @@ const ContactSection = () => {
 			return;
 		}
 
-		const [result, error] = await sendContactFeedback(name, email, message);
+		const [, error] = await sendContactFeedback(name, email, message);
 		if (error) {
 			setError("Something went wrong. Please try again later.");
 		} else {
@@ -46,9 +46,7 @@ const ContactSection = () => {
 				<div className="p-16 bg-white shadow-lg rounded-3xl flex flex-col justify-start items-start gap-2">
 					<div className="inline-flex justify-start items-center gap-20">
 						<div className="w-4/5 inline-flex flex-col justify-center items-start gap-20 relative">
-							<div className="w-full text-black text-4xl font-poppins font-medium leading-tight">
-								Any questions or Feedback?
-							</div>
+							<div className="w-full text-black text-4xl font-poppins font-medium leading-tight">Any questions or Feedback?</div>
 							<div className="absolute top-24 z-0 left-[-1rem] w-96 h-9 bg-green-500 bg-opacity-40 rounded-lg" />
 							<form className="self-stretch h-80 flex flex-col justify-start items-end gap-8" onSubmit={handleSubmit}>
 								<div className="self-stretch inline-flex justify-start items-end gap-12">

@@ -12,9 +12,8 @@ import app from "../../firebase";
 const auth = getAuth(app)
 
 const NavBar = () => {
-	const [error, setError] = useState("");
+	const [error] = useState("");
 	const [searchParams] = useSearchParams();
-	const code = searchParams.get("code");
 
 	const discordClientId = "1234460436745949185"; // Replace with your Discord Client ID
 	let redirect;
