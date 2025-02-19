@@ -72,3 +72,18 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model QueryLimit {
+  id            String   @id @default(cuid())
+  userId        String?  @unique
+  sessionId     String?  @unique
+  ipAddress     String?
+  monthlyCount  Int      @default(0)
+  dailyCount    Int      @default(0)
+  sessionCount  Int      @default(0)
+  lastQueryDate DateTime @default(now())
+  
+  @@index([userId])
+  @@index([sessionId])
+  @@index([ipAddress])
+}

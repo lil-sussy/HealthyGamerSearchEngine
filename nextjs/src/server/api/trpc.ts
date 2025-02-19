@@ -10,6 +10,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import type { Request, Response } from 'express';
 
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
@@ -37,13 +38,21 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 };
 
 /**
+ * Extend the context type
+ */
+export type Context = Awaited<ReturnType<typeof createTRPCContext>> & {
+  req?: Request;
+  res?: Response;
+};
+
+/**
  * 2. INITIALIZATION
  *
  * This is where the tRPC API is initialized, connecting the context and transformer. We also parse
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
+const t = initTRPC.context<Context>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
