@@ -59,7 +59,7 @@ const ContactSection = () => {
 								{success && <div className="text-green-500">{success}</div>}
 							</form>
 						</div>
-						<img className="w-80" src="./dr k confident 2.png" alt="Dr K confident" />
+						<img className="w-80" src="./images/dr k confident 2.png" alt="Dr K confident" />
 					</div>
 				</div>
 			</div>

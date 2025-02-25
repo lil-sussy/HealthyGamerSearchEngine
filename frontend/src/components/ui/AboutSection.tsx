@@ -24,7 +24,7 @@ const AboutSection = () => {
 					</div>
 				</div>
 				<div className="relative w-96 h-96">
-					<img className="w-80 h-80 rounded-2xl" src="./dr k confident.png" alt="Placeholder" />
+					<img className="w-80 h-80 rounded-2xl" src="./images/dr k confident.png" alt="Placeholder" />
 					<div className="absolute top-[-10%] left-[-20%] z-20">
 						<Logo />
 					</div>

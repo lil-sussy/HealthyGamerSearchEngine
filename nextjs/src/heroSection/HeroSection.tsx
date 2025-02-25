@@ -1,11 +1,10 @@
+"use client";
 import React, { useState } from "react";
 import { Button, message, Spin, Typography } from "antd";
 import { SearchForm } from "./components/SearchForm";
 import { ResultsRenderer } from "./components/ResultsRenderer";
-import { Spinner } from "@/components/Spinner";
-import { queryVideos, submitFeedback } from "@/lib/requests";
-import type { Video } from "@/types/Video";
-import Logo from "@/components/Logo";
+import type { Video } from "@/heroSection/types/Video";
+import Logo from "@/app/_icons/Logo2";
 
 const { Text } = Typography;
 
@@ -26,31 +25,10 @@ export const HeroSection = ({ idToken }: HeroSectionProps) => {
     if (!query.trim()) return;
 
     setLoading(true);
-    const [data, error] = await queryVideos(query, idToken);
-    setLoading(false);
-
-    if (error) {
-      setResponseMessage(error);
-      message.error("An error occurred while fetching data.");
-    } else {
-      setResponseMessage("");
-      setResults(data || []);
-    }
   };
 
   const handleRateChange = async (value: number) => {
     setRateValue(value);
-    const [result, error] = await submitFeedback(
-      query,
-      value,
-      JSON.stringify({ results })
-    );
-    
-    if (error) {
-      message.error("Failed to submit feedback.");
-    } else {
-      message.success("Thank you for your feedback!");
-    }
   };
 
   return (
@@ -113,7 +91,7 @@ const ResultsContent = ({ loading, errorMessage, results, rateValue, handleRateC
   rateValue: number | null;
   handleRateChange: (value: number) => void;
 }) => {
-  if (loading) return <Spinner />;
+  if (loading) return <Spin />;
   if (errorMessage) return <ErrorMessage message={errorMessage} />;
   if (!results.length) return <DescriptionSection />;
 
