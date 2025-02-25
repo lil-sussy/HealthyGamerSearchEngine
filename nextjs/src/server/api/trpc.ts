@@ -13,7 +13,7 @@ import { ZodError } from "zod";
 import type { Request, Response } from 'express';
 
 import { auth } from "@/server/auth";
-import { db } from "@/server/db";
+import { prisma } from "@/server/db";
 
 /**
  * 1. CONTEXT
@@ -31,7 +31,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth();
 
   return {
-    db,
+    prisma,
     session,
     ...opts,
   };
