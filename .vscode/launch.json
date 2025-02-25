@@ -49,6 +49,78 @@
       "cwd": "${workspaceFolder}/frontend",
       "console": "integratedTerminal"
     },
+    {
+      "name": "Next.js: debug server-side",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/nextjs",
+      "request": "launch",
+      "command": "npm run dev"
+    },
+    {
+      "name": "Next.js: debug client-side",
+      "type": "chrome",
+      "cwd": "${workspaceFolder}/nextjs",
+      "request": "launch",
+      "url": "http://localhost:3000"
+    },
+    {
+      "name": "Next.js: debug client-side (Firefox)",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "reAttach": true,
+      "pathMappings": [
+        {
+          "url": "webpack://_N_E",
+          "path": "${workspaceFolder}/nextjs"
+        }
+      ]
+    },
+    {
+      "name": "Next.js: debug full stack",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/nextjs",
+      "request": "launch",
+      "command": "npm run dev --inspect",
+      // "program": "${workspaceFolder}/node_modules/.bin/next",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "env": {
+        "FRONT_ENV": "debug nope xd"
+      },
+      "serverReadyAction": {
+        "action": "debugWithChrome",
+        "killOnServerStop": true,
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "webRoot": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Next.js: Debug Server-Side",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/nextjs",
+      "request": "launch",
+      "command": "npm run dev --inspect",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+    },
+    {
+      "name": "Next.js: Debug Client-Side (Firefox)",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}",
+      "reAttach": true,
+      "pathMappings": [
+        {
+          "url": "webpack://_N_E/",
+          "path": "${workspaceFolder}/nextjs"
+        }
+      ]
+    }
   ],
   "compounds": [
     {
@@ -72,5 +144,13 @@
         "chrome 3000 with npm start",
       ]
     },
+    {
+      "name": "Debug Full Stack",
+      "configurations": [
+        "Next.js: Debug Server-Side",
+        "Next.js: Debug Client-Side (Firefox)"
+      ],
+      "stopAll": true
+    }
   ]
 }
