@@ -4,8 +4,10 @@ import { Button, Spin, Typography, Row, Col, Space, Card, Empty, Alert, Rate } f
 import { SearchForm } from "./components/SearchForm";
 import { ResultsRenderer } from "./components/ResultsRenderer";
 import type { Video } from "@/heroSection/types/Video";
-import Logo from "@/app/_icons/Logo2";
-import Image from "next/image";
+import { MainImage } from "./components/MainImage";
+import MainTitle from "./components/MainTitle";
+import DescriptionSection from "./components/DescriptionSection";
+
 
 const { Title, Paragraph } = Typography;
 
@@ -39,62 +41,47 @@ export const HeroSection = () => {
             <Row gutter={[32, 32]} align="middle">
               {/* Logo and Image Section */}
               <Col xs={24} sm={10} className="relative">
-                <div className="relative w-3/4 pl-10 pt-10 sm:w-full md:w-full">
-                  <div className="absolute left-[-20px] top-[-20px] z-20">
-                    <Logo className="h-40 w-40" />
-                  </div>
-                  <div className="overflow-hidden rounded-[1.5rem] border-8 border-primary box-decoration-slice">
-                    <Image
-                      className={`scale-110 ${loading ? "mx-auto w-40" : "mx-auto w-80"}`}
-                      src={
-                        loading
-                          ? "/images/drkThinking.png"
-                          : "/images/drkStaring.png"
-                      }
-                      alt={loading ? "Dr. K thinking" : "Dr. K staring"}
-                      width={720}
-                      height={720}
-                    />
-                  </div>
-                </div>
+                <MainImage loading={loading} />
               </Col>
 
               {/* Content Section */}
               <Col xs={24} sm={0} md={14}>
                 <Space direction="vertical" size="large" className="w-full">
-                  <HeroHeader />
-                  {!isExpanded && <SearchForm
-                    query={query}
-                    loading={loading}
-                    isExpanded={false}
-                    onSubmit={handleSubmit}
-                    onInputChange={(e) => {
-                      setQuery(e.target.value);
-                      setIsExpanded(e.target.value.length > 50);
-                    }}
-                  />}
+                  <MainTitle />
+                  {!isExpanded && (
+                    <SearchForm
+                      query={query}
+                      loading={loading}
+                      isExpanded={false}
+                      onSubmit={handleSubmit}
+                      onInputChange={(e) => {
+                        setQuery(e.target.value);
+                        setIsExpanded(e.target.value.length > 50);
+                      }}
+                    />
+                  )}
                 </Space>
               </Col>
               <Col xs={0} sm={14} md={0}>
                 <Space direction="vertical" size="large" className="w-full">
-                  <HeroHeader />
+                  <MainTitle />
                 </Space>
               </Col>
               {!isExpanded && (
-              <Col xs={0} sm={24} md={0}>
-                <Space direction="vertical" size="large" className="w-full">
-                  <SearchForm
-                    query={query}
-                    loading={loading}
-                    isExpanded={false}
-                    onSubmit={handleSubmit}
-                    onInputChange={(e) => {
-                      setQuery(e.target.value);
-                      setIsExpanded(e.target.value.length > 50);
-                    }}
-                  />
-                </Space>
-              </Col>
+                <Col xs={0} sm={24} md={0}>
+                  <Space direction="vertical" size="large" className="w-full">
+                    <SearchForm
+                      query={query}
+                      loading={loading}
+                      isExpanded={false}
+                      onSubmit={handleSubmit}
+                      onInputChange={(e) => {
+                        setQuery(e.target.value);
+                        setIsExpanded(e.target.value.length > 50);
+                      }}
+                    />
+                  </Space>
+                </Col>
               )}
               {isExpanded && (
                 <Col xs={24} sm={24} md={24}>
@@ -131,15 +118,6 @@ export const HeroSection = () => {
     </div>
   );
 };
-
-const HeroHeader = () => (
-  <Typography>
-    <Title level={2} className="m-0 text-text">
-      <span className="font-medium">Unofficial Healthy Gamer GG </span>
-      <span className="font-bold text-primary">Video Search Engine</span>
-    </Title>
-  </Typography>
-);
 
 const ResultsContent = ({ 
   loading, 
@@ -179,31 +157,4 @@ const ResultsContent = ({
   );
 };
 
-const DescriptionSection = () => (
-  <Card className="mt-4 backdrop-blur-2xl bg-layer1/50">
-    <Space direction="vertical" size="middle">
-      <Paragraph className="text-lg text-text">
-        Welcome to the Unofficial Healthy Gamer GG Search Engine, a dedicated
-        tool designed by fans for fans. This platform allows you to navigate
-        through the extensive content of Dr. K&apos;s videos to find specific
-        advice, insights, and discussions tailored to your mental health and
-        wellness needs.
-      </Paragraph>
-      
-      <Space>
-        <Button 
-          type="primary" 
-          className="bg-primary hover:bg-primary/90"
-        >
-          Support
-        </Button>
-        <Button 
-          type="default"
-          className="border-primary text-primary hover:border-primary/80 hover:text-primary/80"
-        >
-          Share feedback
-        </Button>
-      </Space>
-    </Space>
-  </Card>
-);
+
