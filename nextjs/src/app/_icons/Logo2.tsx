@@ -1,10 +1,9 @@
 import React from "react";
 
-function Logo() {
+function Logo({ className }: { className?: string }) {
 	return (
-<svg width="67" height="48" viewBox="0 0 67 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg className={`${className}`} width="67" height="48" viewBox="0 0 67 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<path d="M40.5072 8.50391H27.5027C19.0206 8.50391 12.1445 15.2725 12.1445 23.622C12.1445 31.9715 19.0206 38.7401 27.5027 38.7401H40.5072C48.9893 38.7401 55.8654 31.9715 55.8654 23.622C55.8654 15.2725 48.9893 8.50391 40.5072 8.50391Z" fill="#9223c5" />
-	{/* <path d="M40.5072 8.50391H27.5027C19.0206 8.50391 12.1445 15.2725 12.1445 23.622C12.1445 31.9715 19.0206 38.7401 27.5027 38.7401H40.5072C48.9893 38.7401 55.8654 31.9715 55.8654 23.622C55.8654 15.2725 48.9893 8.50391 40.5072 8.50391Z" fill="#23C52A" /> */}
 	<path
 		fillRule="evenodd"
 		clipRule="evenodd"

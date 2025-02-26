@@ -19,15 +19,18 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      <ConfigProvider theme={{
-        token: {
-          colorPrimary: theme.colors.primary,
-          colorPrimaryText: theme.colors.primary,
-          colorPrimaryBg: theme.colors.background,
-          colorPrimaryBgHover: theme.colors.layer1,
-        }
-      }}>
-        <div className="h-screen w-screen bg-background bg-gradient-to-b from-primary/30 to-secondary/30 relative z-0">
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: theme.colors.primary,
+            colorPrimaryText: theme.colors.primary,
+            colorPrimaryBg: theme.colors.background,
+            colorPrimaryBgHover: theme.colors.layer1,
+          },
+          hashed: false,
+        }}
+      >
+        <div className="relative z-0 h-screen w-screen bg-background bg-gradient-to-b from-primary/30 to-secondary/30">
           <Background />
           <Navbar />
           <div>

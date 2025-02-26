@@ -44,7 +44,7 @@ const NavBar = () => {
             onClick={() => router.push("/")}
           >
             <Logo />
-            <span className="text-xl font-bold text-text">HGG AI</span>
+            <span className="text-xl font-bold text-text">K.AI</span>
           </Space>
 
           {/* Desktop Navigation */}
