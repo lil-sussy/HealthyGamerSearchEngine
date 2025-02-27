@@ -53,17 +53,17 @@ function VideoResultDisplay({ video }: { video: Video }) {
       </div>
       <div className="mt-8 flex w-full flex-col items-center gap-2">
         <TimeBar
-          occurrences={video.occurrences.slice(0, 4)}
+          occurrences={video.occurrences}
           totalDuration={video.duration}
           onSelect={handleSelectTime}
         />
-        {video.occurrences.length > 4 && (
+        {/* {video.occurrences.length > 4 && (
           <TimeBar
             occurrences={video.occurrences.slice(4)}
             totalDuration={video.duration}
             onSelect={handleSelectTime}
           />
-        )}
+        )} */}
       </div>
       <OccurenceDetails occurrence={occurrence} />
     </div>

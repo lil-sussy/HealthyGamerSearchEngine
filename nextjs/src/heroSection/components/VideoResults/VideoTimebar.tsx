@@ -23,7 +23,10 @@ function TimeBar({
           className="timeline-item cursor-pointer overflow-hidden"
           style={{ width: `25%` }}
         >
-          <div className="timeline-content pr-2">
+          <div
+            className="timeline-content pr-2"
+            onClick={() => onSelect(occurrence)}
+          >
             <Typography.Title
               level={5}
             >{`"${formatTimestamp(occurrence.timestamp)}"`}</Typography.Title>
