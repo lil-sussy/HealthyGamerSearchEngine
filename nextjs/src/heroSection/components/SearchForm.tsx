@@ -29,53 +29,57 @@ export const SearchForm = ({
   }, [isExpanded]);
 
   return (
-    <form
-      className={clsx(
-        "search-form flex w-full flex-col items-end gap-4 sm:flex-row",
-      )}
-      onSubmit={onSubmit}
-    >
-      <div className="flex w-full flex-col gap-2 group">
-        <Alert
-          message="Describe how you feel using one or multiple sentences :"
-          type="info"
-          className="w-full text-xs h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-300"
-          showIcon
-        />
-        {!isExpanded ? (
-          <Input
-            ref={inputRef}
-            className={clsx("w-full flex-grow transition-all duration-300")}
-            size="large"
-            placeholder="What's on your mind..."
-            value={query}
-            onChange={onInputChange}
-            disabled={loading}
-          />
-        ) : (
-          <Input.TextArea
-            ref={textAreaRef}
-            className={clsx("w-full flex-grow transition-all duration-300")}
-            size="large"
-            placeholder="What's on your mind..."
-            value={query}
-            onChange={(e) =>
-              onInputChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
-            }
-            disabled={loading}
-          />
+    <div className="group relative flex flex-col items-end gap-4">
+      <form
+        className={clsx(
+          "search-form flex w-full flex-col items-end gap-4 sm:flex-row",
         )}
-      </div>
-
-      <Button
-        className="search-button mb-1 w-full bg-primary p-4 hover:bg-primary/90 sm:w-24"
-        type="primary"
-        htmlType="submit"
-        icon={loading ? <Spin /> : <SearchOutlined />}
-        disabled={loading}
+        onSubmit={onSubmit}
       >
-        Search :3
-      </Button>
-    </form>
+        <div className="flex w-full flex-col gap-2">
+          {!isExpanded ? (
+            <Input
+              ref={inputRef}
+              className={clsx("w-full flex-grow transition-all duration-300")}
+              size="large"
+              placeholder="What's on your mind..."
+              value={query}
+              onChange={onInputChange}
+              disabled={loading}
+            />
+          ) : (
+            <Input.TextArea
+              ref={textAreaRef}
+              className={clsx("w-full flex-grow transition-all duration-300")}
+              size="large"
+              placeholder="What's on your mind..."
+              value={query}
+              onChange={(e) =>
+                onInputChange(
+                  e as unknown as React.ChangeEvent<HTMLInputElement>,
+                )
+              }
+              disabled={loading}
+            />
+          )}
+        </div>
+
+        <Button
+          className="search-button mb-1 w-full bg-primary p-4 hover:bg-primary/90 sm:w-24"
+        type="primary"
+          htmlType="submit"
+          icon={loading ? <Spin /> : <SearchOutlined />}
+          disabled={loading}
+        >
+          Search :3
+        </Button>
+      </form>
+      <Alert
+        message="Describe how you feel using one or multiple sentences <3"
+        type="info"
+        className="h-0 w-full text-xs opacity-0 transition-all duration-300 group-hover:h-auto group-hover:opacity-100"
+        showIcon
+      />
+    </div>
   );
 };
