@@ -1,8 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { prisma } from "../../db";
 import results from "../../../test/results.json";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 import { RateLimitService } from "../../services/rateLimitService";
 
 export const hggQuery = createTRPCRouter({
@@ -10,10 +9,7 @@ export const hggQuery = createTRPCRouter({
     .input(z.object({ query: z.string() }))
     .mutation(async ({ ctx }) => {
       try {
-        const limitRecord = await RateLimitService.getOrCreateLimitRecord({
-          req: ctx.req,
-          session: ctx.session,
-        });
+        const limitRecord = await RateLimitService.getOrCreateLimitRecord(ctx.headers, ctx.session);
 
         RateLimitService.checkLimits(limitRecord);
 

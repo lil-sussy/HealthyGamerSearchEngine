@@ -25,17 +25,16 @@ interface LimitRecord {
 }
 
 export const RateLimitService = {
-  async getOrCreateLimitRecord(ctx: RateLimitContext): Promise<LimitRecord> {
-    const session = ctx.session;
-    const ipAddress = ctx.req.headers['x-forwarded-for'] ?? ctx.req.socket.remoteAddress;
-    const sessionId = ctx.req.headers['x-session-id'] ?? crypto.randomUUID();
+  async getOrCreateLimitRecord(headers: Headers, session: Session | null): Promise<LimitRecord> {
+    const ipAddress = headers.get('x-forwarded-for');
+    const sessionId = headers.get('x-session-id') ?? crypto.randomUUID();
 
     if (session?.user?.id) {
       return await prisma.queryLimit.upsert({
         where: { userId: session.user.id },
         create: { userId: session.user.id },
         update: {
-          sessionId: sessionId as string,
+          sessionId: sessionId,
           userId: session.user.id,
           ipAddress: Array.isArray(ipAddress) ? ipAddress[0] : ipAddress
         }
@@ -43,9 +42,9 @@ export const RateLimitService = {
     }
 
     return await prisma.queryLimit.upsert({
-      where: { sessionId: sessionId as string },
+      where: { sessionId: sessionId },
       create: {
-        sessionId: sessionId as string,
+        sessionId: sessionId,
         userId: null,
         ipAddress: Array.isArray(ipAddress) ? ipAddress[0] : ipAddress
       },
