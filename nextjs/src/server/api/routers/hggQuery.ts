@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "../../db";
 import results from "../../../test/results.json";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { RateLimitService } from "../../services/rateLimitService";
 
 export const hggQuery = createTRPCRouter({
@@ -17,15 +17,7 @@ export const hggQuery = createTRPCRouter({
 
         RateLimitService.checkLimits(limitRecord);
 
-        await prisma.queryLimit.update({
-          where: { id: limitRecord.id },
-          data: {
-            monthlyCount: { increment: 1 },
-            dailyCount: limitRecord.userId ? { increment: 1 } : undefined,
-            sessionCount: limitRecord.sessionId ? { increment: 1 } : undefined,
-            lastQueryDate: new Date(),
-          },
-        });
+        await RateLimitService.incrementQueryCount(limitRecord);
 
         return results;
       } catch (error) {
