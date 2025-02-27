@@ -8,6 +8,7 @@ import { HeroSection } from "@/heroSection/HeroSection";
 import Background from "@/app/_components/Background";
 import { ConfigProvider } from "antd";
 import theme from "@/styles/theme";
+import AboutSection from "@/app/_components/AboutSection";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
@@ -30,11 +31,12 @@ export default async function Home() {
           hashed: false,
         }}
       >
-        <div className="relative z-0 h-screen w-screen bg-background bg-gradient-to-b from-primary/30 to-secondary/30">
-          <Background />
+        <div className="relative z-0 w-screen bg-background bg-gradient-to-b from-primary/30 to-secondary/30">
+          {/* <Background /> */}
           <Navbar />
-          <div>
+          <div className="flex flex-col gap-16">
             <HeroSection />
+            <AboutSection />
           </div>
         </div>
       </ConfigProvider>
