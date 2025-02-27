@@ -7,25 +7,22 @@ import type { Video } from "@/heroSection/types/Video";
 import { MainImage } from "./components/MainImage";
 import MainTitle from "./components/MainTitle";
 import DescriptionSection from "./components/DescriptionSection";
+import { useQueryResults } from "./contexts/queryResultsContext";
 
 
 const { Title, Paragraph } = Typography;
 
 export const HeroSection = () => {
-  const [results, setResults] = useState<Video[]>([]);
   const [query, setQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
-  const [loading, setLoading] = useState(false);
   const [rateValue, setRateValue] = useState<number | null>(null);
+  const { loading, handleSubmit: handleSubmitQuery, results, error } = useQueryResults();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-
-    setLoading(true);
-    // API call would go here
-    // After API call, update results and set loading to false
+    await handleSubmitQuery(query);
   };
 
   const handleRateChange = async (value: number) => {

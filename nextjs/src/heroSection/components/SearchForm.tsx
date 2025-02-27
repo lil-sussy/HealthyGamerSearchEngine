@@ -1,4 +1,4 @@
-import { Button, Input, Spin, InputRef, Alert } from "antd";
+import { Button, Input, Spin, type InputRef, Alert } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
@@ -65,8 +65,8 @@ export const SearchForm = ({
         </div>
 
         <Button
-          className="search-button mb-1 w-full bg-primary p-4 hover:bg-primary/90 sm:w-24"
-        type="primary"
+          className="search-button mb-1 w-full p-4 sm:w-24"
+          type="primary"
           htmlType="submit"
           icon={loading ? <Spin /> : <SearchOutlined />}
           disabled={loading}
