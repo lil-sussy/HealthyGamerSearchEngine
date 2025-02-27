@@ -71,13 +71,13 @@ export const SearchForm = ({
           icon={loading ? <Spin /> : <SearchOutlined />}
           disabled={loading}
         >
-          Search :3
+          Search
         </Button>
       </form>
       <Alert
         message="Describe how you feel using one or multiple sentences <3"
         type="info"
-        className="h-0 w-full text-xs opacity-0 transition-all duration-300 group-hover:h-auto group-hover:opacity-100"
+        className="w-full text-xs opacity-0 transition-all duration-300 group-hover:h-auto group-hover:opacity-100"
         showIcon
       />
     </div>
