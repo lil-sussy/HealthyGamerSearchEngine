@@ -9,6 +9,7 @@ import Background from "@/app/_components/Background";
 import { ConfigProvider } from "antd";
 import theme from "@/styles/theme";
 import AboutSection from "@/app/_components/AboutSection";
+import HowItWorksSection from "@/app/_components/HowitworksSection";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
@@ -37,6 +38,7 @@ export default async function Home() {
           <div className="flex flex-col gap-16">
             <HeroSection />
             <AboutSection />
+            <HowItWorksSection />
           </div>
         </div>
       </ConfigProvider>
