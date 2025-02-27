@@ -4,6 +4,10 @@ import Title from "antd/es/typography/Title";
 import Paragraph from "antd/es/typography/Paragraph";
 import Text from "antd/es/typography/Text";
 import Link from "next/link";
+import clsx from "clsx";
+
+// Define a common paragraph text size
+const paragraphClass = "text-base md:text-lg font-segoe sm:text-lg";
 
 const AboutSection = () => {
 	return (
@@ -23,7 +27,7 @@ const AboutSection = () => {
 							<Title level={3} className="font-segoe font-bold mb-4">
 								Why I Built This
 							</Title>
-							<Paragraph className="font-segoe">
+							<Paragraph className={clsx(paragraphClass)}>
 								As long-time viewers and supporters of Dr. K, we noticed that the wisdom spread across his videos could be hard to pinpoint when you need it most. This search engine was created to solve that problem, making it easier for everyone in the community to access valuable insights quickly and effectively.
 							</Paragraph>
 						</Typography>
@@ -57,7 +61,7 @@ const AboutSection = () => {
 					</Title>
 					
 					<Space direction="vertical" size="large">
-						<Paragraph className="font-segoe">
+						<Paragraph className={clsx(paragraphClass)}>
 							To use this search engine, you will need to log in using your Discord account. We chose Discord login for several reasons:
 							<br /><br />
 							<Text strong>Community-Centric</Text>: Many of Healthy Gamer&apos;s viewers are already active on Discord, making it a familiar and accessible option.
@@ -92,7 +96,7 @@ const AboutSection = () => {
 					<Title level={3} className="font-segoe font-bold">
 						Who is Dr. K?
 					</Title>
-					<Paragraph className="font-segoe">
+					<Paragraph className={clsx(paragraphClass)}>
 						A Pioneer in Mental Health and Gaming. Dr. Alok Kanojia, better known as Dr. K, is a Harvard-trained psychiatrist and the visionary behind{" "}
 						<Link href="https://www.healthygamer.gg/" target="_blank" className="text-green-500">
 							Healthy Gamer GG

@@ -6,21 +6,21 @@ import Paragraph from "antd/es/typography/Paragraph";
 
 const HowItWorksSection = () => {
 	return (
-		<div className="mt-20 w-full box-border p-24">
-			<Row className="mb-14 relative">
-				<div className="w-40 h-8 z-[-10] absolute left-72 top-4 bg-primary bg-opacity-20 rounded-lg" />
+		<div className="mt-20 w-full box-border px-4 py-8 md:p-16 lg:p-24">
+			<Row className="mb-8 md:mb-14 relative">
+				<div className="w-40 h-8 z-[-10] absolute left-0 md:left-72 top-4 bg-primary bg-opacity-20 rounded-lg" />
 				<Title level={2} className="font-poppins">
 					How It Works
 				</Title>
 			</Row>
 
-			<Space direction="vertical" size="large" className="w-full">
+			<Space direction="vertical" size="large" className="w-full md:gap-8 gap-12">
 				{/* Data Privacy and Usage */}
-				<Row gutter={[32, 0]} align="middle">
-					<Col span={5} className="flex justify-center">
+				<Row gutter={[16, 16]} align="middle">
+					<Col xs={24} sm={24} md={5} className="flex justify-center">
 						<AiCloudIcon />
 					</Col>
-					<Col span={19}>
+					<Col xs={24} sm={24} md={19}>
 						<Card bordered={false} className="bg-background/30">
 							<Title level={4} className="font-bold font-segoe">
 								Data Privacy and Usage
@@ -33,11 +33,11 @@ const HowItWorksSection = () => {
 				</Row>
 
 				{/* Access Requirements */}
-				<Row gutter={[32, 0]} align="middle">
-					<Col span={5} className="flex justify-center">
+				<Row gutter={[16, 16]} align="middle">
+					<Col xs={24} sm={24} md={5} className="flex justify-center">
 						<ShieldIcon />
 					</Col>
-					<Col span={19}>
+					<Col xs={24} sm={24} md={19}>
 						<Card bordered={false} className="bg-background/30">
 							<Title level={4} className="font-bold font-segoe">
 								Access Requirements
@@ -50,11 +50,11 @@ const HowItWorksSection = () => {
 				</Row>
 
 				{/* Searching for Content */}
-				<Row gutter={[32, 0]} align="middle">
-					<Col span={5} className="flex justify-center">
+				<Row gutter={[16, 16]} align="middle">
+					<Col xs={24} sm={24} md={5} className="flex justify-center">
 						<GlassIcon />
 					</Col>
-					<Col span={19}>
+					<Col xs={24} sm={24} md={19}>
 						<Card bordered={false} className="bg-background/30">
 							<Title level={4} className="font-bold font-segoe">
 								Searching for Content
@@ -67,11 +67,11 @@ const HowItWorksSection = () => {
 				</Row>
 
 				{/* Display of Search Results */}
-				<Row gutter={[32, 0]} align="middle">
-					<Col span={5} className="flex justify-center">
+				<Row gutter={[16, 16]} align="middle">
+					<Col xs={24} sm={24} md={5} className="flex justify-center">
 						<TVIcon />
 					</Col>
-					<Col span={19}>
+					<Col xs={24} sm={24} md={19}>
 						<Card bordered={false} className="bg-background/30">
 							<Title level={4} className="font-bold font-segoe">
 								Display of Search Results
@@ -84,11 +84,11 @@ const HowItWorksSection = () => {
 				</Row>
 
 				{/* Future Developments */}
-				<Row gutter={[32, 0]} align="middle">
-					<Col span={5} className="flex justify-center">
+				<Row gutter={[16, 16]} align="middle">
+					<Col xs={24} sm={24} md={5} className="flex justify-center">
 						<RocketIcon />
 					</Col>
-					<Col span={19}>
+					<Col xs={24} sm={24} md={19}>
 						<Card bordered={false} className="bg-background/30">
 							<Title level={4} className="font-bold font-segoe">
 								Future Developments
@@ -101,14 +101,14 @@ const HowItWorksSection = () => {
 				</Row>
 			</Space>
 
-			<Row justify="start" className="mt-14">
-				<Space size="middle">
+			<Row justify="start" className="mt-8 md:mt-14">
+				<Space size="middle" wrap>
 					<Button 
 						type="primary" 
 						size="large" 
-						className=" bg-opacity-40 border-none text-black hover:bg-opacity-60"
+						className="bg-opacity-40 border-none text-black hover:bg-opacity-60"
 					>
-						Donate
+						Support
 					</Button>
 					<Button 
 						type="default" 
