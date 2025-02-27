@@ -32,7 +32,7 @@ export const HeroSection = () => {
 
   return (
     <div className="relative w-full">
-      <Row justify="center" align="middle" className="pt-20">
+      <Row justify="center" align="middle" className="pt-20 md:pb-0 p-4">
         <Col xs={24} md={20} lg={18}>
           <Card className="bg-layer1/50 backdrop-blur-2xl">
             <Row gutter={[32, 32]} align="middle">
@@ -101,7 +101,7 @@ export const HeroSection = () => {
         </Col>
       </Row>
 
-      <Row justify="center" className="mt-8">
+      <Row justify="center" className="mt-8 md:p-0 p-4">
         <Col xs={24} md={20} lg={18}>
           <ResultsContent
             loading={loading}
