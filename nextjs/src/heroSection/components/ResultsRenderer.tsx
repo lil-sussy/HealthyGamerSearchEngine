@@ -1,5 +1,5 @@
 import { Rate, Typography } from "antd";
-import { VideoResultDisplay } from "@/heroSection/components/Videos";
+import { VideoResultDisplay } from "@/heroSection/components/VideoResults/VideoResults";
 import type { Video } from "@/heroSection/types/Video";
 
 const { Text } = Typography;
