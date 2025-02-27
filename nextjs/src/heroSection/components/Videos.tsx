@@ -47,18 +47,24 @@ function VideoResultDisplay({ video }: { video: Video }) {
   }, [video.occurrences]);
 
   return (
-    <div className="video result container relative box-border flex w-full flex-wrap justify-center !px-8 !py-4 !pl-20">
-      <h1 className="text-shadow-lg absolute -left-14 top-4 !text-[5rem] !font-black text-background">{`#${video.occurrences[0]?.rank ?? 0}`}</h1>
-      <div className="h-80 w-full rounded-lg !border-8 border-background">
+    <div className="video result container relative box-border flex w-full flex-wrap justify-center px-8 py-4 md:pl-20 md:pt-4 pt-24 rounded-xl bg-background/40 border border-background">
+      <h1 className="text-shadow-lg absolute md:-left-14 md:top-4 top-0 left-12 !text-[5rem] !font-black text-primary">{`#${video.occurrences[0]?.rank ?? 0}`}</h1>
+      <div className="h-80 w-full rounded-lg !border-8 border-primary">
         <VideoPlayer videoId={video.video_id} seekTime={seekTime} />
       </div>
       <div className="!mt-8 flex w-full flex-col items-center gap-2">
-        <h4 className="text-xl text-purple-200">Results :</h4>
         <TimeBar
-          occurrences={video.occurrences}
+          occurrences={video.occurrences.slice(0, 4)}
           totalDuration={video.duration}
           onSelect={handleSelectTime}
         />
+        {video.occurrences.length > 4 && (
+          <TimeBar
+            occurrences={video.occurrences.slice(4)}
+            totalDuration={video.duration}
+            onSelect={handleSelectTime}
+          />
+        )}
       </div>
       <div className="!mt-8 flex w-full flex-col items-start !gap-4 !rounded-lg !border-2 !border-purple-200 !p-8">
         <div className="flex items-center gap-8">
@@ -132,7 +138,7 @@ function TimeBar({
 }) {
   return (
     <Timeline className="contract-timeline-container flex w-full items-start justify-start">
-      {occurrences.map((occurrence) => (
+      {occurrences.slice(0, 5).map((occurrence) => (
         <Timeline.Item
           key={occurrence.timestamp}
           dot={
