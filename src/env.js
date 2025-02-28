@@ -21,6 +21,10 @@ export const env = createEnv({
     MONTHLY_QUERY_LIMIT: z.string(),
     IP_QUERY_LIMIT: z.string(),
     IP_TOTAL_QUERY_LIMIT: z.string(),
+    OPENAI_API_KEY: z.string(),
+    OPENROUTER_API_KEY: z.string(),
+    CHROMA_SERVER_URL: z.string(),
+    CHROMA_SERVER_PORT: z.string(),
   },
 
   /**
@@ -46,6 +50,10 @@ export const env = createEnv({
     MONTHLY_QUERY_LIMIT: process.env.MONTHLY_QUERY_LIMIT,
     IP_QUERY_LIMIT: process.env.IP_QUERY_LIMIT,
     IP_TOTAL_QUERY_LIMIT: process.env.IP_TOTAL_QUERY_LIMIT,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
+    CHROMA_SERVER_URL: process.env.CHROMA_SERVER_URL,
+    CHROMA_SERVER_PORT: process.env.CHROMA_SERVER_PORT,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
